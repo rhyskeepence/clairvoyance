@@ -28,7 +28,7 @@ class LoggingExample extends ClairvoyantSpec {
   }
 
   trait context extends ClairvoyantContext {
-    // set up stubs
+    // test set up and fixtures
   }
 }
 ```
@@ -45,7 +45,7 @@ Add this to your SBT build:
         "rhyskeepence" %% "clairvoyance" % "1"
     )
     resolvers ++= Seq(
-        "rhys's snapshots" at "https://github.com/rhyskeepence/mvn-repo/raw/master/snapshots"
+        "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
     )
 
 Within IntelliJ, run the test as a JUnit test (rather than a specs2 test)
