@@ -5,6 +5,8 @@ Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provi
 
 It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 
+At the moment it's a major work in progress, so I wouldn't test your nuclear reactor with it just yet.
+
 Example
 -------
 
@@ -49,7 +51,7 @@ Add this to your SBT build:
         "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
     )
 
-Within IntelliJ, run the test as a JUnit test (rather than a specs2 test)
+**Important** Within IntelliJ, run the test as a JUnit test (rather than a specs2 test). This seems to be an absolute ballache with the current IntelliJ plugin.
 
 At the moment, you can't run the spec using the specs2 runner in SBT and get the HTML output. I think it's just a matter of specifying the exporter class as an argument. This will be tested and documented very soon now!
 
