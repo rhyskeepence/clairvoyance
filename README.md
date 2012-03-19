@@ -14,8 +14,8 @@ Here is an example output from a spec.
 TODO
 ----
 
-# Table of contents
-# Notes
-# Custom Rendering
-# SVG sequence diagrams
-# Scenerio tables
+* Table of contents
+* Notes
+* Custom Rendering
+* SVG sequence diagrams
+* Scenerio tables
