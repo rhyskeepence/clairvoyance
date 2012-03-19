@@ -11,6 +11,7 @@ Example
 The full source to this example is [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/LoggingExample.scala).
 
 It breaks down like this:
+
 * We create a Spec which extends `ClairvoyantSpec`
 * We write our spec in the mutable spec style (my team is scared of the immutable style)
 * We create a context which extends `ClairvoyantContext`
