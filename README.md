@@ -16,7 +16,7 @@ It breaks down like this:
 * We write our spec in the mutable spec style (my team is scared of the immutable style)
 * We create a context which extends `ClairvoyantContext`
 * `InterestingGivens` can be added with statements such as `interestingGivens += ("Current date" -> "21/12/2012")`
-* The spec method is interpreted into a text specification
+* The spec method is interpreted into a text specification, so keep it readable
 
 ```scala
 class LoggingExample extends ClairvoyantSpec {
