@@ -57,6 +57,7 @@ Interesting Givens
 ------------------
 
 These are inputs into your test, which may not be specified in the spec, but should be logged to the output:
+
 ```scala
   interestingGivens += ("Current date" -> "21/12/2012")
 ```
@@ -67,12 +68,14 @@ Captured Inputs And Outputs
 These are the inputs or outputs to your system, which may not be practical to assert upon, but should be logged.
 
 Perhaps you are using a stub rather than a communicating with a third party:
+
 ```scala
 class StubGizmometer extends Gizmometer {
 }
 ```
 
 To capture inputs and outputs, just add the `ProducesCapturedInputsAndOutputs` trait and call `captureValue`:
+
 ```scala
 class StubGizmometer extends Gizmometer with ProducesCapturedInputsAndOutputs {
   def scan(brain: Brain) {
@@ -82,7 +85,8 @@ class StubGizmometer extends Gizmometer with ProducesCapturedInputsAndOutputs {
 ```
 
 and in your context, register the stub so that clairvoyant knows about it:
-```
+
+```scala
 trait context extends ClairvoyantContext {
     val gizmometer = new StubGizmometer
     override def capturedInputsAndOutputs = Seq(gizmometer)
