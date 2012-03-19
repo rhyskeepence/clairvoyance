@@ -62,6 +62,13 @@ These are inputs into your test, which may not be specified in the spec, but sho
   interestingGivens += ("Current date" -> "21/12/2012")
 ```
 
+or
+
+```scala
+  ("Current date" -> "21/12/2012").isInteresting
+```
+
+
 Captured Inputs And Outputs
 ---------------------------
 
@@ -93,6 +100,10 @@ trait context extends ClairvoyantContext {
 }
 ```
 
+Warning
+-------
+
+I'm not completely happy with it so the API will change in the future.
 
 TODO
 ----
