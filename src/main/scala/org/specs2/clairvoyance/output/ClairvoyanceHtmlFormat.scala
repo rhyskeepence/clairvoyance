@@ -25,7 +25,10 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     print(<ul>
       {fragment match {
         case result: ExecutedResult =>
-          val resultCss = if (result.isSuccess) "highlight results test-passed highlighted" else "highlight results test-failed highlighted"
+          val resultCss =
+            if (result.isSuccess) "highlight results test-passed highlighted"
+            else "highlight results test-failed highlighted"
+
           val resultOutput =
             if (result.stats.isSuccess) "Test Passed"
             else result.result.message
