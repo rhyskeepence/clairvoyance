@@ -110,10 +110,10 @@ I'm not completely happy with it so the API will change in the future.
 TODO
 ----
 
-* Make it work with SBT rather than requiring JUnit
+* Produce output with the specs runner (rather than requiring JUnit)
 * Table of contents
 * Notes
 * Custom Rendering
 * SVG sequence diagrams
-* Scenerio tables
+* Scenario tables
 * Test output is stored as a mutable queue on the spec class, this is a bit dodgy.
