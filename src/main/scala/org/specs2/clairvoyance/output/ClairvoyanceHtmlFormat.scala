@@ -2,7 +2,6 @@ package org.specs2.clairvoyance.output
 
 import scala.xml._
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedFragment, ExecutedSpecification}
-import org.specs2.clairvoyance.{TestState, ClairvoyantSpec}
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -21,7 +20,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
 
-  def printFragment(sourceSpec: ClairvoyantSpec, fragment: ExecutedFragment) = {
+  def printFragment(fragment: ExecutedFragment) = {
     print(<ul>
       {fragment match {
         case result: ExecutedResult =>
@@ -33,7 +32,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             if (result.stats.isSuccess) "Test Passed"
             else result.result.message
 
-          val testState = sourceSpec.testStates.dequeue()
+          val testState = TestStates.dequeue
 
           <div class="testmethod">
             <h2>

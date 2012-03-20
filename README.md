@@ -76,7 +76,7 @@ Captured Inputs And Outputs
 
 These are the inputs or outputs to your system, which may not be practical to assert upon, but should be logged.
 
-Perhaps you are using a stub rather than a communicating with a third party:
+Perhaps you are using a stub rather than communicating with a third party in your spec:
 
 ```scala
 class StubGizmometer extends Gizmometer {
@@ -88,7 +88,7 @@ To capture inputs and outputs, just add the `ProducesCapturedInputsAndOutputs` t
 ```scala
 class StubGizmometer extends Gizmometer with ProducesCapturedInputsAndOutputs {
   def scan(brain: Brain) {
-    captureValue(("Brain" -> brain))
+    captureValue("Brain" -> brain)
   }
 }
 ```

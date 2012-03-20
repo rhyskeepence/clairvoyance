@@ -5,6 +5,7 @@ import collection.mutable.ListBuffer
 import org.specs2.specification.Scope
 import org.specs2.mutable.{After, Specification}
 import collection.mutable
+import output.{TestState, TestStates}
 
 /**
  * The base class - the only thing to note is that we use mutable specifications rather than immutable.
@@ -14,9 +15,6 @@ import collection.mutable
 @RunWith(classOf[ClairvoyanceRunner])
 class ClairvoyantSpec extends Specification {
   sequential
-
-  /* This is mega dodgy but works. Figure out a better way of reporting state to the Html reporter - perhaps by extending the `in` keyword */
-  val testStates = new mutable.Queue[TestState] 
 
   trait ClairvoyantContext extends Scope with After with InterestingGivens {
     def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()
@@ -28,7 +26,7 @@ class ClairvoyantSpec extends Specification {
       val captured = capturedInputsAndOutputs.map(_.producedCapturedInputsAndOutputs).flatten
       capturedInputsAndOutputs.foreach(_.clear())
 
-      testStates += TestState(interestingGivens.toList, captured)
+      TestStates += TestState(interestingGivens.toList, captured)
     }
   }
 
@@ -37,8 +35,6 @@ class ClairvoyantSpec extends Specification {
     implicit def toInterestingGiven(s: (String, Any)) = new InterestingGivenBuilder(interestingGivens, s)
   }
 }
-
-case class TestState(interestingGivens: Seq[(String, Any)], capturedInputsAndOutputs: Seq[(String, Any)])
 
 class InterestingGivenBuilder(interestingGivens: MutableInterestingGivens, s: (String, Any)) {
   def isInteresting {
@@ -49,15 +45,9 @@ class InterestingGivenBuilder(interestingGivens: MutableInterestingGivens, s: (S
 class MutableInterestingGivens  {
   private lazy val values = new ListBuffer[(String, Any)]
 
-  def this(interestingGivens: MutableInterestingGivens) {
-    this()
-    values ++= interestingGivens.toList
-  }
-
   def +=[T](interestingGiven: (String, T)) {
     values += interestingGiven
   }
-
 
   def apply(key: String) = values.find(_._1 == key).map(_._2)
 

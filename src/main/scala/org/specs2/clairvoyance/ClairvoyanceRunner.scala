@@ -22,7 +22,7 @@ class ClairvoyanceRunner(klass: Class[_]) extends JUnitRunner(klass) {
   private lazy val DescriptionAndExamples(desc, executions) = descriptions.foldAll(select(content.fragments))
 
   override protected lazy val specification = tryToCreateObject[ClairvoyantSpec](klass.getName).get
-  val clairvoyanceExporter = new ClairvoyanceHtmlExporting(specification)
+  val clairvoyanceExporter = new ClairvoyanceHtmlExporting
 
   override def run(notifier: RunNotifier) {
     executeSpecification |> export |> notifyJUnit(notifier)

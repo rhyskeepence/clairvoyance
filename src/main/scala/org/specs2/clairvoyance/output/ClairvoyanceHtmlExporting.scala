@@ -6,15 +6,14 @@ import org.specs2.reporter._
 import org.specs2.specification._
 import org.specs2.internal.scalaz.Scalaz._
 import scala.xml.{Xhtml, NodeSeq}
-import org.specs2.clairvoyance.ClairvoyantSpec
 import java.io.{File, Writer}
 
-class ClairvoyanceHtmlExporting(sourceSpecification: ClairvoyantSpec) extends Exporting with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
+class ClairvoyanceHtmlExporting extends Exporting with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
   type ExportType = Unit
 
   def export(implicit args: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
     val executed = spec.execute
-    print(sourceSpecification, executed) |> writeFiles
+    print(executed) |> writeFiles
     executed
   }
 }
