@@ -19,7 +19,8 @@ import org.specs2.text.AnsiColors
 class ClairvoyanceRunner(klass: Class[_]) extends JUnitRunner(klass) {
   private val executor = new FragmentExecution {}
   private val descriptions = new JUnitDescriptionsFragments(klass.getName)
-  private lazy val DescriptionAndExamples(desc, executions) = descriptions.foldAll(select(content.fragments))
+  private lazy val DescriptionAndExamples(desc, executions) = descriptions.foldAll((select(args)(specification) |> sequence).fragments)
+
 
   override protected lazy val specification = tryToCreateObject[ClairvoyantSpec](klass.getName).get
   val clairvoyanceExporter = new ClairvoyanceHtmlExporting
@@ -41,35 +42,35 @@ class ClairvoyanceRunner(klass: Class[_]) extends JUnitRunner(klass) {
 
   private def executeSpecification =
     executions.collect {
-      case (desc, f@SpecStart(_, _, _, _)) => (desc, executor.executeFragment(args)(f))
-      case (desc, f@Example(_, _)) => (desc, executor.executeFragment(args)(f))
-      case (desc, f@Text(_)) => (desc, executor.executeFragment(args)(f))
-      case (desc, f@Step(_)) => (desc, executor.executeFragment(args)(f))
-      case (desc, f@Action(_)) => (desc, executor.executeFragment(args)(f))
-      case (desc, f@SpecEnd(_)) => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ SpecStart(_,_,_,_)) => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ Example(_, _))      => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ Text(_))            => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ Step(_))            => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ Action(_))          => (desc, executor.executeFragment(args)(f))
+      case (desc, f @ SpecEnd(_))         => (desc, executor.executeFragment(args)(f))
     }
 
   private def notifyJUnit(notifier: RunNotifier) = (executed: Seq[(Description, ExecutedFragment)]) => {
     executed foreach {
-      case (desc, ExecutedResult(_, result, timer, _, _)) => {
+      case (desc, ExecutedResult(_, result, timer, _,_)) => {
         notifier.fireTestStarted(desc)
         result match {
-          case f@Failure(m, e, st, d) =>
+          case f @ Failure(m, e, st, d)                     =>
             notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
-          case e@Error(m, st) =>
+          case e @ Error(m, st)                             =>
             notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
-          case DecoratedResult(_, f@Failure(m, e, st, d)) =>
+          case DecoratedResult(_, f @ Failure(m, e, st, d)) =>
             notifier.fireTestFailure(new notification.Failure(desc, junitFailure(f)))
-          case DecoratedResult(_, e@Error(m, st)) =>
+          case DecoratedResult(_, e @ Error(m, st))         =>
             notifier.fireTestFailure(new notification.Failure(desc, args.traceFilter(e.exception)))
-          case Pending(_) | Skipped(_, _) => notifier.fireTestIgnored(desc)
-          case Success(_) | DecoratedResult(_, _) => ()
+          case Pending(_) | Skipped(_, _)                   => notifier.fireTestIgnored(desc)
+          case Success(_) | DecoratedResult(_, _)           => ()
         }
         notifier.fireTestFinished(desc)
       }
-      case (desc, ExecutedSpecStart(_, _, _)) => notifier.fireTestRunStarted(desc)
-      case (desc, ExecutedSpecEnd(_, _, _)) => notifier.fireTestRunFinished(new org.junit.runner.Result)
-      case (desc, _) => // don't do anything otherwise too many tests will be counted
+      case (desc, ExecutedSpecStart(_,_,_)) => notifier.fireTestRunStarted(desc)
+      case (desc, ExecutedSpecEnd(_,_,_))   => notifier.fireTestRunFinished(new org.junit.runner.Result)
+      case (desc, _)                        => // don't do anything otherwise too many tests will be counted
     }
   }
 
@@ -79,17 +80,11 @@ class ClairvoyanceRunner(klass: Class[_]) extends JUnitRunner(klass) {
 
     case Failure(m, e, st, FailureDetails(expected, actual)) => new ComparisonFailure(AnsiColors.removeColors(m), expected, actual) {
       private val e = args.traceFilter(f.exception)
-
       override def getStackTrace = e.getStackTrace
-
       override def getCause = e.getCause
-
       override def printStackTrace = e.printStackTrace
-
       override def printStackTrace(w: java.io.PrintStream) = e.printStackTrace(w)
-
       override def printStackTrace(w: java.io.PrintWriter) = e.printStackTrace(w)
     }
   }
-
 }

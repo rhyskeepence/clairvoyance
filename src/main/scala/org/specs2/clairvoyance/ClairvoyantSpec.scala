@@ -4,7 +4,6 @@ import org.junit.runner.RunWith
 import collection.mutable.ListBuffer
 import org.specs2.specification.Scope
 import org.specs2.mutable.{After, Specification}
-import collection.mutable
 import output.{TestState, TestStates}
 
 /**
@@ -13,8 +12,9 @@ import output.{TestState, TestStates}
  */
 
 @RunWith(classOf[ClairvoyanceRunner])
-class ClairvoyantSpec extends Specification {
+abstract class ClairvoyantSpec extends Specification {
   sequential
+  args.report(exporter = "org.specs2.clairvoyance.ClairvoyanceHtmlExporting")
 
   trait ClairvoyantContext extends Scope with After with InterestingGivens {
     def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()
