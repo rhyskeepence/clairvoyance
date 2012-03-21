@@ -3,11 +3,8 @@ package org.specs2.clairvoyance.output
 import collection.mutable
 
 object TestStates {
-  /* This is mega dodgy but works because the specs are executed sequentially and the ExecutedResult notification is
-     triggered immediately after the spec fragment is evaluated.
-
-     Figure out a better way of reporting state to the clairvoyance HTML exporter - perhaps by extending the `in` keyword
-     The ExecutedFragment trait is sealed so we can't add our test state to it but perhaps we can fork specs2.
+  /* This is mega dodgy but works because the specs are executed sequentially for each class.
+     Figure out a better way of reporting state to the clairvoyance HTML exporter.
   */
   private val testStates = new mutable.HashMap[String, mutable.Queue[TestState]]()
 
