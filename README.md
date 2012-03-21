@@ -104,12 +104,14 @@ trait context extends ClairvoyantContext {
 Custom Rendering of Interesting Givens & Captured Inputs And Outputs
 --------------------------------------------------------------------
 
-See: [clairvoyance/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/CustomRenderingExample.scala)
+When you capture a value or an interesting given, it will be rendered to the screen. XML and Strings are formatted nicely by default, but you may wish to capture your own domain objects and have them presented in readable format.
+
+A full example is here: [clairvoyance/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/CustomRenderingExample.scala)
 
 The juicy bits are shown below:
 
 ```scala
-class CustomRenderingSpec extends ClairvoyantSpec with CustomRendering {
+class CustomRenderingExample extends ClairvoyantSpec with CustomRendering {
 
   def customRendering = {
     case Brain(iq) => "a Brain with an IQ of %d".format(iq)
