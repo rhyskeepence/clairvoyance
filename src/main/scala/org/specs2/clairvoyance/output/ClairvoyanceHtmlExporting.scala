@@ -7,6 +7,7 @@ import org.specs2.specification._
 import org.specs2.internal.scalaz.Scalaz._
 import scala.xml.{Xhtml, NodeSeq}
 import java.io.{File, Writer}
+import java.net.URL
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
   type ExportType = Unit
@@ -40,6 +41,26 @@ trait ClairvoyanceHtmlFileWriter extends OutputDir {
   }
 
   protected def copyResources() {
-    Seq("css", "javascript").foreach(fileSystem.copySpecResourcesDir(_, outputDir))
+    Seq("css", "javascript").foreach(copyFromResourcesDir(_, outputDir))
+  }
+
+  private def copyFromResourcesDir(src: String, outputDir: String) {
+    val jarUrl = Thread.currentThread.getContextClassLoader.getResource(getClass.getName.replace(".", "/") + ".class")
+    for (url <- Option(jarUrl) if url.toString.startsWith("jar"))
+      fileSystem.unjar(getPath(url).takeWhile(_ != '!').mkString, outputDir, ".*" + src + "/.*")
+
+    val folderUrl = Thread.currentThread.getContextClassLoader.getResource(src)
+    for (url <- Option(folderUrl) if !folderUrl.toString.startsWith("jar"))
+      fileSystem.copyDir(url, outputDir + src)
+  }
+
+  private def getPath(url: URL) = {
+    val path =
+      if (sys.props("file.separator") == "\\")
+        url.getPath.replace("\\", "/").replace("file:/", "")
+      else
+        url.getPath.replace("file:", "")
+
+    path.replace("%20", " ")
   }
 }
