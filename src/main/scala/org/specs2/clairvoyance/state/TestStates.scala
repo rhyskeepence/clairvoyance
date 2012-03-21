@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.output
+package org.specs2.clairvoyance.state
 
 import collection.mutable
 

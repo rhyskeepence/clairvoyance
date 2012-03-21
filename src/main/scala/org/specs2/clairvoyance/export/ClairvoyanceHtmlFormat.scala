@@ -1,7 +1,11 @@
-package org.specs2.clairvoyance.output
+package org.specs2.clairvoyance.export
 
 import scala.xml._
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedFragment, ExecutedSpecification}
+import org.specs2.clairvoyance.state.{TestState, TestStates}
+import org.specs2.reflect.Classes
+import org.specs2.clairvoyance.ClairvoyantSpec
+import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -34,6 +38,9 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           val testState = TestStates.dequeue(spec.name.fullName)
 
+          val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](spec.name.fullName, false, false)
+          val rendering = new Rendering(optionalCustomRenderer)
+
           <div class="testmethod">
             <h2>
               {result.s.toXml}
@@ -45,8 +52,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
               <h2>Test results:</h2>
               <pre class={resultCss}>{resultOutput}</pre>
 
-              {interestingGivensTable(testState)}
-              {loggedInputsAndOutputs(testState)}
+              {interestingGivensTable(testState, rendering)}
+              {loggedInputsAndOutputs(testState, rendering)}
             </div>
           </div>
 
@@ -62,7 +69,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     )
   }
 
-  def interestingGivensTable(testState: Option[TestState]) = {
+  def interestingGivensTable(testState: Option[TestState], rendering: Rendering) = {
     val givens = testState.map(_.interestingGivens).getOrElse(Seq())
 
     givens match {
@@ -71,28 +78,28 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
       case _ =>
         <h3 class="logKey">Interesting Givens</h3>
         <table class="interestingGivens logValue">
-          {mapInterestingGivenRows(givens)}
+          {mapInterestingGivenRows(givens, rendering)}
         </table>
     }
   }
 
-  def mapInterestingGivenRows(givens: Seq[(String,Any)]) = {
+  def mapInterestingGivenRows(givens: Seq[(String,Any)], rendering: Rendering) = {
     givens.map {
       case (key: String, value: Any) =>
         <tr>
           <th class="key">{key}</th>
-          <td class="interestingGiven">{Rendering.renderToString(value)}</td>
+          <td class="interestingGiven">{rendering.renderToString(value)}</td>
         </tr>
     }
   }
 
-  def loggedInputsAndOutputs(testState: Option[TestState]) = {
+  def loggedInputsAndOutputs(testState: Option[TestState], rendering: Rendering) = {
     val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
 
     inputsAndOutputs.map {
       case (key: String, value: Any) =>
         <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>{key}</h3>
-        <div class="logValue highlight String">{Rendering.renderToString(value)}</div>
+        <div class="logValue highlight String">{rendering.renderToString(value)}</div>
     }
   }
 

@@ -2,7 +2,7 @@ name := "clairvoyance"
 
 organization := "rhyskeepence"
 
-version := "4"
+version := "5"
 
 scalaVersion := "2.9.1"
 

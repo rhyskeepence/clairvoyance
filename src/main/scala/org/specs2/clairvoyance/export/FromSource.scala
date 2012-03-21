@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.output
+package org.specs2.clairvoyance.export
 
 import org.specs2.io.Paths._
 import org.specs2.io.Location

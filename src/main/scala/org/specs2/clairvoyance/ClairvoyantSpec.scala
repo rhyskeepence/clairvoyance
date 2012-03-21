@@ -2,8 +2,8 @@ package org.specs2.clairvoyance
 
 import collection.mutable.ListBuffer
 import org.specs2.mutable.{After, Specification}
-import output.{TestState, TestStates}
-import org.specs2.specification.{Fragments, Scope}
+import state.{TestState, TestStates}
+import org.specs2.specification.Scope
 
 /**
  * The base class - the only thing to note is that we use mutable specifications rather than immutable.
@@ -11,7 +11,7 @@ import org.specs2.specification.{Fragments, Scope}
  */
 abstract class ClairvoyantSpec extends Specification {
   sequential
-  args.report(exporter = "org.specs2.clairvoyance.output.ClairvoyanceHtmlExporting")
+  args.report(exporter = "org.specs2.clairvoyance.export.ClairvoyanceHtmlExporting")
 
   trait ClairvoyantContext extends Scope with After with InterestingGivens {
     def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()

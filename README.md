@@ -45,7 +45,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "4"
+        "rhyskeepence" %% "clairvoyance" % "5"
     )
     resolvers ++= Seq(
         "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
@@ -101,6 +101,24 @@ trait context extends ClairvoyantContext {
 }
 ```
 
+Custom Rendering of Interesting Givens & Captured Inputs And Outputs
+--------------------------------------------------------------------
+
+See: [clairvoyance/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/CustomRenderingExample.scala)
+
+The juicy bits are shown below:
+
+```scala
+class CustomRenderingSpec extends ClairvoyantSpec with CustomRendering {
+
+  def customRendering = {
+    case Brain(iq) => "a Brain with an IQ of %d".format(iq)
+  }
+}
+```
+
+`customRendering` is a partial function, which will be run before the default rendering.
+
 Warning
 -------
 
@@ -111,7 +129,6 @@ TODO
 
 * Table of contents
 * Notes
-* Custom Rendering
 * SVG sequence diagrams
 * Scenario tables
 * Test output is stored as a mutable queue on the spec class, this is a bit dodgy.

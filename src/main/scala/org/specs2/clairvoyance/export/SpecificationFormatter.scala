@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.output
+package org.specs2.clairvoyance.export
 
 object SpecificationFormatter {
   val formattingChain = Function chain List(replaceSyntaxWithSpaces, replaceCamelCaseWithSentence, capitaliseFirstCharacterOfEachLine)
