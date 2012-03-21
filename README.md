@@ -119,6 +119,9 @@ class CustomRenderingSpec extends ClairvoyantSpec with CustomRendering {
 
 `customRendering` is a partial function, which will be run before the default rendering.
 
+And behold, custom rendering of Brains:
+![Custom Rendering of Brains](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/custom-rendering.jpg)
+
 Warning
 -------
 
