@@ -30,14 +30,8 @@ class LoggingExample extends ClairvoyantSpec {
       coordinator.runIt()
     }
 
-    def beUnleashed = new Matcher[StubDoomsdayDevice] {
-      def apply[S <: StubDoomsdayDevice](v: Expectable[S]) = {
-        result(
-          v.value.wasUnleashed, 
-          v.description + " was unleashed", 
-          v.description + " was not unleashed", v)
-      }
-    }
+    def beUnleashed: Matcher[StubDoomsdayDevice] = (d: StubDoomsdayDevice) =>
+      (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
 
 
     class StubClock extends Clock {

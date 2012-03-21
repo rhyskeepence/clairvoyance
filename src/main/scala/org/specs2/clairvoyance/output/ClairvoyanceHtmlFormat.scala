@@ -20,7 +20,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
 
-  def printFragment(fragment: ExecutedFragment) = {
+  def printFragment(spec: ExecutedSpecification, fragment: ExecutedFragment) = {
     print(<ul>
       {fragment match {
         case result: ExecutedResult =>
@@ -32,7 +32,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             if (result.stats.isSuccess) "Test Passed"
             else result.result.message
 
-          val testState = TestStates.dequeue
+          val testState = TestStates.dequeue(spec.name.fullName)
 
           <div class="testmethod">
             <h2>
@@ -62,8 +62,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     )
   }
 
-  def interestingGivensTable(testState: TestState) = {
-    val givens = testState.interestingGivens
+  def interestingGivensTable(testState: Option[TestState]) = {
+    val givens = testState.map(_.interestingGivens).getOrElse(Seq())
 
     givens match {
       case Nil =>
@@ -86,8 +86,10 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     }
   }
 
-  def loggedInputsAndOutputs(testState: TestState) = {
-    testState.capturedInputsAndOutputs.map {
+  def loggedInputsAndOutputs(testState: Option[TestState]) = {
+    val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
+
+    inputsAndOutputs.map {
       case (key: String, value: Any) =>
         <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>{key}</h3>
         <div class="logValue highlight String">{Rendering.renderToString(value)}</div>

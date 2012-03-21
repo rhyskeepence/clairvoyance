@@ -23,7 +23,7 @@ trait ClairvoyanceHtmlPrinter {
   def printFragmentsOf(spec: ExecutedSpecification) = {
     spec.fragments.foldLeft(clairvoyanceFormat) {
       (res, cur) =>
-        res.printFragment(cur)
+        res.printFragment(spec, cur)
     }
   }
 }

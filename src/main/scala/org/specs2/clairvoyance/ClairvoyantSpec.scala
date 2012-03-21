@@ -1,20 +1,17 @@
 package org.specs2.clairvoyance
 
-import org.junit.runner.RunWith
 import collection.mutable.ListBuffer
-import org.specs2.specification.Scope
 import org.specs2.mutable.{After, Specification}
 import output.{TestState, TestStates}
+import org.specs2.specification.{Fragments, Scope}
 
 /**
  * The base class - the only thing to note is that we use mutable specifications rather than immutable.
  * This is not ideal but mutable specs may look a bit scary and magic to the intended audience.
  */
-
-@RunWith(classOf[ClairvoyanceRunner])
 abstract class ClairvoyantSpec extends Specification {
   sequential
-  args.report(exporter = "org.specs2.clairvoyance.ClairvoyanceHtmlExporting")
+  args.report(exporter = "org.specs2.clairvoyance.output.ClairvoyanceHtmlExporting")
 
   trait ClairvoyantContext extends Scope with After with InterestingGivens {
     def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()
@@ -26,7 +23,7 @@ abstract class ClairvoyantSpec extends Specification {
       val captured = capturedInputsAndOutputs.map(_.producedCapturedInputsAndOutputs).flatten
       capturedInputsAndOutputs.foreach(_.clear())
 
-      TestStates += TestState(interestingGivens.toList, captured)
+      TestStates += (this -> TestState(interestingGivens.toList, captured))
     }
   }
 

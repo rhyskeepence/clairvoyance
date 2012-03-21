@@ -8,7 +8,7 @@ import org.specs2.internal.scalaz.Scalaz._
 import scala.xml.{Xhtml, NodeSeq}
 import java.io.{File, Writer}
 
-class ClairvoyanceHtmlExporting extends Exporting with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
+class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
   type ExportType = Unit
 
   def export(implicit args: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {

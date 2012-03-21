@@ -48,12 +48,11 @@ Add this to your SBT build:
         "rhyskeepence" %% "clairvoyance" % "1"
     )
     resolvers ++= Seq(
+        "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
         "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
     )
 
-**Important** Within IntelliJ, run the test as a JUnit test (rather than a specs2 test). This seems to be an absolute ballache with the current IntelliJ plugin.
-
-At the moment, you can't run the spec using the specs2 runner in SBT and get the HTML output. I think it's just a matter of specifying the exporter class as an argument. This will be tested and documented very soon now!
+At the moment, clairvoyant relies on a few features in Specs2 1.9-SNAPSHOT - hence the snapshot repository.
 
 Interesting Givens
 ------------------
@@ -110,7 +109,6 @@ I'm not completely happy with it so the API will change in the future.
 TODO
 ----
 
-* Produce output with the specs runner (rather than requiring JUnit)
 * Table of contents
 * Notes
 * Custom Rendering
