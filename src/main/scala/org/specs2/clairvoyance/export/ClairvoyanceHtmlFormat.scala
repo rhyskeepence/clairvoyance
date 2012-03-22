@@ -88,7 +88,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
       case (key: String, value: Any) =>
         <tr>
           <th class="key">{key}</th>
-          <td class="interestingGiven">{rendering.renderToString(value)}</td>
+          <td class="interestingGiven">{rendering.renderToXml(value)}</td>
         </tr>
     }
   }
@@ -99,7 +99,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     inputsAndOutputs.map {
       case (key: String, value: Any) =>
         <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>{key}</h3>
-        <div class="logValue highlight String">{rendering.renderToString(value)}</div>
+        <div class="logValue highlight String">{rendering.renderToXml(value)}</div>
     }
   }
 

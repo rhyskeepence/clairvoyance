@@ -1,12 +1,14 @@
 package org.specs2.clairvoyance
 
 import collection.mutable.ListBuffer
+import org.specs2.clairvoyance.Imports._
+
 
 trait ProducesCapturedInputsAndOutputs {
 
-  private lazy val capturedValues = new ListBuffer[(String, Any)]
+  private lazy val capturedValues = new ListBuffer[KeyValue]
 
-  def captureValue[T](capturedValue: (String, T)) {
+  def captureValue(capturedValue: KeyValue) {
     capturedValues += capturedValue
   }
 

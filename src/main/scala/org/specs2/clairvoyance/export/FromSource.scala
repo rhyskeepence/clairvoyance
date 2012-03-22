@@ -14,7 +14,7 @@ object FromSource {
   }
 
   def readToEndingBrace(content: Seq[String], lineNumber: Int, res: List[String] = List()): List[String] = {
-    if (content(lineNumber).trim().equals("}")) {
+    if (content(lineNumber).trim().startsWith("}")) {
       res.reverse
     } else {
       readToEndingBrace(content, lineNumber + 1, content(lineNumber).trim() :: res)

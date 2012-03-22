@@ -137,4 +137,4 @@ TODO
 * Notes
 * SVG sequence diagrams
 * Scenario tables
-* Test output is stored as a mutable queue on the spec class, this is a bit dodgy.
+* Test output is stored as a mutable queue, this is a bit dodgy.

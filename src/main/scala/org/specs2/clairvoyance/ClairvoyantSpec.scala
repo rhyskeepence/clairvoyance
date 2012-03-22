@@ -1,9 +1,7 @@
 package org.specs2.clairvoyance
 
-import collection.mutable.ListBuffer
 import org.specs2.mutable.{After, Specification}
 import state.{TestState, TestStates}
-import org.specs2.specification.Scope
 
 /**
  * The base class - the only thing to note is that we use mutable specifications rather than immutable.
@@ -13,40 +11,15 @@ abstract class ClairvoyantSpec extends Specification {
   sequential
   args.report(exporter = "org.specs2.clairvoyance.export.ClairvoyanceHtmlExporting")
 
-  trait ClairvoyantContext extends Scope with After with InterestingGivens {
-    def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()
+  trait ClairvoyantContext extends After with InterestingGivens with CapturedInputsAndOutputs {
 
     def tearDown {}
-    
+
     def after {
       tearDown
-      val captured = capturedInputsAndOutputs.map(_.producedCapturedInputsAndOutputs).flatten
-      capturedInputsAndOutputs.foreach(_.clear())
 
-      TestStates += (this -> TestState(interestingGivens.toList, captured))
+      TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
+      clearCapturedValues()
     }
   }
-
-  trait InterestingGivens {
-    val interestingGivens = new MutableInterestingGivens()
-    implicit def toInterestingGiven(s: (String, Any)) = new InterestingGivenBuilder(interestingGivens, s)
-  }
-}
-
-class InterestingGivenBuilder(interestingGivens: MutableInterestingGivens, s: (String, Any)) {
-  def isInteresting {
-    interestingGivens += s
-  }
-}
-
-class MutableInterestingGivens  {
-  private lazy val values = new ListBuffer[(String, Any)]
-
-  def +=[T](interestingGiven: (String, T)) {
-    values += interestingGiven
-  }
-
-  def apply(key: String) = values.find(_._1 == key).map(_._2)
-
-  def toList = values.toList
 }
