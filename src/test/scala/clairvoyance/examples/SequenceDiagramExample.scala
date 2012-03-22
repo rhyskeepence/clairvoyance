@@ -7,7 +7,7 @@ import org.specs2.clairvoyance.plugins.SequenceDiagram
 class SequenceDiagramExample extends ClairvoyantSpec {
 
   "Mario" should {
-    "giveDaisyTo Daisy to Luigi" in new context {
+    "give Daisy to Luigi" in new context {
       mario.giveDaisyTo(luigy)
     }
   }
@@ -15,6 +15,8 @@ class SequenceDiagramExample extends ClairvoyantSpec {
   trait context extends ClairvoyantContext with SequenceDiagram {
     val mario = new Mario
     val luigy = {}
+
+    override def capturedInputsAndOutputs = super.capturedInputsAndOutputs :+ mario
   }
 
   class Mario extends ProducesCapturedInputsAndOutputs {
