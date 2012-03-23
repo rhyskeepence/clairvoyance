@@ -4,7 +4,7 @@ import org.specs2.clairvoyance.plugins.SvgSequenceDiagram
 import xml.{XML, Elem, NodeSeq, PrettyPrinter}
 
 trait Renderer[T] {
-  def render: (T => Elem)
+  def render: (T => Any)
 }
 
 class Rendering(specInstance: Option[CustomRendering]) {
@@ -18,26 +18,29 @@ class Rendering(specInstance: Option[CustomRendering]) {
       case None => defaultRendering
     }
 
-  def defaultRendering: PartialFunction[Any, Elem] = {
+  def defaultRendering: PartialFunction[Any, Any] = {
     case xml: NodeSeq => nodeSeqRenderer.render(xml)
     case diagram: SvgSequenceDiagram => umlRenderer.render(diagram)
-    case any: Any => <div>{defaultRenderer.render(any)}</div>
+    case any: Any => defaultRenderer.render(any)
   }
 
   def renderToXml(anything: Any) = {
-    renderingFunction(anything)
+    renderingFunction(anything) match {
+      case xml: Elem => <div class='nohighlight'>{xml}</div>
+      case string: String => <span>{string}</span>
+    }
   }
 }
 
 class ToStringRender extends Renderer[Any] {
-  def render = something => <div>{something.toString}</div>
+  def render = something => something.toString
 }
 
 class NodeSeqRenderer extends Renderer[NodeSeq] {
   val formatter = new PrettyPrinter(80, 2)
-  def render = nodes => <div>formatter.formatNodes(nodes)</div>
+  def render = nodes => formatter.formatNodes(nodes)
 }
 
 class SvgSequenceDiagramRenderer extends Renderer[SvgSequenceDiagram] {
-  def render = diagram => <div class='nohighlight'>{XML.loadString(diagram.toMarkup)}</div>
+  def render = diagram => XML.loadString(diagram.toMarkup)
 }

@@ -13,7 +13,7 @@ class CustomRenderingExample extends ClairvoyantSpec with CustomRendering {
   trait context extends ClairvoyantContext
 
   def customRendering = {
-    case Brain(iq) => <div>{"a Brain with an IQ of %d".format(iq)}</div>
+    case Brain(iq) => "a Brain with an IQ of %d".format(iq)
   }
 }
 
