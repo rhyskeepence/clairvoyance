@@ -20,8 +20,7 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
     }
 
     def thenTheCapturedValueNamed(key: String) =
-      capturedInputsAndOutputs
-        .flatMap(_.producedCapturedInputsAndOutputs)
+      gatherCapturedValues
         .toMap
         .apply(key)
   }

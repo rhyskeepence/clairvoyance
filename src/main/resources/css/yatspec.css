@@ -212,3 +212,12 @@ dl.index-result {
     margin-left: 0px;
     margin-right: 5px;
 }
+
+.toggle {
+    float: left;
+    width: 40px;
+}
+
+.toggle:hover {
+    text-decoration: none;
+}

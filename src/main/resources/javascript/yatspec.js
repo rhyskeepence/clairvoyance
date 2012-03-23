@@ -104,8 +104,15 @@ $(document).ready(function () {
                 ];
             }).get();
 
+        $('.logKey', this).prepend("<span class='toggle'>- </span>");
+
         $('.logKey', this).click(function() {
             $(this).next(".logValue").toggleClass("hide");
+        }
+        ).toggle( function() {
+            $(this).children("span").text("+ ");
+        }, function() {
+            $(this).children("span").text("- ");
         });
 
         $('.logKey', this).each(function() {
