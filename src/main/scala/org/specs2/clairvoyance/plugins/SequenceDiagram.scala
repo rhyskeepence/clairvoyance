@@ -9,12 +9,12 @@ trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesC
 
   def defaultSequenceDiagramActor = "Default"
 
-  override def capturedInputsAndOutputs = super.capturedInputsAndOutputs :+ this
+  abstract override def gatherCapturedValues = {
+    val gatheredValues = super.gatherCapturedValues
+    val umlMarkup = UmlMarkupGeneration.generateUmlMarkup(gatheredValues, defaultSequenceDiagramActor)
+    val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(umlMarkup)
 
-  abstract override def after {
-    val umlMarkup = UmlMarkupGeneration.generateUmlMarkup(gatherCapturedValues, defaultSequenceDiagramActor)
-    captureValue("Sequence Diagram" -> SvgSequenceDiagram(umlMarkup))
-    super.after
+    gatheredValues :+ sequenceDiagram
   }
 }
 

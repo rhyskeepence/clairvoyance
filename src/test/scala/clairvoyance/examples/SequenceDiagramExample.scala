@@ -16,7 +16,7 @@ class SequenceDiagramExample extends ClairvoyantSpec {
     val mario = new Mario
     val luigy = {}
 
-    override def capturedInputsAndOutputs = super.capturedInputsAndOutputs :+ mario
+    override def capturedInputsAndOutputs = Seq(mario)
   }
 
   class Mario extends ProducesCapturedInputsAndOutputs {

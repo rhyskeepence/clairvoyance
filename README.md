@@ -125,6 +125,27 @@ And behold, custom rendering of Brains:
 
 ![Custom Rendering of Brains](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/custom-rendering.jpg)
 
+Sequence Diagrams
+-----------------
+
+If your spec describes interactions between many systems, it can be nice to generate a sequence diagram automatically from CapturedInputsAndOutputs. Just add the `SequenceDiagram` trait to your context, ie:
+
+```scala
+trait context extends ClairvoyantContext with SequenceDiagram {
+  override def capturedInputsAndOutputs = Seq(system_x, system_y)
+}
+```
+
+The name of the captured values should be in the following formats in order to appear on the diagram:
+`captureValue("SOMETHING from X to Y" -> ...)` or
+`captureValue("SOMETHING from X" -> ...)` or
+`captureValue("SOMETHING to Y" -> ...)`
+
+In the last two cases, the default actor will be used, which can be set using this statement in the context:
+`override def defaultSequenceDiagramActor = "Name of my component"`
+
+![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
+
 Warning
 -------
 
@@ -135,6 +156,5 @@ TODO
 
 * Table of contents
 * Notes
-* SVG sequence diagrams
 * Scenario tables
 * Test output is stored as a mutable queue, this is a bit dodgy.
