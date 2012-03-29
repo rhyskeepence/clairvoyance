@@ -45,7 +45,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "6"
+        "rhyskeepence" %% "clairvoyance" % "7"
     )
     resolvers ++= Seq(
         "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
