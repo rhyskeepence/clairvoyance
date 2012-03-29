@@ -1,8 +1,9 @@
 package clairvoyance.plugins
 
-import org.specs2.clairvoyance.plugins.UmlMarkupGeneration
 import org.specs2.clairvoyance.Imports._
 import org.specs2.clairvoyance.{ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import org.specs2.clairvoyance.plugins.CapturedValues._
+import org.specs2.clairvoyance.plugins.UmlMarkupGeneration._
 
 class SequenceDiagramSpec extends ClairvoyantSpec {
 
@@ -50,7 +51,7 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     }
 
     def whenTheSequenceDiagramIsGenerated() {
-      theMarkupGenerated = UmlMarkupGeneration.generateUmlMarkup(capturedValues, "Donkey Kong")
+      theMarkupGenerated = generateUmlMarkup(collectCollaborators(capturedValues, "Donkey Kong"))
       captureValue("Generated UML" -> theMarkupGenerated)
     }
   }

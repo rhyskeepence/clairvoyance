@@ -11,7 +11,10 @@ trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesC
 
   abstract override def gatherCapturedValues = {
     val gatheredValues = super.gatherCapturedValues
-    val umlMarkup = UmlMarkupGeneration.generateUmlMarkup(gatheredValues, defaultSequenceDiagramActor)
+
+    val collaborators = CapturedValues.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
+
+    val umlMarkup = UmlMarkupGeneration.generateUmlMarkup(collaborators)
     val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(umlMarkup)
 
     gatheredValues :+ sequenceDiagram
