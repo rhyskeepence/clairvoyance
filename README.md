@@ -137,12 +137,18 @@ trait context extends ClairvoyantContext with SequenceDiagram {
 ```
 
 The name of the captured values should be in the following formats in order to appear on the diagram:
+
 `captureValue("SOMETHING from X to Y" -> ...)` or
+
 `captureValue("SOMETHING from X" -> ...)` or
+
 `captureValue("SOMETHING to Y" -> ...)`
 
 In the last two cases, the default actor will be used, which can be set using this statement in the context:
 `override def defaultSequenceDiagramActor = "Name of my component"`
+
+An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/SequenceDiagramExample.scala),
+which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
 

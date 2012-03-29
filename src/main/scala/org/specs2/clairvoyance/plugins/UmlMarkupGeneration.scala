@@ -17,10 +17,14 @@ object UmlMarkupGeneration {
   def toPlantUml(defaultActor: String): (KeyValue) => String = {
     case (capturedValueKey, value) =>
       capturedValueKey match {
-        case fullyQualifiedMessageSend(what, from, to) => from + " ->> " + to + ":" + what
-        case messageSendWithDefaultReceiver(what, from) => from + " ->> " + defaultActor + ":" + what
-        case messageSendWithDefaultSender(what, to) => defaultActor + " ->> " + to + ":" + what
+        case fullyQualifiedMessageSend(what, from, to)    => umlArrow(from, to, what)
+        case messageSendWithDefaultReceiver(what, from)   => umlArrow(from, defaultActor, what)
+        case messageSendWithDefaultSender(what, to)       => umlArrow(defaultActor, to, what)
         case _ => ""
       }
+  }
+
+  private def umlArrow(from: String, to: String, what: String): String = {
+    "\"" + from + "\" ->> \"" + to + "\":" + what
   }
 }
