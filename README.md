@@ -45,14 +45,11 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "7"
+        "rhyskeepence" %% "clairvoyance" % "8"
     )
     resolvers ++= Seq(
-        "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
         "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
     )
-
-At the moment, clairvoyant relies on a few features in Specs2 1.9-SNAPSHOT - hence the snapshot repository.
 
 Interesting Givens
 ------------------
