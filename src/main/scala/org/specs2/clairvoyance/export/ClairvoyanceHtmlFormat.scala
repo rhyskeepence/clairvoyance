@@ -17,10 +17,18 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def printBody(spec: ExecutedSpecification, n: => NodeSeq) = print(<body>
     <div id="container">
-      <h1>{spec.name}</h1>
+      <h1>{wordify(spec.name.title)}</h1>
       {n}
     </div>
   </body>)
+
+  def wordify(title: String) = {
+    "%s|%s|%s".format(
+      "(?<=[A-Z])(?=[A-Z][a-z])",
+      "(?<=[^A-Z])(?=[A-Z])",
+      "(?<=[A-Za-z])(?=[^A-Za-z])"
+    ).r.replaceAllIn(title, " ")
+  }
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
 
