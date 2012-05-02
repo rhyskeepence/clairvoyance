@@ -5,8 +5,6 @@ Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provi
 
 It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 
-At the moment it's a major work in progress, so I wouldn't test your nuclear reactor with it just yet.
-
 Example
 -------
 
@@ -170,11 +168,6 @@ An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob
 which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
-
-Warning
--------
-
-I'm not completely happy with it so the API will change in the future.
 
 TODO
 ----
