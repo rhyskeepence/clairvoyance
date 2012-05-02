@@ -45,7 +45,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "10"
+        "rhyskeepence" %% "clairvoyance" % "11"
     )
     resolvers ++= Seq(
         "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
@@ -57,7 +57,7 @@ Or in Maven:
     <dependency>
         <groupId>rhyskeepence</groupId>
         <artifactId>clairvoyance_2.9.1</artifactId>
-        <version>10</version>
+        <version>11</version>
         <scope>test</scope>
     </dependency>
 
@@ -179,7 +179,6 @@ I'm not completely happy with it so the API will change in the future.
 TODO
 ----
 
-* Table of contents
 * Notes
 * Scenario tables
 * Test output is stored as a mutable queue, this is a bit dodgy.

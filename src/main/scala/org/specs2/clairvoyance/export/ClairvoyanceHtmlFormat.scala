@@ -1,11 +1,10 @@
 package org.specs2.clairvoyance.export
 
-import scala.xml._
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedFragment, ExecutedSpecification}
 import org.specs2.clairvoyance.state.{TestState, TestStates}
 import org.specs2.reflect.Classes
-import org.specs2.clairvoyance.ClairvoyantSpec
 import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
+import xml._
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -17,17 +16,39 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def printBody(spec: ExecutedSpecification, n: => NodeSeq) = print(<body>
     <div id="container">
-      <h1>{wordify(spec.name.title)}</h1>
-      {n}
+      <h1>
+        {wordify(spec.name.title)}
+      </h1>{tableOfContentsFor(spec)}{n}
     </div>
   </body>)
 
-  def wordify(title: String) = {
-    "%s|%s|%s".format(
-      "(?<=[A-Z])(?=[A-Z][a-z])",
-      "(?<=[^A-Z])(?=[A-Z])",
-      "(?<=[A-Za-z])(?=[^A-Za-z])"
-    ).r.replaceAllIn(title, " ")
+
+  def tableOfContentsFor(spec: ExecutedSpecification) = {
+    val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
+      fragment match {
+        case executedResult: ExecutedResult =>
+          val listClass = if (executedResult.stats.isSuccess) "test-passed" else "test-failed"
+          val link = "#" + linkNameOf(executedResult)
+
+          val htmlListItemForResult =
+            <li class={listClass}>
+              <a href={link}>{ accumulator._1 + " " + executedResult.s.toHtml }</a>
+            </li>
+          
+          (accumulator._1, htmlListItemForResult :: accumulator._2)
+
+        case executedText: ExecutedText =>
+          (executedText.text, accumulator._2)
+
+        case _ =>
+          (accumulator._1, accumulator._2)
+
+      }
+    }
+
+    <ul class="contents">
+      {items._2}
+    </ul>
   }
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
@@ -51,15 +72,14 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           <div class="testmethod">
             <h2>
-              {result.s.toXml}
+              {result.s.toHtml}
             </h2>
             <div class="scenario" id=" ">
-              <a id=""></a>
+              <a id={linkNameOf(result)}></a>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(result.location))}</pre>
               <h2>Test results:</h2>
               <pre class={resultCss}>{resultOutput}</pre>
-
               {interestingGivensTable(testState, rendering)}
               {loggedInputsAndOutputs(testState, rendering)}
             </div>
@@ -85,18 +105,22 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
         NodeSeq.Empty
       case _ =>
         <h3 class="logKey">Interesting Givens</h3>
-        <table class="interestingGivens logValue">
-          {mapInterestingGivenRows(givens, rendering)}
-        </table>
+          <table class="interestingGivens logValue">
+            {mapInterestingGivenRows(givens, rendering)}
+          </table>
     }
   }
 
-  def mapInterestingGivenRows(givens: Seq[(String,Any)], rendering: Rendering) = {
+  def mapInterestingGivenRows(givens: Seq[(String, Any)], rendering: Rendering) = {
     givens.map {
       case (key: String, value: Any) =>
         <tr>
-          <th class="key">{key}</th>
-          <td class="interestingGiven">{rendering.renderToXml(value)}</td>
+          <th class="key">
+            {key}
+          </th>
+          <td class="interestingGiven">
+            {rendering.renderToXml(value)}
+          </td>
         </tr>
     }
   }
@@ -106,8 +130,12 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
     inputsAndOutputs.map {
       case (key: String, value: Any) =>
-        <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>{key}</h3>
-        <div class="logValue highlight String">{rendering.renderToXml(value)}</div>
+        <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>
+          {key}
+        </h3>
+          <div class="logValue highlight String">
+            {rendering.renderToXml(value)}
+          </div>
     }
   }
 
@@ -134,4 +162,15 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
   private def print(xml2: Elem): ClairvoyanceHtmlFormat = {
     ClairvoyanceHtmlFormat(xml ++ xml2)
   }
+
+  private def wordify(title: String) = {
+    "%s|%s|%s".format(
+      "(?<=[A-Z])(?=[A-Z][a-z])",
+      "(?<=[^A-Z])(?=[A-Z])",
+      "(?<=[A-Za-z])(?=[^A-Za-z])"
+    ).r.replaceAllIn(title, " ")
+  }
+
+  private def linkNameOf(fragment: ExecutedResult) = fragment.s.toString.replaceAll("\\s", "")
+
 }
