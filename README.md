@@ -45,7 +45,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "11"
+        "rhyskeepence" %% "clairvoyance" % "12"
     )
     resolvers ++= Seq(
         "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
@@ -57,7 +57,7 @@ Or in Maven:
     <dependency>
         <groupId>rhyskeepence</groupId>
         <artifactId>clairvoyance_2.9.1</artifactId>
-        <version>11</version>
+        <version>12</version>
         <scope>test</scope>
     </dependency>
 

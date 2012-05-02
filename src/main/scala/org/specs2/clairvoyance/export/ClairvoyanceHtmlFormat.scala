@@ -47,7 +47,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     }
 
     <ul class="contents">
-      {items._2}
+      {items._2.reverse}
     </ul>
   }
 
