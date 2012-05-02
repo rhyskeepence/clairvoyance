@@ -70,12 +70,12 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
           val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](spec.name.fullName, false, false)
           val rendering = new Rendering(optionalCustomRenderer)
 
+          <a id={linkNameOf(result)}></a>
           <div class="testmethod">
             <h2>
               {result.s.toHtml}
             </h2>
             <div class="scenario" id=" ">
-              <a id={linkNameOf(result)}></a>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(result.location))}</pre>
               <h2>Test results:</h2>
