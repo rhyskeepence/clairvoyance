@@ -2,9 +2,9 @@ name := "clairvoyance"
 
 organization := "rhyskeepence"
 
-version := "13"
+version := "14"
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.9.2"
 
 libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "1.9",
