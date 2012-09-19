@@ -2,15 +2,14 @@ name := "clairvoyance"
 
 organization := "rhyskeepence"
 
-version := "14"
+version := "15"
 
 scalaVersion := "2.9.2"
 
 libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "1.9",
+  "org.specs2" %% "specs2" % "1.12.1",
   "org.pegdown" % "pegdown" % "1.0.2",
-  "net.sourceforge.plantuml" % "plantuml" % "6487",
-  "junit" % "junit" % "4.8"
+  "net.sourceforge.plantuml" % "plantuml" % "6487"
 )
 
 resolvers ++= Seq(
