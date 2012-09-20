@@ -46,9 +46,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
       }
     }
 
-    <ul class="contents">
-      {items._2.reverse}
-    </ul>
+    <ul class="contents">{items._2.reverse}</ul>
   }
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
@@ -115,8 +113,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     givens.map {
       case (key: String, value: Any) =>
         <tr>
-          <th class="key"> {key} </th>
-          <td class="interestingGiven"> {rendering.renderToXml(value)} </td>
+          <th class="key">{key}</th>
+          <td class="interestingGiven">{rendering.renderToXml(value)}</td>
         </tr>
     }
   }

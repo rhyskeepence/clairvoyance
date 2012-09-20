@@ -5,7 +5,7 @@ import org.specs2.clairvoyance.rendering.CustomRendering
 
 class CustomRenderingExample extends ClairvoyantSpec with CustomRendering {
   "The Custom Renderer" should {
-    "should be invoked" in new context {
+    "be invoked" in new context {
       interestingGivens += ("brain" -> Brain(130))
     }
   }
