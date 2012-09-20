@@ -22,4 +22,5 @@ abstract class ClairvoyantSpec extends Specification {
       clearCapturedValues()
     }
   }
+
 }

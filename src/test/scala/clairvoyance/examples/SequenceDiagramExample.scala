@@ -17,7 +17,6 @@ class SequenceDiagramExample extends ClairvoyantSpec {
     val ldap = new Ldap
     val webServer = new WebServer(ldap)
 
-
     override def defaultSequenceDiagramActor = "Web Server"
 
     def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String) {
@@ -41,9 +40,27 @@ class SequenceDiagramExample extends ClairvoyantSpec {
 
   class Ldap extends ProducesCapturedInputsAndOutputs {
     def authenticate(user: String, password: String) {
-      captureValue("Username and Password to LDAP" -> "user: %s, password: %s".format(user, password))
+
+      captureValue("Username and Password to LDAP" ->
+        <authRequest>
+          <user>{user}</user>
+          <pass>{password}</pass>
+        </authRequest>
+      )
       // do something
-      captureValue("User's Credentials from LDAP" -> "user")
+
+      captureValue("Credentials for User from LDAP" ->
+        <authResponse>
+          <user>
+            <name>{user}</name>
+            <credentials>
+              <login/>
+              <viewWibbles/>
+              <changeWibbles/>
+              <admin/>
+            </credentials>
+          </user>
+        </authResponse>)
     }
   }
 

@@ -9,12 +9,10 @@ object UmlMarkupGeneration {
       .mkString("@startuml\n", "\n", "\n@enduml")
   }
 
-  def toPlantUml: (CapturedValueCollaborators) => String = { collaborator =>
-    umlArrow(collaborator.from, collaborator.to, collaborator.what)
-  }
+  def toPlantUml: (CapturedValueCollaborators) => String = umlArrow
 
-  private def umlArrow(from: String, to: String, what: String): String = {
-    "\"" + from + "\" ->> \"" + to + "\":" + what
+  private def umlArrow(message: CapturedValueCollaborators): String = {
+    "\"%s\" ->> \"%s\":<text class=sequence_diagram_clickable sequence_diagram_message_id=%s>%s</text>".format(message.from, message.to, message.id, message.what)
   }
 }
 

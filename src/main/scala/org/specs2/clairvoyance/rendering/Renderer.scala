@@ -26,7 +26,7 @@ class Rendering(specInstance: Option[CustomRendering]) {
 
   def renderToXml(anything: Any) = {
     renderingFunction(anything) match {
-      case xml: Elem => <div class='nohighlight'>{xml}</div>
+      case xml: NodeSeq => <div class='nohighlight'>{xml}</div>
       case string: String => <span>{string}</span>
     }
   }

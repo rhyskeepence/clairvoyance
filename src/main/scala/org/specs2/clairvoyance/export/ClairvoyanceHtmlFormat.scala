@@ -75,7 +75,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             <h2>
               {result.s.toHtml}
             </h2>
-            <div class="scenario" id=" ">
+            <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(result.location))}</pre>
               <h2>Test results:</h2>
@@ -115,12 +115,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     givens.map {
       case (key: String, value: Any) =>
         <tr>
-          <th class="key">
-            {key}
-          </th>
-          <td class="interestingGiven">
-            {rendering.renderToXml(value)}
-          </td>
+          <th class="key"> {key} </th>
+          <td class="interestingGiven"> {rendering.renderToXml(value)} </td>
         </tr>
     }
   }
@@ -129,17 +125,13 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
 
     inputsAndOutputs.map {
-      case (key: String, value: Any) =>
-        <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}>
-          {key}
-        </h3>
-          <div class="logValue highlight String">
-            {rendering.renderToXml(value)}
-          </div>
+      case (key: String, value: AnyRef) =>
+        <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}> {key} </h3>
+        <div class={"logValue highlight " + value.getClass.getSimpleName }> {rendering.renderToXml(value)} </div>
     }
   }
 
-  def head(spec: ExecutedSpecification) =
+  def head(spec: ExecutedSpecification) = {
     <head>
       <title>
         {spec.name}
@@ -147,13 +139,15 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js" type="text/javascript"></script>
 
-        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all"/>
-        <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all"/>
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all"/>
+      <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all"/>
 
-        <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all"/>
+      <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all"/>
       <script src="javascript/xregexp.js" type="text/javascript"></script>
       <script src="javascript/yatspec.js" type="text/javascript"></script>
+      <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
     </head>
+  }
 
   private def print(xml2: NodeSeq): ClairvoyanceHtmlFormat = {
     ClairvoyanceHtmlFormat(xml ++ xml2)

@@ -2,8 +2,6 @@ package org.specs2.clairvoyance.plugins
 
 import org.specs2.mutable.After
 import org.specs2.clairvoyance.{ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
-import java.io.ByteArrayOutputStream
-import net.sourceforge.plantuml.{FileFormat, FileFormatOption, SourceStringReader}
 
 trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 
@@ -14,19 +12,8 @@ trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesC
 
     val collaborators = CapturedValues.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
 
-    val umlMarkup = UmlMarkupGeneration.generateUmlMarkup(collaborators)
-    val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(umlMarkup)
+    val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(collaborators)
 
     gatheredValues :+ sequenceDiagram
-  }
-}
-
-case class SvgSequenceDiagram(umlMarkup: String) {
-  def toMarkup = {
-    val reader = new SourceStringReader(umlMarkup);
-    val os = new ByteArrayOutputStream();
-    reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
-    os.close();
-    new String(os.toByteArray)
   }
 }

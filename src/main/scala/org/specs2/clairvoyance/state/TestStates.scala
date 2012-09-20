@@ -3,7 +3,6 @@ package org.specs2.clairvoyance.state
 import collection.mutable
 import org.specs2.clairvoyance.Imports._
 
-
 object TestStates {
   /* This is mega dodgy but works because the specs are executed sequentially for each class.
      Figure out a better way of reporting state to the clairvoyance HTML exporter.

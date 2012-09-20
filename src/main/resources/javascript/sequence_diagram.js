@@ -19,7 +19,7 @@ var dialogsCreated = false;
 var messagePayloadDialogs = {};
 $(document).ready(function () {
 
-    $(".SvgWrapper").toggleClass("hide");
+    $(".SvgSequenceDiagram").toggleClass("hide");
 
     $(".sequence_diagram_clickable").click(function () {
         openDialog($(this), "click");
