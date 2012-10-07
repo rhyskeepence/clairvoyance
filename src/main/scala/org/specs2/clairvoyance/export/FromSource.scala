@@ -12,13 +12,21 @@ object FromSource {
     readToEndingBrace(content, location.lineNumber).mkString("\n")
   }
 
-  def readToEndingBrace(content: Seq[String], lineNumber: Int, res: List[String] = List()): List[String] = {
+  def readToEndingBrace(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[String] = List()): List[String] = {
     if (content.size < lineNumber || lineNumber < 1) {
       res.reverse
-    } else if (content(lineNumber).trim().startsWith("}")) {
+
+    } else if (content(lineNumber).trim().endsWith("{")) {
+      readToEndingBrace(content, lineNumber + 1, indentLevel + 1, content(lineNumber).trim() :: res)
+
+    } else if (content(lineNumber).trim().startsWith("}") && indentLevel == 0) {
       res.reverse
+
+    } else if (content(lineNumber).trim().startsWith("}")) {
+      readToEndingBrace(content, lineNumber + 1, indentLevel - 1, content(lineNumber).trim() :: res)
+
     } else {
-      readToEndingBrace(content, lineNumber + 1, content(lineNumber).trim() :: res)
+      readToEndingBrace(content, lineNumber + 1, indentLevel, content(lineNumber).trim() :: res)
     }
   }
 

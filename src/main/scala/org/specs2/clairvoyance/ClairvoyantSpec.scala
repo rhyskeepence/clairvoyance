@@ -21,6 +21,12 @@ abstract class ClairvoyantSpec extends Specification {
       TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
       clearCapturedValues()
     }
+
+
+    implicit def stringToStep(description: String) = new ClairvoyantStep(description)
+    class ClairvoyantStep(description: String) {
+      def ==>[T](step: T): T = step
+    }
   }
 
 }
