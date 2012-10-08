@@ -1,10 +1,13 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedFragment, ExecutedSpecification}
-import org.specs2.clairvoyance.state.{TestState, TestStates}
+import org.specs2.specification._
+import org.specs2.clairvoyance.state.TestStates
 import org.specs2.reflect.Classes
 import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
 import xml._
+import org.specs2.specification.ExecutedSpecification
+import org.specs2.clairvoyance.state.TestState
+import org.specs2.specification.ExecutedText
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -20,6 +23,28 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     </div>
   </body>)
 
+  def printSidebar(structure: Seq[SpecificationStructure]) = {
+    print(sidebar(structure))
+  }
+
+  def sidebar(structures: Seq[SpecificationStructure]) = {
+    val structure = structures.map { s =>
+
+      val specFragments = s.content.fragments.flatMap {
+        case org.specs2.specification.Text(text) => Some(<li><em>{text}</em></li>)
+        case Example(name, _) => Some(<li> - {name}</li>)
+        case _ => None
+      }
+
+      <li>
+        <a href={s.identification.url}>{s.identification.title}</a><ul>
+        {specFragments}
+        </ul>
+      </li>
+    }
+
+    <div id="sidebar"><ul>{structure}</ul></div>
+  }
 
   def tableOfContentsFor(spec: ExecutedSpecification) = {
     val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>

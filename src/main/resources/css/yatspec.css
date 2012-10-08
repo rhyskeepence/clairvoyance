@@ -1,5 +1,5 @@
 html, body {
-    margin: 1em 2ex 2em;
+    margin: 1em 1ex 2em;
     padding: 0;
     background-color: #fff;
     color: #000;
@@ -125,6 +125,28 @@ td {
 
 div.contents, div.testmethod {
     margin-bottom: 40px;
+}
+
+#container {
+  float: right;
+  width: 80%;
+}
+
+#sidebar {
+  clear: none;
+  float: left;
+  width: 20%;
+  font-size: 80%;
+}
+
+#sidebar ul {
+  padding: 0 0 10px 0;
+}
+
+#sidebar ul li {
+  list-style: none;
+  padding-left: 5px;;
+
 }
 
 .scenarios td {

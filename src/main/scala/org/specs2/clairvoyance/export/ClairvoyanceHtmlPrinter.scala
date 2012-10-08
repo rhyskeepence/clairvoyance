@@ -1,7 +1,8 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.specification.ExecutedSpecification
+import org.specs2.specification.{SpecificationStructure, ExecutedSpecification}
 import org.specs2.main.Arguments
+import org.specs2.runner.SpecificationsFinder
 
 trait ClairvoyanceHtmlPrinter {
 
@@ -12,9 +13,11 @@ trait ClairvoyanceHtmlPrinter {
   }
 
   def printHtml(spec: ExecutedSpecification) = {
+    val x = System.currentTimeMillis()
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(spec)
+        .printSidebar(SpecificationsFinder.specifications(pattern=".*[Example|Spec]"))
         .printBody(spec, printFragmentsOf(spec).xml)
         .xml
     )
