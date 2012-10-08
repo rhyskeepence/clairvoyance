@@ -58,6 +58,12 @@ h6 {
     color: #080;
 }
 
+.highlight .failure {
+    color: #f00;
+    font-weight: bold;
+    text-decoration: line-through;
+}
+
 .highlight.specification .literal,
 .highlight.specification .keyword,
 .highlight.specification .constant,

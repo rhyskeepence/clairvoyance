@@ -72,6 +72,7 @@ $(document).ready(function () {
     $('.highlight.specification').each(function() {
         yatspec.highlight(this, [
             {pattern: '"[^"]*"',     cssClass: "quote" },
+            {pattern: "\\-\\s.*" ,   cssClass: "failure" },
             {pattern: "Given",       cssClass: "keyword" },
             {pattern: "And",         cssClass: "keyword" },
             {pattern: "When",        cssClass: "keyword" },

@@ -10,9 +10,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   lazy val blank = new ClairvoyanceHtmlFormat
 
-  def printHtml(n: => NodeSeq) = print(<html>
-    {n}
-  </html>)
+  def printHtml(n: => NodeSeq) = print(<html>{n}</html>)
 
   def printBody(spec: ExecutedSpecification, n: => NodeSeq) = print(<body>
     <div id="container">
@@ -75,7 +73,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             </h2>
             <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(result.location))}</pre>
+              <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location))}</pre>
               <h2>Test results:</h2>
               <pre class={resultCss}>{resultOutput}</pre>
               {interestingGivensTable(testState, rendering)}

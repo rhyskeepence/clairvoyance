@@ -1,26 +1,49 @@
 package org.specs2.clairvoyance.export
 
 import java.util.regex.Matcher
+import org.specs2.execute.{Result, Failure}
 
 object SpecificationFormatter {
-  val formattingChain = Function chain List(replaceSyntaxWithSpaces, replaceCamelCaseWithSentence, capitaliseFirstCharacterOfEachLine, formatGWTStyle, formatGWTStyleWithoutBrace)
+  val formattingChain = replaceSyntaxWithSpaces andThen replaceCamelCaseWithSentence andThen capitaliseFirstCharacterOfEachLine andThen formatGWTStyle andThen formatGWTStyleWithoutBrace
 
-  def format(source: String) = {
-    formattingChain(source)
+  def format(result: Result, sourceLines: List[(Int, String)]) = {
+    val withHighlightedFailures = formatFailures(result, sourceLines)
+    val codeAsString = withHighlightedFailures.mkString("\n")
+    formattingChain(codeAsString)
   }
 
-  def replaceSyntaxWithSpaces: String => String = "[\\(\\);_\\.]".r.replaceAllIn(_, " ")
+  private def replaceSyntaxWithSpaces: String => String =
+    "[\\(\\);_\\.]".r.replaceAllIn(_, " ")
 
-  def replaceCamelCaseWithSentence: String => String = "([a-z])([A-Z])".r.replaceAllIn(_, m => m.group(1) + " " + m.group(2).toLowerCase)
+  private def replaceCamelCaseWithSentence: String => String =
+    "([a-z])([A-Z])".r.replaceAllIn(_, m => m.group(1) + " " + m.group(2).toLowerCase)
 
-  def capitaliseFirstCharacterOfEachLine: String => String = "(?m)^([a-z])".r.replaceAllIn(_, _.group(1).toUpperCase)
+  private def capitaliseFirstCharacterOfEachLine: String => String =
+    "(?m)^([a-z])".r.replaceAllIn(_, _.group(1).toUpperCase)
 
-  def formatGWTStyle: String => String = {
+  private def formatGWTStyle: String => String =
     "(?s)\"(.*?)\"[\\s+]==>[\\s+]\\{.*?\\}".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
+
+  private def formatGWTStyleWithoutBrace: String => String =
+    "\"(.*?)\"\\s+==>\\s+.*".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
+
+  private def formatFailures(result: Result, sourceLines: List[(Int, String)]) = {
+    val failureLine = failureLineNumber(result, sourceLines).getOrElse(-1)
+    sourceLines.map {
+      case (line: Int, source: String) =>
+        if (failureLine == line)
+          "- " + source
+        else
+          source
+    }
   }
 
-  def formatGWTStyleWithoutBrace: String => String = { s =>
-    println(s)
-    "\"(.*?)\"\\s+==>\\s+.*".r.replaceAllIn(s, m => Matcher.quoteReplacement(m.group(1)))
+  private def failureLineNumber(result: Result, source: List[(Int, String)]) = {
+    val lineNumbers = source.map(_._1)
+    val stackTrace: Seq[StackTraceElement] = result match {
+      case Failure(_, _, st, _) => st
+      case _ => Seq.empty
+    }
+    stackTrace.map(_.getLineNumber).find(lineNumbers.contains(_))
   }
 }
