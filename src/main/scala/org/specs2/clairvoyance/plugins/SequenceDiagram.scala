@@ -9,9 +9,7 @@ trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesC
 
   abstract override def gatherCapturedValues = {
     val gatheredValues = super.gatherCapturedValues
-
     val collaborators = CapturedValues.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
-
     val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(collaborators)
 
     gatheredValues :+ sequenceDiagram
