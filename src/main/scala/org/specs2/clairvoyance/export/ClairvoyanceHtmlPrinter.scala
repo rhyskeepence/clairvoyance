@@ -13,7 +13,6 @@ trait ClairvoyanceHtmlPrinter {
   }
 
   def printHtml(spec: ExecutedSpecification) = {
-    val x = System.currentTimeMillis()
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(spec)

@@ -1,7 +1,7 @@
 package clairvoyance.rendering
 
 import xml.PrettyPrinter
-import org.specs2.clairvoyance.{ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
 import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
 
 class RenderingSpec extends ClairvoyantSpec {

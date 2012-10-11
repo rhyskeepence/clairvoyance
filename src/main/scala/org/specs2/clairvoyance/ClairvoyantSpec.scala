@@ -10,23 +10,4 @@ import state.{TestState, TestStates}
 abstract class ClairvoyantSpec extends Specification {
   sequential
   args.report(exporter = "org.specs2.clairvoyance.export.ClairvoyanceHtmlExporting")
-
-  trait ClairvoyantContext extends After with InterestingGivens with CapturedInputsAndOutputs {
-
-    def tearDown {}
-
-    def after {
-      tearDown
-
-      TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
-      clearCapturedValues()
-    }
-
-
-    implicit def stringToStep(description: String) = new ClairvoyantStep(description)
-    class ClairvoyantStep(description: String) {
-      def ==>[T](step: T): T = step
-    }
-  }
-
 }

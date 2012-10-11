@@ -1,7 +1,7 @@
 package clairvoyance.plugins
 
 import org.specs2.clairvoyance.Imports._
-import org.specs2.clairvoyance.{ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
 import org.specs2.clairvoyance.plugins.CapturedValues._
 import org.specs2.clairvoyance.plugins.UmlMarkupGeneration._
 
