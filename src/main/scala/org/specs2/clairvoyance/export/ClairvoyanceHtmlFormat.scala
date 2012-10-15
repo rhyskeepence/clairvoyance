@@ -9,6 +9,7 @@ import org.specs2.specification.ExecutedSpecification
 import org.specs2.clairvoyance.state.TestState
 import org.specs2.specification.ExecutedText
 import org.specs2.clairvoyance.CapturedValue
+import org.specs2.main.Arguments
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -101,7 +102,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location))}</pre>
               <h2>Test results:</h2>
-              <pre class={resultCss}>{resultOutput}</pre>
+              <pre class={resultCss}>{resultOutput + " in " + result.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
               {loggedInputsAndOutputs(testState, rendering)}
             </div>
