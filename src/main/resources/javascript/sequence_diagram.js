@@ -10,7 +10,7 @@ var createDialogsForSequenceDiagramMessages = function () {
 
         var capturedInputAndOutputsName = sequenceDiagramMessage.text();
         sequenceDiagramMessageId = "" + sequenceDiagramMessageId + "_" + scenarioUid;
-        messagePayloadDialogs[sequenceDiagramMessageId] = dialogContent.dialog({title:capturedInputAndOutputsName, minWidth:800, stack:false, autoOpen:false });
+        messagePayloadDialogs[sequenceDiagramMessageId] = dialogContent.dialog({title:capturedInputAndOutputsName, minWidth:800, stack:false, closeOnEscape:true, autoOpen:false });
     });
     return messagePayloadDialogs;
 };
@@ -54,6 +54,6 @@ function openDialog(sequenceDiagramMessage, openMethod, event) {
 
     var dialog = dialogForSequenceDiagramMessage(sequenceDiagramMessage);
     dialog.openMethod = openMethod;
-    dialog.dialog('option','position',[event.clientX + 10,event.clientY + 10]);
+    dialog.dialog('option','position',[event.clientX + 10, event.clientY + 10]);
     dialog.dialog("open");
 }
