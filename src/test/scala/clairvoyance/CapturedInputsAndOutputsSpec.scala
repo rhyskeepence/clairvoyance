@@ -21,6 +21,7 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
 
     def thenTheCapturedValueNamed(key: String) =
       gatherCapturedValues
+        .map(_.toPair)
         .toMap
         .apply(key)
   }

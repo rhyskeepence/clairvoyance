@@ -2,6 +2,7 @@ package org.specs2.clairvoyance.state
 
 import collection.mutable
 import org.specs2.clairvoyance.Imports._
+import org.specs2.clairvoyance.CapturedValue
 
 object TestStates {
   /* This is mega dodgy but works because the specs are executed sequentially for each class.
@@ -23,5 +24,5 @@ object TestStates {
   private def keyNameOf(spec: Class[_]) = spec.getName.split("\\$")(0)
 }
 
-case class TestState(interestingGivens: KeyValueSequence, capturedInputsAndOutputs: KeyValueSequence)
+case class TestState(interestingGivens: KeyValueSequence, capturedInputsAndOutputs: Seq[CapturedValue])
 

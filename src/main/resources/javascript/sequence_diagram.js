@@ -10,7 +10,7 @@ var createDialogsForSequenceDiagramMessages = function () {
 
         var capturedInputAndOutputsName = sequenceDiagramMessage.text();
         sequenceDiagramMessageId = "" + sequenceDiagramMessageId + "_" + scenarioUid;
-        messagePayloadDialogs[sequenceDiagramMessageId] = dialogContent.dialog({title:capturedInputAndOutputsName, minWidth:800, stack:false, closeOnEscape:true, autoOpen:false });
+        messagePayloadDialogs[sequenceDiagramMessageId] = dialogContent.dialog({title:capturedInputAndOutputsName, minWidth:800, stack:false, autoOpen:false });
     });
     return messagePayloadDialogs;
 };
@@ -21,12 +21,12 @@ $(document).ready(function () {
 
     $(".SvgSequenceDiagram").toggleClass("hide");
 
-    $(".sequence_diagram_clickable").click(function () {
-        openDialog($(this), "click");
+    $(".sequence_diagram_clickable").click(function (event) {
+        openDialog($(this), "click", event);
     });
 
-    $(".sequence_diagram_clickable").hover(function () {
-        openDialog($(this), "hover");
+    $(".sequence_diagram_clickable").hover(function (event) {
+        openDialog($(this), "hover", event);
     }, function () {
         closeHoveredDialog($(this));
     })
@@ -46,7 +46,7 @@ function closeHoveredDialog(sequenceDiagramMessage) {
     }
 }
 
-function openDialog(sequenceDiagramMessage, openMethod) {
+function openDialog(sequenceDiagramMessage, openMethod, event) {
     if (!dialogsCreated) {
         messagePayloadDialogs = createDialogsForSequenceDiagramMessages();
         dialogsCreated = true;
@@ -54,5 +54,6 @@ function openDialog(sequenceDiagramMessage, openMethod) {
 
     var dialog = dialogForSequenceDiagramMessage(sequenceDiagramMessage);
     dialog.openMethod = openMethod;
+    dialog.dialog('option','position',[event.clientX + 10,event.clientY + 10]);
     dialog.dialog("open");
 }

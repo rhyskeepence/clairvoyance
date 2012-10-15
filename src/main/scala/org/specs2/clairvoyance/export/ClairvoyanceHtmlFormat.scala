@@ -8,6 +8,7 @@ import xml._
 import org.specs2.specification.ExecutedSpecification
 import org.specs2.clairvoyance.state.TestState
 import org.specs2.specification.ExecutedText
+import org.specs2.clairvoyance.CapturedValue
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -144,11 +145,10 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def loggedInputsAndOutputs(testState: Option[TestState], rendering: Rendering) = {
     val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
-
     inputsAndOutputs.map {
-      case (key: String, value: AnyRef) =>
-        <h3 class="logKey" logkey={key.replaceAll("\\s", "_")}> {key} </h3>
-        <div class={"logValue highlight " + value.getClass.getSimpleName }> {rendering.renderToXml(value)} </div>
+      case CapturedValue(id, key, value) =>
+        <h3 class="logKey" logkey={id.toString}>{key}</h3>
+        <div class={"logValue highlight " + value.getClass.getSimpleName }>{rendering.renderToXml(value)}</div>
     }
   }
 

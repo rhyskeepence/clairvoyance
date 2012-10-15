@@ -20,7 +20,7 @@ class SvgSequenceDiagramSpec extends ClairvoyantSpec {
     }
 
     "contain clickable message" in new context {
-      svgMarkupProduced must =~(".*<text.*class=\"sequence_diagram_clickable\".*sequence_diagram_message_id=\"Honey_from_Bees_to_Human\" .*>Honey</text>.*")
+      svgMarkupProduced must =~(".*<text.*class=\"sequence_diagram_clickable\".*sequence_diagram_message_id=\"1\" .*>Honey</text>.*")
     }
 
   }
@@ -29,8 +29,8 @@ class SvgSequenceDiagramSpec extends ClairvoyantSpec {
     override def capturedInputsAndOutputs = Seq(this)
 
     val collaborators = Seq(
-      CapturedValueCollaborators("Honey from Bees to Human", "Bees", "Human", "Honey", "raw value"),
-      CapturedValueCollaborators("Binary from Robots to Human", "Robots", "Human", "Binary", "0001101011")
+      CapturedValueCollaborators(1, "Honey from Bees to Human", "Bees", "Human", "Honey", "raw value"),
+      CapturedValueCollaborators(2, "Binary from Robots to Human", "Robots", "Human", "Binary", "0001101011")
     )
 
     def svgMarkupProduced = {

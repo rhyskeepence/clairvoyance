@@ -1,7 +1,7 @@
 package org.specs2.clairvoyance.plugins
 
 import org.specs2.mutable.After
-import org.specs2.clairvoyance.{ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
+import org.specs2.clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
 
 trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 
@@ -9,8 +9,8 @@ trait SequenceDiagram extends After with CapturedInputsAndOutputs with ProducesC
 
   abstract override def gatherCapturedValues = {
     val gatheredValues = super.gatherCapturedValues
-    val collaborators = CapturedValues.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
-    val sequenceDiagram = "Sequence Diagram" -> SvgSequenceDiagram(collaborators)
+    val collaborators = CapturedCollaborators.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
+    val sequenceDiagram = CapturedValue(CapturedValueSequence.nextId, "Sequence Diagram", SvgSequenceDiagram(collaborators))
 
     gatheredValues :+ sequenceDiagram
   }

@@ -11,6 +11,13 @@ class SequenceDiagramExample extends ClairvoyantSpec {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials("mario", "luigi")
       thenTheUserIsShownSecrets()
     }
+
+    "handle multiple givens" in new context {
+      whenTheUserLogsInToTheWebSiteUsingTheCredentials("mario", "luigi")
+      whenTheUserLogsInToTheWebSiteUsingTheCredentials("mario", "luigi")
+      whenTheUserLogsInToTheWebSiteUsingTheCredentials("mario", "luigi")
+      thenTheUserIsShownSecrets()
+    }
   }
 
   trait context extends ClairvoyantContext with SequenceDiagram {

@@ -29,7 +29,7 @@ class RenderingSpec extends ClairvoyantSpec {
     val xml = <xml>someXml</xml>
     val formattedXml = new PrettyPrinter(80, 2).formatNodes(xml)
 
-    def rendered(thingToRender: Any) = {
+    def rendered(thingToRender: AnyRef) = {
       captureValue("Input" -> thingToRender)
       val output = rendering.renderToXml(thingToRender)
       captureValue("Output" -> output)

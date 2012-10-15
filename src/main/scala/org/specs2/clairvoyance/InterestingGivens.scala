@@ -17,7 +17,7 @@ trait InterestingGivens {
   class MutableInterestingGivens  {
     private lazy val values = new ListBuffer[KeyValue]
 
-    def +=[T](interestingGiven: (String, T)) {
+    def +=[T <: AnyRef](interestingGiven: (String, T)) {
       values += interestingGiven
     }
 

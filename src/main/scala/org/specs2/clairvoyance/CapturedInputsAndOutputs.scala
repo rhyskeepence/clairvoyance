@@ -7,8 +7,7 @@ trait CapturedInputsAndOutputs {
     capturedInputsAndOutputs
       .map(_.producedCapturedInputsAndOutputs)
       .flatten
-      .sortBy(_._1)
-      .map(_._2)
+      .sortBy(_.id)
   }
 
   def clearCapturedValues() {
