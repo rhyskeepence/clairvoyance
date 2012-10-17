@@ -44,6 +44,9 @@ object SpecificationFormatter {
       case Failure(_, _, st, _) => st
       case _ => Seq.empty
     }
-    stackTrace.map(_.getLineNumber).find(lineNumbers.contains(_))
+    stackTrace
+      .filter(!_.getClassName.startsWith("org.specs2"))
+      .map(_.getLineNumber)
+      .find(lineNumbers.contains(_))
   }
 }
