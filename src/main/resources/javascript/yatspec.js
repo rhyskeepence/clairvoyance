@@ -97,7 +97,7 @@ $(document).ready(function () {
             return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
         };
 
-        var interestingGivens = $('.interestingGiven', this).filter(function() { return !this.innerText.isEmpty }).map(
+        var interestingGivens = $('.interestingGiven', this).filter(function() { return this.innerText != "" }).map(
             function() {
                 return [
                     {pattern: '\\Q"' + $(this).text() + '"\\E',     cssClass: "interestingGiven" },
