@@ -9,9 +9,9 @@ class GivenWhenThenExample extends ClairvoyantSpec {
 
   "The co-ordinator" should {
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
-      "Given the date is ${21/12/2012}"               ==> givenTheDateIs
-      "When the coordinator runs"                     ==> theCoordinatorRuns
-      "Then the Doomsday device should be unleashed"  ==> doomsdayDeviceIsUnleashed
+      "Given the date is ${21/12/2012}"               ===> givenTheDateIs
+      "When the coordinator runs"                     ===> theCoordinatorRuns
+      "Then the Doomsday device should be unleashed"  ===> doomsdayDeviceIsUnleashed
     }
   }
 

@@ -7,7 +7,7 @@ version := "24"
 scalaVersion := "2.9.2"
 
 libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "1.12.1",
+  "org.specs2" %% "specs2" % "1.12.3",
   "org.pegdown" % "pegdown" % "1.0.2",
   "net.sourceforge.plantuml" % "plantuml" % "7933"
 )

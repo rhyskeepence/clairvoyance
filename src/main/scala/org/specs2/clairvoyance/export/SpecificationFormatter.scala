@@ -22,10 +22,10 @@ object SpecificationFormatter {
     "(?m)^([a-z])".r.replaceAllIn(_, _.group(1).toUpperCase)
 
   private def formatGWTStyle: String => String =
-    "(?s)\"(.*?)\"[\\s+]==>[\\s+]\\{.*?\\}".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
+    "(?s)\"(.*?)\"[\\s+]===>[\\s+]\\{.*?\\}".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
 
   private def formatGWTStyleWithoutBrace: String => String =
-    "\"(.*?)\"\\s+==>\\s+.*".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
+    "\"(.*?)\"\\s+===>\\s+.*".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
 
   private def formatFailures(result: Result, sourceLines: List[(Int, String)]) = {
     val failureLine = failureLineNumber(result, sourceLines).getOrElse(-1)

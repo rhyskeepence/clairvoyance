@@ -17,7 +17,7 @@ trait ClairvoyantContext extends After with InterestingGivens with CapturedInput
 
   implicit def stringToStep(description: String) = new ClairvoyantStep(description)
   class ClairvoyantStep(description: String) {
-    def ==>[T](step: T): T = step
+    def ===>[T](step: T): T = step
   }
 }
 
