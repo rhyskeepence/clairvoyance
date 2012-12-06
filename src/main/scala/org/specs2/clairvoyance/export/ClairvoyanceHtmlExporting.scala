@@ -9,12 +9,13 @@ import scala.xml.{Xhtml, NodeSeq}
 import java.io.{File, Writer}
 import java.net.URL
 
-class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
+class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
   type ExportType = Unit
 
   def export(implicit args: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
     val executed = spec.execute
     print(executed) |> writeFiles
+    printTeamCityLog(executed)
     executed
   }
 }
