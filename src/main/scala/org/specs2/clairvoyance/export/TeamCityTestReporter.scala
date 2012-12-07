@@ -12,13 +12,13 @@ trait TeamCityTestReporter {
       (latestHeading, fragment) =>
         fragment match {
           case executedResult: ExecutedResult =>
-            val testName = latestHeading + " " + executedResult.s.toHtml
+            val testName = latestHeading + " " + executedResult.s.toString
             teamcityReport("testStarted", "name" -> testName)
 
             if (executedResult.isIssue) {
               teamcityReport("testFailed",
                 "name" -> testName,
-                "details" -> executedResult.result.message
+                "details" -> ("Expected " + executedResult.result.expected + ", but " + executedResult.result.message)
               )
             }
 
@@ -26,7 +26,10 @@ trait TeamCityTestReporter {
               teamcityReport("testIgnored", "name" -> testName)
             }
 
-            teamcityReport("testFinished", "name" -> testName)
+            teamcityReport("testFinished",
+              "name" -> testName,
+              "duration" -> executedResult.stats.timer.totalMillis.toString
+            )
 
             latestHeading
 
@@ -58,7 +61,7 @@ trait TeamCityTestReporter {
         case (k, v) => k + "='" + tidy(v) + "'"
       }.mkString(" ")
 
-      printf("##teamcity[%s %s]%n", messageName, attributeString)
+      printf("##teamcity[%s %s]\n", messageName, attributeString)
     }
   }
 
