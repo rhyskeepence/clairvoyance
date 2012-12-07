@@ -15,7 +15,7 @@ trait TeamCityTestReporter {
             val testName = latestHeading + " " + executedResult.s.toHtml
             teamcityReport("testStarted", "name" -> testName)
 
-            if (executedResult.isFailure) {
+            if (executedResult.isIssue) {
               teamcityReport("testFailed",
                 "name" -> testName,
                 "details" -> executedResult.result.message
