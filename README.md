@@ -43,17 +43,17 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "rhyskeepence" %% "clairvoyance" % "27"
+        "com.github.rhyskeepence" %% "clairvoyance" % "27"
     )
     resolvers ++= Seq(
-        "rhys's releases" at "https://github.com/rhyskeepence/mvn-repo/raw/master/releases"
+        "releases"  at "http://oss.sonatype.org/content/repositories/releases"
     )
 
 Or in Maven:
 
 ```xml
     <dependency>
-        <groupId>rhyskeepence</groupId>
+        <groupId>com.github.rhyskeepence</groupId>
         <artifactId>clairvoyance_2.9.2</artifactId>
         <version>27</version>
         <scope>test</scope>
@@ -62,12 +62,12 @@ Or in Maven:
     ....
 
     <repository>
-        <id>rhys</id>
-        <name>rhys's releases</name>
+        <id>sonatype-releases</id>
+        <name>sonatype releases</name>
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
-        <url>https://github.com/rhyskeepence/mvn-repo/raw/master/releases</url>
+        <url>http://oss.sonatype.org/content/repositories/releases</url>
     </repository>
 ```
 
