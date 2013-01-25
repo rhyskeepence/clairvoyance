@@ -1,10 +1,10 @@
 package clairvoyance.examples
 
 import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.SequenceDiagram
+import org.specs2.clairvoyance.plugins.{Graph, SequenceDiagram}
 import org.specs2.execute.Success
 
-class SequenceDiagramExample extends ClairvoyantSpec {
+class GraphExample extends ClairvoyantSpec {
 
   "The Web Site" should {
     "authenticate the user using LDAP" in new context {
@@ -13,7 +13,7 @@ class SequenceDiagramExample extends ClairvoyantSpec {
     }
   }
 
-  trait context extends ClairvoyantContext with SequenceDiagram {
+  trait context extends ClairvoyantContext with Graph {
     val ldap = new Ldap
     val webServer = new WebServer(ldap)
 

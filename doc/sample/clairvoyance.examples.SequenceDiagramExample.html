@@ -1,0 +1,107 @@
+<html><head>
+      <title>
+        SequenceDiagramExample
+      </title>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+
+      <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all" />
+      <script src="javascript/xregexp.js" type="text/javascript"></script>
+      <script src="javascript/yatspec.js" type="text/javascript"></script>
+      <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
+    </head><div id="sidebar"><ul><li>
+        <a href="clairvoyance.CapturedInputsAndOutputsSpec.html">CapturedInputsAndOutputsSpec</a><ul>
+        <li><em>The Captured Inputs And Outputs should</em></li><li> - include outputs from registered producers</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.CustomRenderingExample.html">CustomRenderingExample</a><ul>
+        <li><em>The Custom Renderer should</em></li><li> - be invoked</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.GivenWhenThenExample.html">GivenWhenThenExample</a><ul>
+        <li><em>The co-ordinator should</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.GraphExample.html">GraphExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.HelloWorldSpec.html">HelloWorldSpec</a><ul>
+        <li><em>The 'Hello world' string should</em></li><li> - contain 11 characters</li><li> - start with 'Hello'</li><li> - end with 'world'</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.LoggingExample.html">LoggingExample</a><ul>
+        <li><em>The co-ordinator should</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.SequenceDiagramExample.html">SequenceDiagramExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.InterestingGivensSpec.html">InterestingGivensSpec</a><ul>
+        <li><em>The Interesting Givens list should</em></li><li> - include default Interesting Givens</li><li> - include both default and context specific Interesting Givens</li><li> - not include Interesting Givens from the previous context</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.plugins.SequenceDiagramSpec.html">SequenceDiagramSpec</a><ul>
+        <li><em>The Sequence Diagrammer should</em></li><li> - identify captured values in the format `SOME MESSAGE from X to Y`</li><li> - identify captured values in the format `SOME MESSAGE to Y`, using Donkey Kong as the default</li><li> - identify captured values in the format `SOME MESSAGE from Y`, using Donkey Kong as the default</li><li> - be case insensititve</li><li> - ignored captured values which do not match the `From/To` format</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.rendering.RenderingSpec.html">RenderingSpec</a><ul>
+        <li><em>The Renderer should</em></li><li> - render objects as strings</li><li> - render XML as escaped XML</li><li> - use the custom renderer</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.tests.SvgSequenceDiagramSpec.html">SvgSequenceDiagramSpec</a><ul>
+        <li><em>The Rendered SVG Sequence Diagram should</em></li><li> - contain actor named Bees</li><li> - contain actor named Human</li><li> - contain actor named Robots</li><li> - contain clickable message</li>
+        </ul>
+      </li></ul></div><body>
+    <div id="container">
+      <h1>
+        Sequence Diagram Example
+      </h1><ul class="contents"><li class="test-passed">
+              <a href="#authenticatetheuserusingLDAP">The Web Site should authenticate the user using LDAP</a>
+            </li></ul><ul>
+      <span></span>
+    </ul><ul>
+      <h1>
+            The Web Site should
+          </h1>
+    </ul><ul>
+      <a id="authenticatetheuserusingLDAP"></a><div class="testmethod">
+            <h2>
+              authenticate the user using LDAP
+            </h2>
+            <div class="scenario" id="-1923158412">
+              <h2>Specification</h2>
+              <pre class="highlight specification">When the user logs in to the web site using the credentials user=&quot;mario&quot;, password=&quot;luigi&quot; 
+Then the user is shown secrets  </pre>
+              <h2>Test results:</h2>
+              <pre class="highlight results test-passed highlighted">Test Passed in 138 ms</pre>
+              
+              <h3 class="logKey" logkey="0">Login Submitted from User</h3><div class="logValue highlight String"><span>user: mario, password: luigi</span></div><h3 class="logKey" logkey="1">Username and Password to LDAP</h3><div class="logValue highlight Elem"><span>&lt;authRequest&gt;
+  &lt;user&gt;mario&lt;/user&gt;
+  &lt;pass&gt;luigi&lt;/pass&gt;
+&lt;/authRequest&gt;</span></div><h3 class="logKey" logkey="2">Credentials for User from LDAP</h3><div class="logValue highlight Elem"><span>&lt;authResponse&gt;
+  &lt;user&gt;
+    &lt;name&gt;mario&lt;/name&gt;
+    &lt;credentials&gt;
+      &lt;login/&gt;
+      &lt;viewWibbles/&gt;
+      &lt;changeWibbles/&gt;
+      &lt;admin/&gt;
+    &lt;/credentials&gt;
+  &lt;/user&gt;
+&lt;/authResponse&gt;</span></div><h3 class="logKey" logkey="3">Response to User</h3><div class="logValue highlight String"><span>Forwarding to showSecrets.html</span></div><h3 class="logKey" logkey="4">Sequence Diagram</h3><div class="logValue highlight SvgSequenceDiagram"><div class="nohighlight"><svg width="361pt" viewBox="0 0 361 208" version="1.1" style="width:361px;height:208px;" height="208pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><defs><filter y="-1" x="-1" width="300%" id="f1" height="300%"><feGaussianBlur stdDeviation="2" result="blurOut"></feGaussianBlur><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0" type="matrix" result="blurOut2" in="blurOut"></feColorMatrix><feOffset result="blurOut3" in="blurOut2" dy="4" dx="4"></feOffset><feBlend mode="normal" in2="blurOut3" in="SourceGraphic"></feBlend></filter></defs><g><line y2="171.5527" y1="34.3105" x2="28" x1="28" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;"></line><line y2="171.5527" y1="34.3105" x2="155" x1="155" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;"></line><line y2="171.5527" y1="34.3105" x2="330.5" x1="330.5" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;"></line><rect y="0" x="5" width="42" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="20" x="12" textLength="28" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">User</text><rect y="169.6895" x="5" width="42" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="189.6895" x="12" textLength="28" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">User</text><rect y="0" x="112" width="82" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="20" x="119" textLength="68" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">Web Server</text><rect y="169.6895" x="112" width="82" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="189.6895" x="119" textLength="68" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">Web Server</text><rect y="0" x="305.5" width="47" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="20" x="312.5" textLength="33" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">LDAP</text><rect y="169.6895" x="305.5" width="47" style="stroke: #A80036; stroke-width: 1.5;" height="29.3105" filter="url(#f1)" fill="#FEFECE"></rect><text y="189.6895" x="312.5" textLength="33" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000">LDAP</text><line y2="65.3105" y1="65.3105" x2="154" x1="28" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="61.3105" y1="65.3105" x2="143" x1="153" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="69.3105" y1="65.3105" x2="143" x1="153" style="stroke: #A80036; stroke-width: 1.0;"></line><text y="61.3105" x="35" textLength="103" sequence_diagram_message_id="0" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000" class="sequence_diagram_clickable">Login Submitted</text><line y2="94.6211" y1="94.6211" x2="330" x1="155" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="90.6211" y1="94.6211" x2="319" x1="329" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="98.6211" y1="94.6211" x2="319" x1="329" style="stroke: #A80036; stroke-width: 1.0;"></line><text y="90.6211" x="162" textLength="152" sequence_diagram_message_id="1" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000" class="sequence_diagram_clickable">Username and Password</text><line y2="123.9316" y1="123.9316" x2="330" x1="155" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="119.9316" y1="123.9316" x2="166" x1="156" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="127.9316" y1="123.9316" x2="166" x1="156" style="stroke: #A80036; stroke-width: 1.0;"></line><text y="119.9316" x="172" textLength="125" sequence_diagram_message_id="2" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000" class="sequence_diagram_clickable">Credentials for User</text><line y2="153.2422" y1="153.2422" x2="154" x1="28" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="149.2422" y1="153.2422" x2="39" x1="29" style="stroke: #A80036; stroke-width: 1.0;"></line><line y2="157.2422" y1="153.2422" x2="39" x1="29" style="stroke: #A80036; stroke-width: 1.0;"></line><text y="149.2422" x="45" textLength="60" sequence_diagram_message_id="3" lengthAdjust="spacingAndGlyphs" font-size="13" fill="#000000" class="sequence_diagram_clickable">Response</text></g></svg></div></div>
+            </div>
+          </div>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul>
+    </div>
+  </body></html>

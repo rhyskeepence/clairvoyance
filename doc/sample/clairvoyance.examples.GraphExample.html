@@ -1,0 +1,110 @@
+<html><head>
+      <title>
+        GraphExample
+      </title>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+
+      <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all" />
+      <script src="javascript/xregexp.js" type="text/javascript"></script>
+      <script src="javascript/yatspec.js" type="text/javascript"></script>
+      <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
+    </head><div id="sidebar"><ul><li>
+        <a href="clairvoyance.CapturedInputsAndOutputsSpec.html">CapturedInputsAndOutputsSpec</a><ul>
+        <li><em>The Captured Inputs And Outputs should</em></li><li> - include outputs from registered producers</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.CustomRenderingExample.html">CustomRenderingExample</a><ul>
+        <li><em>The Custom Renderer should</em></li><li> - be invoked</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.GivenWhenThenExample.html">GivenWhenThenExample</a><ul>
+        <li><em>The co-ordinator should</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.GraphExample.html">GraphExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.HelloWorldSpec.html">HelloWorldSpec</a><ul>
+        <li><em>The 'Hello world' string should</em></li><li> - contain 11 characters</li><li> - start with 'Hello'</li><li> - end with 'world'</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.LoggingExample.html">LoggingExample</a><ul>
+        <li><em>The co-ordinator should</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.examples.SequenceDiagramExample.html">SequenceDiagramExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.InterestingGivensSpec.html">InterestingGivensSpec</a><ul>
+        <li><em>The Interesting Givens list should</em></li><li> - include default Interesting Givens</li><li> - include both default and context specific Interesting Givens</li><li> - not include Interesting Givens from the previous context</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.plugins.SequenceDiagramSpec.html">SequenceDiagramSpec</a><ul>
+        <li><em>The Sequence Diagrammer should</em></li><li> - identify captured values in the format `SOME MESSAGE from X to Y`</li><li> - identify captured values in the format `SOME MESSAGE to Y`, using Donkey Kong as the default</li><li> - identify captured values in the format `SOME MESSAGE from Y`, using Donkey Kong as the default</li><li> - be case insensititve</li><li> - ignored captured values which do not match the `From/To` format</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.rendering.RenderingSpec.html">RenderingSpec</a><ul>
+        <li><em>The Renderer should</em></li><li> - render objects as strings</li><li> - render XML as escaped XML</li><li> - use the custom renderer</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.tests.SvgSequenceDiagramSpec.html">SvgSequenceDiagramSpec</a><ul>
+        <li><em>The Rendered SVG Sequence Diagram should</em></li><li> - contain actor named Bees</li><li> - contain actor named Human</li><li> - contain actor named Robots</li><li> - contain clickable message</li>
+        </ul>
+      </li></ul></div><body>
+    <div id="container">
+      <h1>
+        Graph Example
+      </h1><ul class="contents"><li class="test-passed">
+              <a href="#authenticatetheuserusingLDAP">The Web Site should authenticate the user using LDAP</a>
+            </li></ul><ul>
+      <span></span>
+    </ul><ul>
+      <h1>
+            The Web Site should
+          </h1>
+    </ul><ul>
+      <a id="authenticatetheuserusingLDAP"></a><div class="testmethod">
+            <h2>
+              authenticate the user using LDAP
+            </h2>
+            <div class="scenario" id="346351952">
+              <h2>Specification</h2>
+              <pre class="highlight specification">When the user logs in to the web site using the credentials user=&quot;mario&quot;, password=&quot;luigi&quot; 
+Then the user is shown secrets  </pre>
+              <h2>Test results:</h2>
+              <pre class="highlight results test-passed highlighted">Test Passed in 39 ms</pre>
+              
+              <h3 class="logKey" logkey="0">Login Submitted from User</h3><div class="logValue highlight String"><span>user: mario, password: luigi</span></div><h3 class="logKey" logkey="1">Username and Password to LDAP</h3><div class="logValue highlight Elem"><span>&lt;authRequest&gt;
+  &lt;user&gt;mario&lt;/user&gt;
+  &lt;pass&gt;luigi&lt;/pass&gt;
+&lt;/authRequest&gt;</span></div><h3 class="logKey" logkey="2">Credentials for User from LDAP</h3><div class="logValue highlight Elem"><span>&lt;authResponse&gt;
+  &lt;user&gt;
+    &lt;name&gt;mario&lt;/name&gt;
+    &lt;credentials&gt;
+      &lt;login/&gt;
+      &lt;viewWibbles/&gt;
+      &lt;changeWibbles/&gt;
+      &lt;admin/&gt;
+    &lt;/credentials&gt;
+  &lt;/user&gt;
+&lt;/authResponse&gt;</span></div><h3 class="logKey" logkey="3">Response to User</h3><div class="logValue highlight String"><span>Forwarding to showSecrets.html</span></div><h3 class="logKey" logkey="4">Graph</h3><div class="logValue highlight GraphVizDiagram"><div class="nohighlight"><img src="https://chart.googleapis.com/chart?cht=gv&amp;chl=digraph g {&quot;User&quot; -&gt; &quot;Web Server&quot; [label=&quot;Login Submitted&quot;]
+&quot;Web Server&quot; -&gt; &quot;LDAP&quot; [label=&quot;Username and Password&quot;]
+&quot;LDAP&quot; -&gt; &quot;Web Server&quot; [label=&quot;Credentials for User&quot;]
+&quot;Web Server&quot; -&gt; &quot;User&quot; [label=&quot;Response&quot;]}" /></div></div>
+            </div>
+          </div>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul>
+    </div>
+  </body></html>

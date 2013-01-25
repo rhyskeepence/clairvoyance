@@ -2,15 +2,16 @@ name := "clairvoyance"
 
 organization := "com.github.rhyskeepence"
 
-version := "28"
+version := "29"
 
 scalaVersion := "2.10.0"
 
-libraryDependencies ++= Seq(
+libraryDependencies <<= scalaVersion { scala_version => Seq(
   "org.specs2" %% "specs2" % "1.13",
   "org.pegdown" % "pegdown" % "1.0.2",
-  "net.sourceforge.plantuml" % "plantuml" % "7933"
-)
+  "net.sourceforge.plantuml" % "plantuml" % "7933",
+  "org.scala-lang" % "scala-compiler" % scala_version  % "optional"
+)}
 
 resolvers ++= Seq(
   "sonatype releases"  at "http://oss.sonatype.org/content/repositories/releases"

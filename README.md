@@ -43,7 +43,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "com.github.rhyskeepence" %% "clairvoyance" % "28"
+        "com.github.rhyskeepence" %% "clairvoyance" % "29"
         //  or, for scala 2.9.2: 
         //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
     )
@@ -170,6 +170,11 @@ An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob
 which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
+
+More Samples
+------------
+[Graph Example](http://github.com/rhyskeeepnce/clairvoyance/raw/master/doc/example/clairvoyance.examples.GraphExample.html)
+[Sequence Diagram Example](http://github.com/rhyskeeepnce/clairvoyance/raw/master/doc/example/clairvoyance.examples.SequenceDiagramExample.html)
 
 TODO
 ----

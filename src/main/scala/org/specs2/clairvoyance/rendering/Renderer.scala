@@ -1,6 +1,6 @@
 package org.specs2.clairvoyance.rendering
 
-import org.specs2.clairvoyance.plugins.SvgSequenceDiagram
+import org.specs2.clairvoyance.plugins.{GraphVizDiagram, SvgSequenceDiagram}
 import xml.{XML, Elem, NodeSeq, PrettyPrinter}
 
 trait Renderer[T] {
@@ -11,6 +11,7 @@ class Rendering(specInstance: Option[CustomRendering]) {
   lazy val defaultRenderer = new ToStringRender
   lazy val nodeSeqRenderer = new NodeSeqRenderer
   lazy val umlRenderer = new SvgSequenceDiagramRenderer
+  lazy val graphVizRenderer = new GraphVizRenderer
 
   val renderingFunction =
     specInstance match {
@@ -20,7 +21,8 @@ class Rendering(specInstance: Option[CustomRendering]) {
 
   def defaultRendering: PartialFunction[Any, Any] = {
     case xml: NodeSeq => nodeSeqRenderer.render(xml)
-    case diagram: SvgSequenceDiagram => umlRenderer.render(diagram)
+    case graphViz: GraphVizDiagram => graphVizRenderer.render(graphViz)
+    case svg: SvgSequenceDiagram => umlRenderer.render(svg)
     case any: Any => defaultRenderer.render(any)
   }
 
@@ -43,4 +45,12 @@ class NodeSeqRenderer extends Renderer[NodeSeq] {
 
 class SvgSequenceDiagramRenderer extends Renderer[SvgSequenceDiagram] {
   def render = diagram => XML.loadString(diagram.toMarkup)
+}
+
+class GraphVizRenderer extends Renderer[GraphVizDiagram] {
+  def render = diagram => {
+    val url = "https://chart.googleapis.com/chart?cht=gv&chl=" + diagram.toMarkup
+    <img src={url}></img>
+  }
+
 }
