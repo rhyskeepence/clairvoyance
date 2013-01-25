@@ -43,7 +43,9 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "com.github.rhyskeepence" %% "clairvoyance" % "27"
+        "com.github.rhyskeepence" %% "clairvoyance" % "28"
+        //  or, for scala 2.9.2: 
+        //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
     )
     resolvers ++= Seq(
         "releases"  at "http://oss.sonatype.org/content/repositories/releases"
@@ -55,7 +57,7 @@ Or in Maven:
     <dependency>
         <groupId>com.github.rhyskeepence</groupId>
         <artifactId>clairvoyance_2.9.2</artifactId>
-        <version>27</version>
+        <version>28</version>
         <scope>test</scope>
     </dependency>
 

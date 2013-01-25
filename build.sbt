@@ -2,12 +2,12 @@ name := "clairvoyance"
 
 organization := "com.github.rhyskeepence"
 
-version := "27"
+version := "28"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.0"
 
 libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "1.12.3",
+  "org.specs2" %% "specs2" % "1.13",
   "org.pegdown" % "pegdown" % "1.0.2",
   "net.sourceforge.plantuml" % "plantuml" % "7933"
 )
@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
 resolvers ++= Seq(
   "sonatype releases"  at "http://oss.sonatype.org/content/repositories/releases"
 )
+
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
 
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
