@@ -171,11 +171,6 @@ which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
 
-More Samples
-------------
-[Graph Example](http://github.com/rhyskeeepnce/clairvoyance/raw/master/doc/example/clairvoyance.examples.GraphExample.html)
-[Sequence Diagram Example](http://github.com/rhyskeeepnce/clairvoyance/raw/master/doc/example/clairvoyance.examples.SequenceDiagramExample.html)
-
 TODO
 ----
 
