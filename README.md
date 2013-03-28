@@ -43,7 +43,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "com.github.rhyskeepence" %% "clairvoyance" % "29"
+        "com.github.rhyskeepence" %% "clairvoyance" % "30"
         //  or, for scala 2.9.2: 
         //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
     )
@@ -56,8 +56,8 @@ Or in Maven:
 ```xml
     <dependency>
         <groupId>com.github.rhyskeepence</groupId>
-        <artifactId>clairvoyance_2.9.2</artifactId>
-        <version>28</version>
+        <artifactId>clairvoyance_2.10.0</artifactId>
+        <version>30</version>
         <scope>test</scope>
     </dependency>
 

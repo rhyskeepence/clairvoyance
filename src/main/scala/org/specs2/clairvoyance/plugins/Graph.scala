@@ -1,9 +1,8 @@
 package org.specs2.clairvoyance.plugins
 
-import org.specs2.mutable.After
 import org.specs2.clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
 
-trait Graph extends After with CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
+trait Graph extends CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 
   def defaultSequenceDiagramActor = "Default"
 

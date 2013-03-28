@@ -2,14 +2,15 @@ name := "clairvoyance"
 
 organization := "com.github.rhyskeepence"
 
-version := "29"
+version := "30"
 
 scalaVersion := "2.10.0"
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
-  "org.specs2" %% "specs2" % "1.13",
+  "org.specs2" %% "specs2" % "1.14",
   "org.pegdown" % "pegdown" % "1.0.2",
   "net.sourceforge.plantuml" % "plantuml" % "7933",
+  "org.scalacheck" %% "scalacheck" % "1.10.0" % "optional",
   "org.scala-lang" % "scala-compiler" % scala_version  % "optional"
 )}
 
