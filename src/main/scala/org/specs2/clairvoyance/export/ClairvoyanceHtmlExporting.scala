@@ -4,17 +4,16 @@ import org.specs2.io.ConsoleOutput
 import org.specs2.main.Arguments
 import org.specs2.reporter._
 import org.specs2.specification._
-import org.specs2.internal.scalaz.Scalaz._
-import scala.xml.{Xhtml, NodeSeq}
-import java.io.{File, Writer}
-import java.net.URL
+import scalaz.Scalaz._
+import scala.xml.NodeSeq
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
   type ExportType = Unit
 
-  def export(implicit args: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
+  def export(implicit arguments: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
     val executed = spec.execute
-    print(executed) |> writeFiles
+    val args = arguments <| executed.arguments
+    print(executed)(args) |> writeFiles(args)
     printTeamCityLog(executed)
     executed
   }

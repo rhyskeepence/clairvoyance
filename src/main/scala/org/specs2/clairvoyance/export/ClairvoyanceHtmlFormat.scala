@@ -33,8 +33,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     val structure = structures.map { s =>
 
       val specFragments = s.content.fragments.flatMap {
-        case org.specs2.specification.Text(text) => Some(<li><em>{text}</em></li>)
-        case Example(name, _) => Some(<li> - {name}</li>)
+        case org.specs2.specification.Text(text, _) => Some(<li><em>{text}</em></li>)
+        case Example(name, _, _, _, _) => Some(<li> - {name}</li>)
         case _ => None
       }
 
@@ -57,7 +57,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           val htmlListItemForResult =
             <li class={listClass}>
-              <a href={link}>{ accumulator._1 + " " + executedResult.s.toHtml }</a>
+              <a href={link}>{ accumulator._1 + " " + executedResult.s.raw }</a>
             </li>
           
           (accumulator._1, htmlListItemForResult :: accumulator._2)
@@ -96,7 +96,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
           <a id={linkNameOf(result)}></a>
           <div class="testmethod">
             <h2>
-              {result.s.toHtml}
+              {result.s.toXml}
             </h2>
             <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>

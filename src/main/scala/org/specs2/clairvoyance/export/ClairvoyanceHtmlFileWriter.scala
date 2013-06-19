@@ -3,11 +3,12 @@ package org.specs2.clairvoyance.export
 import org.specs2.reporter.OutputDir
 import java.io.{Writer, File}
 import xml.{Xhtml, NodeSeq}
-import java.net.URL
+import org.specs2.main.Arguments
+import org.specs2.clairvoyance.io.ClasspathResources
 
 trait ClairvoyanceHtmlFileWriter extends OutputDir {
 
-  def writeFiles = (htmlFiles: Seq[ClairvoyanceHtml]) => {
+  def writeFiles(implicit args: Arguments = Arguments()) = (htmlFiles: Seq[ClairvoyanceHtml]) => {
     copyResources()
     htmlFiles foreach writeFile
   }
@@ -23,26 +24,8 @@ trait ClairvoyanceHtmlFileWriter extends OutputDir {
   }
 
   protected def copyResources() {
-    Seq("css", "javascript").foreach(copyFromResourcesDir(_, outputDir))
+    Seq("css", "javascript").foreach(ClasspathResources.copyResource(_, outputDir))
   }
 
-  private def copyFromResourcesDir(src: String, outputDir: String) {
-    val jarUrl = Thread.currentThread.getContextClassLoader.getResource(getClass.getName.replace(".", "/") + ".class")
-    for (url <- Option(jarUrl) if url.toString.startsWith("jar"))
-      fileSystem.unjar(getPath(url).takeWhile(_ != '!').mkString, outputDir, ".*" + src + "/.*")
 
-    val folderUrl = Thread.currentThread.getContextClassLoader.getResource(src)
-    for (url <- Option(folderUrl) if !folderUrl.toString.startsWith("jar"))
-      fileSystem.copyDir(url, outputDir + src)
-  }
-
-  private def getPath(url: URL) = {
-    val path =
-      if (sys.props("file.separator") == "\\")
-        url.getPath.replace("\\", "/").replace("file:/", "")
-      else
-        url.getPath.replace("file:", "")
-
-    path.replace("%20", " ")
-  }
 }
