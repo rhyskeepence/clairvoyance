@@ -36,7 +36,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     val structure = structures.map { s =>
 
       val specFragments = s.content.fragments.flatMap {
-        case org.specs2.specification.Text(text, _) => Some(<li><em>{text}</em></li>)
+        case org.specs2.specification.Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
         case Example(name, _, _, _, _) => Some(<li> - {formatShortExampleName(name.raw)}</li>)
         case _ => None
       }
@@ -62,7 +62,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           val htmlListItemForResult =
             <li class={listClass}>
-              <a href={link}>{ accumulator._1 + " " + formatShortExampleName(executedResult.s.raw) }</a>
+              <a href={link}>{ formatShortExampleName(accumulator._1) + " " + formatShortExampleName(executedResult.s.raw) }</a>
             </li>
           
           (accumulator._1, htmlListItemForResult :: accumulator._2)
@@ -100,7 +100,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           <a id={linkNameOf(result)}></a>
           <div class="testmethod">
-            {XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar("## " + result.s.raw) + "</text>"))}
+            {markdownToXhtml("## " +result.s.raw)}
             <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location))}</pre>
@@ -112,15 +112,18 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
           </div>
 
         case text: ExecutedText => {
-          <h1>
-            {text.text}
-          </h1>
+          {markdownToXhtml("# " + text.text)}
         }
 
         case _ => <span></span>
       }}
     </ul>
     )
+  }
+
+
+  def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq = {
+    XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar(markdownText) + "</text>"))
   }
 
   def interestingGivensTable(testState: Option[TestState], rendering: Rendering) = {

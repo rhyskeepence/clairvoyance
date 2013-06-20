@@ -12,11 +12,11 @@ The full source to this example is [here](https://github.com/rhyskeepence/clairv
 
 It breaks down like this:
 
-* We create a Spec which extends `ClairvoyantSpec`
-* We write our spec in the mutable spec style (my team is scared of the immutable style)
-* We create a context which extends `ClairvoyantContext`
+* Create a Spec which extends `ClairvoyantSpec`
+* Write the spec in the mutable spec style (for various historical reasons)
+* Create a context which extends `ClairvoyantContext`
 * `InterestingGivens` can be added with statements such as `interestingGivens += ("Current date" -> "21/12/2012")`
-* The spec method is interpreted into a text specification, so keep it readable
+* The Scala code within the spec method is interpreted into a text specification, to encourage readability.
 
 ```scala
 class LoggingExample extends ClairvoyantSpec {
@@ -43,7 +43,7 @@ Get This Party Started
 Add this to your SBT build:
 
     libraryDependencies ++= Seq(
-        "com.github.rhyskeepence" %% "clairvoyance" % "30"
+        "com.github.rhyskeepence" %% "clairvoyance" % "31"
         //  or, for scala 2.9.2: 
         //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
     )
@@ -57,7 +57,7 @@ Or in Maven:
     <dependency>
         <groupId>com.github.rhyskeepence</groupId>
         <artifactId>clairvoyance_2.10.0</artifactId>
-        <version>30</version>
+        <version>31</version>
         <scope>test</scope>
     </dependency>
 
@@ -171,9 +171,25 @@ which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
 
+Alternatively, a graph can be produced:
+
+```scala
+trait context extends ClairvoyantContext with Graph
+```
+
+Markdown
+--------
+
+[Markdown](http://en.wikipedia.org/wiki/Markdown) is supported in specification descriptions, to whet your appetite [see this example](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/MarkdownExample.scala).
+
+OTHER COOL STUFF!!!
+-------------------
+
+* [ScalaCheck](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/ScalaCheckExample.scala)
+* [Graphs](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/GraphExample.scala)
+* [G/W/T](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/GivenWhenThenExample.scala)
+
 TODO
 ----
 
-* Notes
 * Scenario tables
-* Test output is stored as a mutable queue, this is a bit dodgy.
