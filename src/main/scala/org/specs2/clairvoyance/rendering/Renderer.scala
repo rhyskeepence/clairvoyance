@@ -8,28 +8,27 @@ trait Renderer[T] {
 }
 
 class Rendering(specInstance: Option[CustomRendering]) {
-  lazy val defaultRenderer = new ToStringRender
-  lazy val nodeSeqRenderer = new NodeSeqRenderer
-  lazy val umlRenderer = new SvgSequenceDiagramRenderer
-  lazy val graphVizRenderer = new GraphVizRenderer
+  val defaultRenderer = new ToStringRender
+  val nodeSeqRenderer = new NodeSeqRenderer
+  val umlRenderer = new SvgSequenceDiagramRenderer
+  val graphVizRenderer = new GraphVizRenderer
 
-  val renderingFunction =
-    specInstance match {
-      case Some(r) => r.customRendering orElse defaultRendering
-      case None => defaultRendering
-    }
+  val render = specInstance match {
+    case Some(r) => r.customRendering orElse defaultRendering
+    case None => defaultRendering
+  }
 
   def defaultRendering: PartialFunction[Any, Any] = {
-    case xml: NodeSeq => nodeSeqRenderer.render(xml)
-    case graphViz: GraphVizDiagram => graphVizRenderer.render(graphViz)
-    case svg: SvgSequenceDiagram => umlRenderer.render(svg)
-    case any: Any => defaultRenderer.render(any)
+    case xml: NodeSeq               => nodeSeqRenderer.render(xml)
+    case graphViz: GraphVizDiagram  => graphVizRenderer.render(graphViz)
+    case svg: SvgSequenceDiagram    => umlRenderer.render(svg)
+    case any: Any                   => defaultRenderer.render(any)
   }
 
   def renderToXml(anything: Any) = {
-    renderingFunction(anything) match {
-      case xml: NodeSeq => <div class='nohighlight'>{xml}</div>
-      case string: String => <span>{string}</span>
+    render(anything) match {
+      case xml: NodeSeq     => <div class='nohighlight'>{xml}</div>
+      case string: String   => <span>{string}</span>
     }
   }
 }
@@ -52,5 +51,4 @@ class GraphVizRenderer extends Renderer[GraphVizDiagram] {
     val url = "https://chart.googleapis.com/chart?cht=gv&chl=" + diagram.toMarkup
     <img src={url}></img>
   }
-
 }

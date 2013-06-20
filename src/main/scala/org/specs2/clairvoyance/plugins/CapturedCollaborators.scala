@@ -14,10 +14,10 @@ object CapturedCollaborators {
   def toCapturedValueCollaborators(defaultActor: String): (CapturedValue) => Option[CapturedValueCollaborators] = {
     case CapturedValue(id, capturedValueKey, value) =>
       capturedValueKey match {
-        case fullyQualifiedMessageSend(what, from, to) => Some(CapturedValueCollaborators(id, capturedValueKey, from, to, what, value))
+        case fullyQualifiedMessageSend(what, from, to)  => Some(CapturedValueCollaborators(id, capturedValueKey, from, to, what, value))
         case messageSendWithDefaultReceiver(what, from) => Some(CapturedValueCollaborators(id, capturedValueKey, from, defaultActor, what, value))
-        case messageSendWithDefaultSender(what, to) => Some(CapturedValueCollaborators(id, capturedValueKey, defaultActor, to, what, value))
-        case _ => None
+        case messageSendWithDefaultSender(what, to)     => Some(CapturedValueCollaborators(id, capturedValueKey, defaultActor, to, what, value))
+        case _                                          => None
       }
   }
 }

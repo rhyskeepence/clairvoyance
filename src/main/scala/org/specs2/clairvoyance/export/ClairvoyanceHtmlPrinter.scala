@@ -12,7 +12,7 @@ trait ClairvoyanceHtmlPrinter {
     Seq(ClairvoyanceHtml(executedSpec.name.url, printHtml(executedSpec).xml))
   }
 
-  def printHtml(spec: ExecutedSpecification) = {
+  def printHtml(spec: ExecutedSpecification)(implicit args: Arguments) = {
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(spec)
@@ -22,7 +22,7 @@ trait ClairvoyanceHtmlPrinter {
     )
   }
 
-  def printFragmentsOf(spec: ExecutedSpecification) = {
+  def printFragmentsOf(spec: ExecutedSpecification)(implicit args: Arguments) = {
     spec.fragments.foldLeft(clairvoyanceFormat) {
       (res, cur) =>
         res.printFragment(spec, cur)

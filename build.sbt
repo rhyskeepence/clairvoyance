@@ -8,7 +8,7 @@ scalaVersion := "2.10.0"
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
   "org.specs2" %% "specs2" % "2.0-RC2",
-  "org.pegdown" % "pegdown" % "1.0.2",
+  "org.pegdown" % "pegdown" % "1.3.0",
   "net.sourceforge.plantuml" % "plantuml" % "7933",
   "org.scalacheck" %% "scalacheck" % "1.10.0" % "optional",
   "org.scala-lang" % "scala-compiler" % scala_version  % "optional"

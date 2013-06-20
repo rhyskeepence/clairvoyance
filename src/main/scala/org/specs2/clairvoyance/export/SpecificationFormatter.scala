@@ -32,7 +32,7 @@ object SpecificationFormatter {
     sourceLines.map {
       case (line: Int, source: String) =>
         if (failureLine == line)
-          "- " + source
+          "-- " + source
         else
           source
     }

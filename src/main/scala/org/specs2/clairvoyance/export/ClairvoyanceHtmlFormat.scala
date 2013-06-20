@@ -10,6 +10,9 @@ import org.specs2.clairvoyance.state.TestState
 import org.specs2.specification.ExecutedText
 import org.specs2.clairvoyance.CapturedValue
 import org.specs2.main.Arguments
+import org.specs2.text.Markdown
+import scala.xml.parsing.XhtmlParser
+import scala.io.Source
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -34,7 +37,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
       val specFragments = s.content.fragments.flatMap {
         case org.specs2.specification.Text(text, _) => Some(<li><em>{text}</em></li>)
-        case Example(name, _, _, _, _) => Some(<li> - {name}</li>)
+        case Example(name, _, _, _, _) => Some(<li> - {formatShortExampleName(name.raw)}</li>)
         case _ => None
       }
 
@@ -48,6 +51,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     <div id="sidebar"><ul>{structure}</ul></div>
   }
 
+  def formatShortExampleName: String => String = _.split('\n').head
+
   def tableOfContentsFor(spec: ExecutedSpecification) = {
     val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
       fragment match {
@@ -57,7 +62,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           val htmlListItemForResult =
             <li class={listClass}>
-              <a href={link}>{ accumulator._1 + " " + executedResult.s.raw }</a>
+              <a href={link}>{ accumulator._1 + " " + formatShortExampleName(executedResult.s.raw) }</a>
             </li>
           
           (accumulator._1, htmlListItemForResult :: accumulator._2)
@@ -76,7 +81,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
 
-  def printFragment(spec: ExecutedSpecification, fragment: ExecutedFragment) = {
+  def printFragment(spec: ExecutedSpecification, fragment: ExecutedFragment)(implicit args: Arguments) = {
     print(<ul>
       {fragment match {
         case result: ExecutedResult =>
@@ -95,9 +100,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           <a id={linkNameOf(result)}></a>
           <div class="testmethod">
-            <h2>
-              {result.s.toXml}
-            </h2>
+            {XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar("## " + result.s.raw) + "</text>"))}
             <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location))}</pre>

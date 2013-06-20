@@ -30,7 +30,6 @@ object FromSource {
     }
   }
 
-
   def addLine(lineNumber: Int, content: Seq[String], lines: List[(Int, String)]): List[(Int, String)] =
     (lineNumber + 1, content(lineNumber).trim()) :: lines
 
