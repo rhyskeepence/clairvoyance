@@ -16,7 +16,7 @@ object ClasspathResources {
 
     val folderUrl = Thread.currentThread.getContextClassLoader.getResource(src)
     for (url <- Option(folderUrl) if !folderUrl.toString.startsWith("jar"))
-      fs.copyDir(url, outputDir + src)
+      fs.copyDir(url.toExternalForm, outputDir + src)
   }
 
   private def unjar(jarUrl: URL, dirPath: String, regexFilter: String) {
