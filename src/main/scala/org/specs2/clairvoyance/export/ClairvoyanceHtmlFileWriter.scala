@@ -1,10 +1,10 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.reporter.OutputDir
-import java.io.{Writer, File}
-import xml.{Xhtml, NodeSeq}
-import org.specs2.main.Arguments
+import java.io.{File, Writer}
 import org.specs2.clairvoyance.io.ClasspathResources
+import org.specs2.main.Arguments
+import org.specs2.reporter.OutputDir
+import scala.xml.{Xhtml, NodeSeq}
 
 trait ClairvoyanceHtmlFileWriter extends OutputDir {
 
@@ -16,16 +16,12 @@ trait ClairvoyanceHtmlFileWriter extends OutputDir {
   protected def writeFile = (file: ClairvoyanceHtml) => {
     val reportFile = reportPath(file.url)
     fileWriter.write(reportFile)(writeXml(file.xml))
-    println("Output:\n%s".format(new File(reportFile).getAbsolutePath))
+    println(s"Output:\n${new File(reportFile).getAbsolutePath}")
   }
 
-  protected def writeXml(xml: NodeSeq)(out: Writer) {
-    out.write(Xhtml.toXhtml(xml))
-  }
+  protected def writeXml(xml: NodeSeq)(out: Writer): Unit = { out.write(Xhtml.toXhtml(xml)) }
 
-  protected def copyResources() {
+  protected def copyResources(): Unit = {
     Seq("css", "javascript").foreach(ClasspathResources.copyResource(_, outputDir))
   }
-
-
 }

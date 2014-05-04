@@ -1,7 +1,6 @@
 package org.specs2.clairvoyance
 
-import org.specs2.mutable.{After, Specification}
-import state.{TestState, TestStates}
+import org.specs2.mutable.Specification
 
 abstract class ClairvoyantSpec extends Specification {
   sequential

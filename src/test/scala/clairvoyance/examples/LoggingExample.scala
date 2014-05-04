@@ -1,13 +1,13 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
 import java.text.SimpleDateFormat
 import java.util.Date
-import org.specs2.matcher.{Matcher, Expectable}
+import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import org.specs2.matcher.Matcher
 
 class LoggingExample extends ClairvoyantSpec {
 
-  "The co-ordinator" should {
+  "The coordinator" should {
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
       givenTheDateIs("21/12/2012")
       whenTheCoordinatorRuns()
@@ -21,11 +21,11 @@ class LoggingExample extends ClairvoyantSpec {
 
     override def capturedInputsAndOutputs = Seq(theDoomsdayDevice)
 
-    def givenTheDateIs(ddMMyyyy: String) {
+    def givenTheDateIs(ddMMyyyy: String): Unit = {
       clock.setDateTo(toDate(ddMMyyyy))
     }
 
-    def whenTheCoordinatorRuns() {
+    def whenTheCoordinatorRuns(): Unit = {
       val coordinator = new MasterCoordinator(theDoomsdayDevice, clock)
       coordinator.runIt()
     }
@@ -35,7 +35,7 @@ class LoggingExample extends ClairvoyantSpec {
 
 
     class StubClock extends Clock {
-      def setDateTo(time: Date) {
+      def setDateTo(time: Date): Unit = {
         interestingGivens += ("Current date" -> time)
       }
 
@@ -50,7 +50,7 @@ class LoggingExample extends ClairvoyantSpec {
     class StubDoomsdayDevice extends DoomsdayDevice with ProducesCapturedInputsAndOutputs {
       var wasUnleashed = false
 
-      def unleashDestruction(target: String) {
+      def unleashDestruction(target: String): Unit = {
         wasUnleashed = true
 
         interestingGivens += ("Target" -> target)
@@ -69,7 +69,7 @@ class LoggingExample extends ClairvoyantSpec {
   class MasterCoordinator(doomsdayDevice: DoomsdayDevice, clock: Clock) {
     val triggerDate = toDate("21/12/2012")
     
-    def runIt() {
+    def runIt(): Unit = {
       if (clock.currentTime equals triggerDate)
         doomsdayDevice.unleashDestruction("Planet Earth")
     }
@@ -80,7 +80,7 @@ class LoggingExample extends ClairvoyantSpec {
   }
 
   trait DoomsdayDevice {
-    def unleashDestruction(target: String)
+    def unleashDestruction(target: String): Unit
   }
 
   def toDate(ddMMyyyy: String) = new SimpleDateFormat("dd/MM/yyyy").parse(ddMMyyyy)

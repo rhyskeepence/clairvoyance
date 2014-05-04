@@ -1,7 +1,7 @@
 package clairvoyance.examples
 
 import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.{Graph, SequenceDiagram}
+import org.specs2.clairvoyance.plugins.Graph
 import org.specs2.execute.Success
 
 class GraphExample extends ClairvoyantSpec {
@@ -19,27 +19,25 @@ class GraphExample extends ClairvoyantSpec {
 
     override def defaultSequenceDiagramActor = "Web Server"
 
-    def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String) {
+    def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String): Unit = {
       webServer.login(user, password)
     }
 
-    def thenTheUserIsShownSecrets() {
-      Success
-    }
+    def thenTheUserIsShownSecrets(): Unit = Success
 
     override def capturedInputsAndOutputs = Seq(webServer, ldap)
   }
 
   class WebServer(ldap: Ldap) extends ProducesCapturedInputsAndOutputs {
-    def login(user: String, password: String) {
-      captureValue("Login Submitted from User" -> "user: %s, password: %s".format(user, password))
+    def login(user: String, password: String): Unit = {
+      captureValue("Login Submitted from User" -> s"user: $user, password: $password")
       ldap.authenticate(user, password)
       captureValue("Response to User" -> "Forwarding to showSecrets.html")
     }
   }
 
   class Ldap extends ProducesCapturedInputsAndOutputs {
-    def authenticate(user: String, password: String) {
+    def authenticate(user: String, password: String): Unit = {
 
       captureValue("Username and Password to LDAP" ->
         <authRequest>
@@ -63,5 +61,4 @@ class GraphExample extends ClairvoyantSpec {
         </authResponse>)
     }
   }
-
 }

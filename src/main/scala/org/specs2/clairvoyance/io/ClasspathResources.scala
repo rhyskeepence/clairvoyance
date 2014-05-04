@@ -7,7 +7,7 @@ import org.specs2.io.fs
 
 object ClasspathResources {
 
-  def copyResource(src: String, outputDir: String) {
+  def copyResource(src: String, outputDir: String): Unit = {
     val selfUrl = Thread.currentThread.getContextClassLoader.getResource(getClass.getName.replace(".", "/")+".class")
     for (url <- Option(selfUrl) if url.getProtocol == "jar") {
       val jarUrl = new URL(url.getPath.takeWhile(_ != '!').mkString)
@@ -19,24 +19,24 @@ object ClasspathResources {
       fs.copyDir(url.toExternalForm, outputDir + src)
   }
 
-  private def unjar(jarUrl: URL, dirPath: String, regexFilter: String) {
+  private def unjar(jarUrl: URL, dirPath: String, regexFilter: String): Unit = {
     fs.mkdirs(dirPath)
     val uis = jarUrl.openStream()
     val zis = new ZipInputStream(new BufferedInputStream(uis))
 
     @annotation.tailrec
-    def extractEntry(entry: ZipEntry) {
+    def extractEntry(entry: ZipEntry): Unit = {
       if (entry != null) {
         if (entry.getName.matches(regexFilter)) {
-          if (entry.isDirectory()) {
+          if (entry.isDirectory) {
             fs.createDir(dirPath + "/" + entry.getName)
           } else {
             fs.createFile(dirPath + "/" + entry.getName)
             val fos = new FileOutputStream(dirPath + "/" + entry.getName)
             val dest = new BufferedOutputStream(fos, 2048)
             fs.copy(zis, dest)
-            dest.flush
-            dest.close
+            dest.flush()
+            dest.close()
           }
 
         }
@@ -44,6 +44,6 @@ object ClasspathResources {
       }
     }
     extractEntry(zis.getNextEntry)
-    zis.close
+    zis.close()
   }
 }

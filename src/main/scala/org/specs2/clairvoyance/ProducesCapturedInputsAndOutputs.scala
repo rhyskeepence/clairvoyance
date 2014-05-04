@@ -1,20 +1,18 @@
 package org.specs2.clairvoyance
 
-import collection.mutable.ListBuffer
-import org.specs2.clairvoyance.Imports._
 import java.util.concurrent.atomic.AtomicInteger
+import org.specs2.clairvoyance.Imports.KeyValue
+import scala.collection.mutable.ListBuffer
 
 trait ProducesCapturedInputsAndOutputs {
 
   private lazy val capturedValues = new ListBuffer[CapturedValue]
 
-  def captureValue(capturedValue: KeyValue) {
+  def captureValue(capturedValue: KeyValue): Unit = {
     capturedValues += CapturedValue(CapturedValueSequence.nextId, capturedValue._1, capturedValue._2)
   }
 
-  def clear() {
-    capturedValues.clear()
-  }
+  def clear(): Unit = { capturedValues.clear() }
 
   def producedCapturedInputsAndOutputs = capturedValues.toList
 }

@@ -1,6 +1,6 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.specification.{SpecificationStructure, ExecutedSpecification}
+import org.specs2.specification.ExecutedSpecification
 import org.specs2.main.Arguments
 import org.specs2.runner.SpecificationsFinder
 

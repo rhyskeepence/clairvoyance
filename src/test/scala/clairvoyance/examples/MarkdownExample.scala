@@ -8,7 +8,7 @@ class MarkdownExample extends ClairvoyantSpec with Snippets {
   """The Triangle Number Calculator
     |###Rules
     |* The nth triangle number is the number of dots composing a triangle with n dots on a side, and is equal to the sum of the n natural numbers from 1 to n
-    |* [Futher reading](http://en.wikipedia.org/wiki/Triangular_number)
+    |* [Further reading](http://en.wikipedia.org/wiki/Triangular_number)
     |
     |Here we calculate the 6th triangle number, represented by the following diagram:
     |       *
@@ -29,7 +29,7 @@ class MarkdownExample extends ClairvoyantSpec with Snippets {
       |### Rules
       |* The factorial of n is the product of all positive integers less than or equal to n
       |* *Non-negative* integers only
-      |* [Futher reading](http://en.wikipedia.org/wiki/Factorial)
+      |* [Further reading](http://en.wikipedia.org/wiki/Factorial)
     """.stripMargin in {
       factorial(3) == 6
     }

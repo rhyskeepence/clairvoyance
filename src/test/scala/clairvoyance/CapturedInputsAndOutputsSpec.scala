@@ -15,9 +15,7 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
     val bazza = new Bazza
     override def capturedInputsAndOutputs = Seq(bazza)
 
-    def whenFootieIsStarting() {
-      bazza.footieIsStarting()
-    }
+    def whenFootieIsStarting(): Unit = { bazza.footieIsStarting() }
 
     def thenTheCapturedValueNamed(key: String) =
       gatherCapturedValues
@@ -27,8 +25,8 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
   }
   
   class Bazza extends ProducesCapturedInputsAndOutputs {
-    def footieIsStarting() {
-      captureValue(("Bazza says" -> "Oi Shazza, get me a beer, the game's starting."))
+    def footieIsStarting(): Unit = {
+      captureValue("Bazza says" -> "Oi Shazza, get me a beer, the game's starting.")
     }
   }
   

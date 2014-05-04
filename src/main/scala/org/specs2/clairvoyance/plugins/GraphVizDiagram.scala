@@ -7,7 +7,6 @@ case class GraphVizDiagram(collaborators: Seq[CapturedValueCollaborators]) {
       .mkString("digraph g {", "\n", "}")
   }
 
-  private def toArc(message: CapturedValueCollaborators): String = {
-    "\"%s\" -> \"%s\" [label=\"%s\"]".format(message.from, message.to, message.what)
-  }
+  private def toArc(message: CapturedValueCollaborators): String =
+    s"""\"${message.from}\" -> \"${message.to}\" [label=\"${message.what}\"]"""
 }

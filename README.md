@@ -20,7 +20,7 @@ It breaks down like this:
 
 ```scala
 class LoggingExample extends ClairvoyantSpec {
-  "The co-ordinator" should {
+  "The coordinator" should {
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
       givenTheDateIs("21/12/2012")
       whenTheCoordinatorRuns

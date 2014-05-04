@@ -1,14 +1,14 @@
 package org.specs2.clairvoyance
 
-import org.specs2.mutable.After
 import org.specs2.clairvoyance.state.{TestState, TestStates}
+import org.specs2.mutable.After
 
 trait ClairvoyantContext extends After with InterestingGivens with CapturedInputsAndOutputs {
 
-  def tearDown {}
+  def tearDown(): Unit = {}
 
-  def after {
-    tearDown
+  def after: Unit = {
+    tearDown()
 
     TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
@@ -20,4 +20,3 @@ trait ClairvoyantContext extends After with InterestingGivens with CapturedInput
     def ===>[T](step: T): T = step
   }
 }
-

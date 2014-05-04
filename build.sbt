@@ -34,7 +34,7 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-pomExtra := (
+pomExtra :=
   <url>http://www.github.com/rhyskeepence/clairvoyance</url>
   <licenses>
     <license>
@@ -54,5 +54,3 @@ pomExtra := (
       <url>http://rhyskeepence.github.com</url>
     </developer>
   </developers>
-)
-

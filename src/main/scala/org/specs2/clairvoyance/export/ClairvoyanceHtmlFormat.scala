@@ -1,18 +1,15 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.specification._
-import org.specs2.clairvoyance.state.TestStates
-import org.specs2.reflect.Classes
-import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
-import xml._
-import org.specs2.specification.ExecutedSpecification
-import org.specs2.clairvoyance.state.TestState
-import org.specs2.specification.ExecutedText
 import org.specs2.clairvoyance.CapturedValue
+import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
+import org.specs2.clairvoyance.state.{TestState, TestStates}
 import org.specs2.main.Arguments
+import org.specs2.reflect.Classes
+import org.specs2.specification._
 import org.specs2.text.Markdown
-import scala.xml.parsing.XhtmlParser
 import scala.io.Source
+import scala.xml.{Elem, NodeSeq}
+import scala.xml.parsing.XhtmlParser
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -95,7 +92,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
           val testState = TestStates.dequeue(spec.name.fullName)
 
-          val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](spec.name.fullName, false, false)
+          val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](spec.name.fullName, printMessage = false, printStackTrace = false)
           val rendering = new Rendering(optionalCustomRenderer)
 
           <a id={linkNameOf(result)}></a>
@@ -111,16 +108,12 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             </div>
           </div>
 
-        case text: ExecutedText => {
-          {markdownToXhtml("# " + text.text)}
-        }
-
+        case text: ExecutedText => markdownToXhtml("# " + text.text)
         case _ => <span></span>
       }}
     </ul>
     )
   }
-
 
   def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq = {
     XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar(markdownText) + "</text>"))
@@ -186,13 +179,8 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
   }
 
   private def wordify(title: String) = {
-    "%s|%s|%s".format(
-      "(?<=[A-Z])(?=[A-Z][a-z])",
-      "(?<=[^A-Z])(?=[A-Z])",
-      "(?<=[A-Za-z])(?=[^A-Za-z])"
-    ).r.replaceAllIn(title, " ")
+    "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])".r.replaceAllIn(title, " ")
   }
 
-  private def linkNameOf(fragment: ExecutedResult) = fragment.s.toString.replaceAll("\\s", "")
-
+  private def linkNameOf(fragment: ExecutedResult) = fragment.s.toString().replaceAll("\\s", "")
 }

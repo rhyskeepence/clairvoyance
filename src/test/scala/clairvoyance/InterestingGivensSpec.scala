@@ -10,19 +10,19 @@ class InterestingGivensSpec extends ClairvoyantSpec {
     }
 
     "include both default and context specific Interesting Givens" in new context {
-      interestingGivens += ("Spouce" -> "Shazza")
+      interestingGivens += ("Spouse" -> "Shazza")
 
       interestingGivens("Name") should beSetTo("Bazza")
-      interestingGivens("Spouce") should beSetTo("Shazza")
+      interestingGivens("Spouse") should beSetTo("Shazza")
     }
 
     "not include Interesting Givens from the previous context" in new context {
-      interestingGivens("Spouce") should notBeSet
+      interestingGivens("Spouse") should notBeSet
     }
   }
 
   trait context extends ClairvoyantContext {
-    ("Name" -> "Bazza").isInteresting
+    ("Name" -> "Bazza").isInteresting()
   }
 
   def beSetTo[T](t: =>T) = beSome(t)

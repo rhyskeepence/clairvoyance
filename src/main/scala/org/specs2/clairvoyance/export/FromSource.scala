@@ -1,8 +1,9 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.io.Location
 import java.io.File
+import org.specs2.io.Location
 import org.specs2.clairvoyance.io.Files._
+import scala.annotation.tailrec
 
 object FromSource {
   def getCodeFrom(location: Location): List[(Int, String)] = {
@@ -12,6 +13,7 @@ object FromSource {
     readToEndOfMethod(content, location.lineNumber)
   }
 
+  @tailrec
   def readToEndOfMethod(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[(Int, String)] = List()): List[(Int, String)] = {
     if (content.size < lineNumber || lineNumber < 1) {
       res.reverse
@@ -35,5 +37,4 @@ object FromSource {
 
   def readLines(path: Option[File]) =
     path.map(scala.io.Source.fromFile(_).getLines().toIndexedSeq)
-
 }

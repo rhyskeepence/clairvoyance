@@ -1,7 +1,7 @@
 package org.specs2.clairvoyance.rendering
 
 import org.specs2.clairvoyance.plugins.{GraphVizDiagram, SvgSequenceDiagram}
-import xml.{XML, Elem, NodeSeq, PrettyPrinter}
+import scala.xml.{XML, NodeSeq, PrettyPrinter}
 
 trait Renderer[T] {
   def render: (T => Any)

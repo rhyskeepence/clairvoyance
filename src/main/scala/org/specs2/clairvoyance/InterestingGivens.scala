@@ -1,7 +1,7 @@
 package org.specs2.clairvoyance
 
-import collection.mutable.ListBuffer
-import org.specs2.clairvoyance.Imports._
+import org.specs2.clairvoyance.Imports.KeyValue
+import scala.collection.mutable.ListBuffer
 
 trait InterestingGivens {
   val interestingGivens = new MutableInterestingGivens()
@@ -9,7 +9,7 @@ trait InterestingGivens {
   implicit def toInterestingGiven(s: KeyValue) = new InterestingGivenBuilder(interestingGivens, s)
 
   class InterestingGivenBuilder(interestingGivens: MutableInterestingGivens, s: KeyValue) {
-    def isInteresting {
+    def isInteresting(): Unit = {
       interestingGivens += s
     }
   }
@@ -17,7 +17,7 @@ trait InterestingGivens {
   class MutableInterestingGivens  {
     private lazy val values = new ListBuffer[KeyValue]
 
-    def +=[T <: AnyRef](interestingGiven: (String, T)) {
+    def +=[T <: AnyRef](interestingGiven: (String, T)): Unit = {
       values += interestingGiven
     }
 

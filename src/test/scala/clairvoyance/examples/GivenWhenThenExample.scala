@@ -7,7 +7,7 @@ import java.util.Date
 
 class GivenWhenThenExample extends ClairvoyantSpec {
 
-  "The co-ordinator" should {
+  "The coordinator" should {
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
       "Given the date is ${21/12/2012}"               ===> givenTheDateIs
       "When the coordinator runs"                     ===> theCoordinatorRuns
@@ -31,7 +31,7 @@ class GivenWhenThenExample extends ClairvoyantSpec {
         clock.setDateTo(toDate(s))
     }
 
-    def theCoordinatorRuns() {
+    def theCoordinatorRuns(): Unit = {
       new MasterCoordinator(theDoomsdayDevice, clock).runIt()
     }
 
@@ -44,9 +44,7 @@ class GivenWhenThenExample extends ClairvoyantSpec {
 class StubDoomsdayDevice extends ProducesCapturedInputsAndOutputs {
   var unleashed = false
 
-  def unleash(date: Date) {
-    unleashed = true
-  }
+  def unleash(date: Date): Unit = { unleashed = true }
 
   def wasUnleashed = unleashed
 }
@@ -54,14 +52,9 @@ class StubDoomsdayDevice extends ProducesCapturedInputsAndOutputs {
 class StubClock extends ProducesCapturedInputsAndOutputs {
   var date: Date = new Date
 
-  def setDateTo(date: Date) {
-    this.date = date
-  }
+  def setDateTo(date: Date): Unit = { this.date = date }
 }
 
 class MasterCoordinator(device: StubDoomsdayDevice, clock: StubClock) {
-  def runIt() {
-    device.unleash(clock.date)
-  }
-
+  def runIt(): Unit = { device.unleash(clock.date) }
 }

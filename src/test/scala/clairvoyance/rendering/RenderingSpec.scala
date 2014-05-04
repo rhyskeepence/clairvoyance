@@ -1,8 +1,8 @@
 package clairvoyance.rendering
 
-import xml.PrettyPrinter
 import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
 import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
+import scala.xml.PrettyPrinter
 
 class RenderingSpec extends ClairvoyantSpec {
 

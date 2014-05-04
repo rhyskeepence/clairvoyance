@@ -1,13 +1,13 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedSpecification}
 import org.specs2.main.Arguments
+import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedSpecification}
 
 trait TeamCityTestReporter {
 
   private lazy val teamCityProjectName = Option(System.getenv("TEAMCITY_PROJECT_NAME"))
 
-  def printTeamCityLog(spec: ExecutedSpecification)(implicit args: Arguments) {
+  def printTeamCityLog(spec: ExecutedSpecification)(implicit args: Arguments): Unit = {
     spec.fragments.foldLeft("") {
       (latestHeading, fragment) =>
         fragment match {
@@ -33,12 +33,8 @@ trait TeamCityTestReporter {
 
             latestHeading
 
-          case executedText: ExecutedText =>
-            executedText.text
-
-          case _ =>
-            latestHeading
-
+          case executedText: ExecutedText => executedText.text
+          case _ => latestHeading
         }
     }
   }
@@ -55,7 +51,7 @@ trait TeamCityTestReporter {
     .replace("[", "|[")
     .replace("]", "|]")
 
-  private def teamcityReport(messageName: String, attributes: (String, String)*) {
+  private def teamcityReport(messageName: String, attributes: (String, String)*): Unit = {
     if (shouldLog) {
       val attributeString = attributes.map {
         case (k, v) => k + "='" + tidy(v) + "'"
@@ -66,5 +62,4 @@ trait TeamCityTestReporter {
   }
 
   private def shouldLog = teamCityProjectName.isDefined
-
 }

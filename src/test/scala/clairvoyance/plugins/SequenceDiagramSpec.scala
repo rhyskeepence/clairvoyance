@@ -27,7 +27,7 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
       theMarkupGenerated must contain("\"Monkey\" ->> \"Donkey Kong\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
     }
 
-    "be case insensititve" in new context {
+    "be case insensitive" in new context {
       givenTheCapturedValuesContains("Banana FROM Human TO Monkey")
       whenTheSequenceDiagramIsGenerated()
       theMarkupGenerated must contain("\"Human\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
@@ -36,7 +36,7 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     "ignored captured values which do not match the `From/To` format" in new context {
       givenTheCapturedValuesContains("Nonsense")
       whenTheSequenceDiagramIsGenerated()
-      theMarkupGenerated must not contain("Nonsense")
+      theMarkupGenerated must not contain "Nonsense"
     }
   }
 
@@ -46,11 +46,11 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     var capturedValues = Seq[CapturedValue]()
     var theMarkupGenerated = ""
 
-    def givenTheCapturedValuesContains(key: String) {
+    def givenTheCapturedValuesContains(key: String): Unit = {
       capturedValues = Seq(CapturedValue(1, key, "doesn't matter"))
     }
 
-    def whenTheSequenceDiagramIsGenerated() {
+    def whenTheSequenceDiagramIsGenerated(): Unit = {
       theMarkupGenerated = generateUmlMarkup(collectCollaborators(capturedValues, "Donkey Kong"))
       captureValue("Generated UML" -> theMarkupGenerated)
     }
