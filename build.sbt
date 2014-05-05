@@ -2,12 +2,12 @@ name := "clairvoyance"
 
 organization := "com.github.rhyskeepence"
 
-version := "32"
+version := "33"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
-  "org.specs2" %% "specs2" % "2.3.7",
+  "org.specs2" %% "specs2" % "2.3.11",
   "org.pegdown" % "pegdown" % "1.4.2",
   "net.sourceforge.plantuml" % "plantuml" % "7933",
   "org.scalacheck" %% "scalacheck" % "1.11.3" % "optional",
@@ -52,5 +52,10 @@ pomExtra :=
       <id>rhyskeepence</id>
       <name>Rhys Keepence</name>
       <url>http://rhyskeepence.github.com</url>
+    </developer>
+    <developer>
+      <id>franckrasolo</id>
+      <name>Franck Rasolo</name>
+      <url>https://github.com/franckrasolo</url>
     </developer>
   </developers>
