@@ -1,7 +1,7 @@
-package org.specs2.clairvoyance.state
+package clairvoyance.state
 
-import org.specs2.clairvoyance.CapturedValue
-import org.specs2.clairvoyance.Imports._
+import clairvoyance.CapturedValue
+import clairvoyance.Imports._
 import scala.collection.mutable
 
 object TestStates {

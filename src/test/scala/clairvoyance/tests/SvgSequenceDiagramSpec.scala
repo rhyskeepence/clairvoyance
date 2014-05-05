@@ -1,7 +1,7 @@
 package clairvoyance.tests
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.{CapturedValueCollaborators, SvgSequenceDiagram}
+import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import clairvoyance.plugins.{CapturedValueCollaborators, SvgSequenceDiagram}
 
 class SvgSequenceDiagramSpec extends ClairvoyantSpec {
 
@@ -22,7 +22,6 @@ class SvgSequenceDiagramSpec extends ClairvoyantSpec {
     "contain clickable message" in new context {
       svgMarkupProduced must =~(".*<text.*class=\"sequence_diagram_clickable\".*sequence_diagram_message_id=\"1\" .*>Honey</text>.*")
     }
-
   }
 
   trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs {
@@ -39,5 +38,4 @@ class SvgSequenceDiagramSpec extends ClairvoyantSpec {
       svgOutput
     }
   }
-
 }

@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance
+package clairvoyance
 
 trait CapturedInputsAndOutputs {
   def capturedInputsAndOutputs = Seq[ProducesCapturedInputsAndOutputs]()

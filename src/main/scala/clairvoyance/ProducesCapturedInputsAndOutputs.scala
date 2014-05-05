@@ -1,7 +1,7 @@
-package org.specs2.clairvoyance
+package clairvoyance
 
+import clairvoyance.Imports.KeyValue
 import java.util.concurrent.atomic.AtomicInteger
-import org.specs2.clairvoyance.Imports.KeyValue
 import scala.collection.mutable.ListBuffer
 
 trait ProducesCapturedInputsAndOutputs {

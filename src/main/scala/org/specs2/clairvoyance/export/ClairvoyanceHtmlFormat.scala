@@ -1,8 +1,9 @@
 package org.specs2.clairvoyance.export
 
-import org.specs2.clairvoyance.CapturedValue
-import org.specs2.clairvoyance.rendering.{CustomRendering, Rendering}
-import org.specs2.clairvoyance.state.{TestState, TestStates}
+import clairvoyance.CapturedValue
+import clairvoyance.export.{FromSource, SpecificationFormatter}
+import clairvoyance.rendering.{CustomRendering, Rendering}
+import clairvoyance.state.{TestState, TestStates}
 import org.specs2.main.Arguments
 import org.specs2.reflect.Classes
 import org.specs2.specification._

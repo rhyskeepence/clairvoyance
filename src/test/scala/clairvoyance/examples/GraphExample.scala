@@ -1,7 +1,7 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.Graph
+import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import clairvoyance.plugins.Graph
 import org.specs2.execute.Success
 
 class GraphExample extends ClairvoyantSpec {

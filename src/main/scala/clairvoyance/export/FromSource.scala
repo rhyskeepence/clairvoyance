@@ -1,8 +1,8 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
+import clairvoyance.io.Files.{currentWorkingDirectory, listFiles}
 import java.io.File
 import org.specs2.io.Location
-import org.specs2.clairvoyance.io.Files._
 import scala.annotation.tailrec
 
 object FromSource {

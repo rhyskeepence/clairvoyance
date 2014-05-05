@@ -1,7 +1,5 @@
 package clairvoyance
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-
 class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
 
   "The Captured Inputs And Outputs" should {
@@ -29,5 +27,4 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
       captureValue("Bazza says" -> "Oi Shazza, get me a beer, the game's starting.")
     }
   }
-  
 }

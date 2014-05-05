@@ -1,7 +1,7 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.SequenceDiagram
+import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import clairvoyance.plugins.SequenceDiagram
 import org.specs2.execute.Success
 
 class SequenceDiagramExample extends ClairvoyantSpec {

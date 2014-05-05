@@ -1,7 +1,7 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ClairvoyantSpec}
-import org.specs2.clairvoyance.rendering.CustomRendering
+import clairvoyance.{ClairvoyantContext, ClairvoyantSpec}
+import clairvoyance.rendering.CustomRendering
 
 class CustomRenderingExample extends ClairvoyantSpec with CustomRendering {
   "The Custom Renderer" should {

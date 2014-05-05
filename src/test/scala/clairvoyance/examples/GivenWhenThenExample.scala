@@ -1,6 +1,6 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
 import org.specs2.matcher.{MatchResult, Matcher}
 import java.text.SimpleDateFormat
 import java.util.Date

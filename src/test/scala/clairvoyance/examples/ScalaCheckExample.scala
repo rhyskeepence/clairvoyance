@@ -1,8 +1,8 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance._
+import clairvoyance.{ClairvoyantContext, ClairvoyantSpec}
+import org.scalacheck.Prop.forAll
 import org.specs2._
-import org.scalacheck.Prop._
 
 class ScalaCheckExample extends ClairvoyantSpec with ScalaCheck {
 

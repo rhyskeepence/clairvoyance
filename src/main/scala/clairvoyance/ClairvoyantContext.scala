@@ -1,6 +1,6 @@
-package org.specs2.clairvoyance
+package clairvoyance
 
-import org.specs2.clairvoyance.state.{TestState, TestStates}
+import clairvoyance.state.{TestState, TestStates}
 import org.specs2.mutable.After
 
 trait ClairvoyantContext extends After with InterestingGivens with CapturedInputsAndOutputs {
