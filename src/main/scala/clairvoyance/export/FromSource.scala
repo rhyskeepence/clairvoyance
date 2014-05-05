@@ -2,15 +2,19 @@ package clairvoyance.export
 
 import clairvoyance.io.Files.{currentWorkingDirectory, listFiles}
 import java.io.File
-import org.specs2.io.Location
 import scala.annotation.tailrec
 
 object FromSource {
-  def getCodeFrom(location: Location): List[(Int, String)] = {
-    val sourceFilePath = location.toString().split(" ")(0).replaceAll("\\.", "/") + ".scala"
+  /**
+   * @param location   a string containing class name, file name, and line number
+   * @param lineNumber the line number related to the location
+   * @return
+   */
+  def getCodeFrom(location: String, lineNumber: Int): List[(Int, String)] = {
+    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", "/") + ".scala"
     val sourceFile = listFiles(currentWorkingDirectory).find(_.getPath.endsWith(sourceFilePath))
     val content = readLines(sourceFile).getOrElse(Seq.empty)
-    readToEndOfMethod(content, location.lineNumber)
+    readToEndOfMethod(content, lineNumber)
   }
 
   @tailrec

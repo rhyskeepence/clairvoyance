@@ -1,6 +1,6 @@
-package clairvoyance.examples
+package clairvoyance.specs2.examples
 
-import clairvoyance.ClairvoyantSpec
+import clairvoyance.specs2.ClairvoyantSpec
 
 class HelloWorldSpec extends ClairvoyantSpec {
   "The 'Hello world' string" should {

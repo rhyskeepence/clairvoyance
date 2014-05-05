@@ -1,5 +1,6 @@
-package clairvoyance
+package clairvoyance.specs2
 
+import clairvoyance.{CapturedInputsAndOutputs, InterestingGivens}
 import clairvoyance.state.{TestState, TestStates}
 import org.specs2.mutable.After
 

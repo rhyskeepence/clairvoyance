@@ -1,16 +1,15 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.specs2.export
 
 import clairvoyance.CapturedValue
-import clairvoyance.export.{FromSource, SpecificationFormatter}
+import clairvoyance.export.FromSource
 import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.state.{TestState, TestStates}
-import org.specs2.main.Arguments
-import org.specs2.reflect.Classes
-import org.specs2.specification._
-import org.specs2.text.Markdown
+import org.specs2.clairvoyance.Specs2Spy.{fragmentsOf, Classes, Markdown}
+import org.specs2.specification.{Example, ExecutedFragment, ExecutedResult, ExecutedSpecification, ExecutedText, SpecificationStructure, Text}
 import scala.io.Source
-import scala.xml.{Elem, NodeSeq}
+import scala.xml.{NodeBuffer, NodeSeq}
 import scala.xml.parsing.XhtmlParser
+import org.specs2.main.Arguments
 
 case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
@@ -26,15 +25,13 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     </div>
   </body>)
 
-  def printSidebar(structure: Seq[SpecificationStructure]) = {
-    print(sidebar(structure))
-  }
+  def printSidebar(structure: Seq[SpecificationStructure]): ClairvoyanceHtmlFormat = print(sidebar(structure))
 
-  def sidebar(structures: Seq[SpecificationStructure]) = {
+  def sidebar(structures: Seq[SpecificationStructure]): NodeSeq = {
     val structure = structures.map { s =>
 
-      val specFragments = s.content.fragments.flatMap {
-        case org.specs2.specification.Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
+      val specFragments = fragmentsOf(s).flatMap {
+        case Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
         case Example(name, _, _, _, _) => Some(<li> - {formatShortExampleName(name.raw)}</li>)
         case _ => None
       }
@@ -51,7 +48,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
 
   def formatShortExampleName: String => String = _.split('\n').head
 
-  def tableOfContentsFor(spec: ExecutedSpecification) = {
+  def tableOfContentsFor(spec: ExecutedSpecification): NodeSeq = {
     val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
       fragment match {
         case executedResult: ExecutedResult =>
@@ -62,24 +59,20 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             <li class={listClass}>
               <a href={link}>{ formatShortExampleName(accumulator._1) + " " + formatShortExampleName(executedResult.s.raw) }</a>
             </li>
-          
+
           (accumulator._1, htmlListItemForResult :: accumulator._2)
 
-        case executedText: ExecutedText =>
-          (executedText.text, accumulator._2)
-
-        case _ =>
-          (accumulator._1, accumulator._2)
-
+        case executedText: ExecutedText => (executedText.text, accumulator._2)
+        case _ => (accumulator._1, accumulator._2)
       }
     }
 
     <ul class="contents">{items._2.reverse}</ul>
   }
 
-  def printHead(spec: ExecutedSpecification) = print(xml ++ head(spec))
+  def printHead(spec: ExecutedSpecification): ClairvoyanceHtmlFormat = print(xml ++ head(spec))
 
-  def printFragment(spec: ExecutedSpecification, fragment: ExecutedFragment)(implicit args: Arguments) = {
+  def printFragment(spec: ExecutedSpecification, fragment: ExecutedFragment)(implicit args: Arguments): ClairvoyanceHtmlFormat = {
     print(<ul>
       {fragment match {
         case result: ExecutedResult =>
@@ -101,7 +94,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
             {markdownToXhtml("## " +result.s.raw)}
             <div class="scenario" id={result.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location))}</pre>
+              <pre class="highlight specification">{SpecificationFormatter.format(result.result, FromSource.getCodeFrom(result.location.toString(), result.location.lineNumber))}</pre>
               <h2>Test results:</h2>
               <pre class={resultCss}>{resultOutput + " in " + result.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
@@ -116,11 +109,10 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     )
   }
 
-  def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq = {
+  def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq =
     XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar(markdownText) + "</text>"))
-  }
 
-  def interestingGivensTable(testState: Option[TestState], rendering: Rendering) = {
+  def interestingGivensTable(testState: Option[TestState], rendering: Rendering): Seq[NodeSeq] = {
     val givens = testState.map(_.interestingGivens).getOrElse(Seq())
 
     givens match {
@@ -134,17 +126,15 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     }
   }
 
-  def mapInterestingGivenRows(givens: Seq[(String, Any)], rendering: Rendering) = {
-    givens.map {
-      case (key: String, value: Any) =>
-        <tr>
-          <th class="key">{key}</th>
-          <td class="interestingGiven">{rendering.renderToXml(value)}</td>
-        </tr>
-    }
+  def mapInterestingGivenRows(givens: Seq[(String, Any)], rendering: Rendering): Seq[NodeSeq] = givens.map {
+    case (key: String, value: Any) =>
+      <tr>
+        <th class="key">{key}</th>
+        <td class="interestingGiven">{rendering.renderToXml(value)}</td>
+      </tr>
   }
 
-  def loggedInputsAndOutputs(testState: Option[TestState], rendering: Rendering) = {
+  def loggedInputsAndOutputs(testState: Option[TestState], rendering: Rendering): Seq[NodeBuffer] = {
     val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
     inputsAndOutputs.map {
       case CapturedValue(id, key, value) =>
@@ -153,7 +143,7 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     }
   }
 
-  def head(spec: ExecutedSpecification) = {
+  def head(spec: ExecutedSpecification): NodeSeq = {
     <head>
       <title>
         {spec.name}
@@ -171,17 +161,10 @@ case class ClairvoyanceHtmlFormat(xml: NodeSeq = NodeSeq.Empty) {
     </head>
   }
 
-  private def print(xml2: NodeSeq): ClairvoyanceHtmlFormat = {
-    ClairvoyanceHtmlFormat(xml ++ xml2)
-  }
+  private def print(xml2: NodeSeq): ClairvoyanceHtmlFormat = ClairvoyanceHtmlFormat(xml ++ xml2)
 
-  private def print(xml2: Elem): ClairvoyanceHtmlFormat = {
-    ClairvoyanceHtmlFormat(xml ++ xml2)
-  }
-
-  private def wordify(title: String) = {
+  private def wordify(title: String): String =
     "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])".r.replaceAllIn(title, " ")
-  }
 
-  private def linkNameOf(fragment: ExecutedResult) = fragment.s.toString().replaceAll("\\s", "")
+  private def linkNameOf(fragment: ExecutedResult): String = fragment.s.toString().replaceAll("\\s", "")
 }

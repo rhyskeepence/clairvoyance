@@ -4,14 +4,13 @@ import clairvoyance.export.ClairvoyanceHtmlFileWriter.{copyResourcesOnlyOnce, ou
 import clairvoyance.io.ClasspathResources
 import java.io.Writer
 import java.util.concurrent.atomic.AtomicBoolean
-import org.specs2.main.Arguments
 import scala.util.Properties.{propOrElse, userDir}
 import scala.xml.{Xhtml, NodeSeq}
 import scalax.file.Path
 
 trait ClairvoyanceHtmlFileWriter {
 
-  def writeFiles(implicit args: Arguments = Arguments()) = (htmlFiles: Seq[ClairvoyanceHtml]) => {
+  def writeFiles = (htmlFiles: Seq[ClairvoyanceHtml]) => {
     copyResources()
     htmlFiles foreach writeFile
   }
@@ -22,8 +21,7 @@ trait ClairvoyanceHtmlFileWriter {
     println(s"Output:\n${reportFile.toAbsolute.path}")
   }
 
-  protected def writeXml(xml: NodeSeq)(out: Writer): Unit = { out.write(Xhtml.toXhtml(xml)) }
-
+  protected def writeXml(xml: NodeSeq)(out: Writer): Unit = out.write(Xhtml.toXhtml(xml))
   protected def copyResources(): Unit = copyResourcesOnlyOnce()
 }
 

@@ -1,7 +1,7 @@
-package clairvoyance.export
+package clairvoyance.specs2.export
 
 import java.util.regex.Matcher
-import org.specs2.execute.{Result, Failure}
+import org.specs2.execute.{Failure, Result}
 
 object SpecificationFormatter {
   val formattingChain = replaceSyntaxWithSpaces andThen replaceCamelCaseWithSentence andThen capitaliseFirstCharacterOfEachLine andThen formatGWTStyle andThen formatGWTStyleWithoutBrace

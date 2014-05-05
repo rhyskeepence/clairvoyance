@@ -1,10 +1,10 @@
-package clairvoyance.export
+package clairvoyance.specs2.export
 
+import clairvoyance.export.ClairvoyanceHtmlFileWriter
 import org.specs2.io.ConsoleOutput
 import org.specs2.main.Arguments
 import org.specs2.reporter.{DefaultReporter, Exporter}
 import org.specs2.specification.{ExecutedSpecification, ExecutingSpecification}
-import scala.xml.NodeSeq
 import scalaz.Scalaz.ToIdOps
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
@@ -13,12 +13,10 @@ class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter wi
   def export(implicit arguments: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
     val executed = spec.execute
     val args = arguments <| executed.arguments
-    print(executed)(args) |> writeFiles(args)
+    print(executed)(args) |> writeFiles
     printTeamCityLog(executed)
     executed
   }
 }
-
-case class ClairvoyanceHtml(url: String, xml: NodeSeq)
 
 trait HtmlReporter extends DefaultReporter with ClairvoyanceHtmlFileWriter with ConsoleOutput

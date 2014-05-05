@@ -1,5 +1,7 @@
 package clairvoyance
 
+import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
+
 class InterestingGivensSpec extends ClairvoyantSpec {
   "The Interesting Givens list" should {
 

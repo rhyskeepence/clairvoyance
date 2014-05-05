@@ -1,7 +1,7 @@
-package clairvoyance.tests
+package clairvoyance.plugins
 
-import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import clairvoyance.plugins.{CapturedValueCollaborators, SvgSequenceDiagram}
+import clairvoyance.ProducesCapturedInputsAndOutputs
+import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
 
 class SvgSequenceDiagramSpec extends ClairvoyantSpec {
 

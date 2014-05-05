@@ -1,9 +1,10 @@
-package clairvoyance.examples
+package clairvoyance.specs2.examples
 
-import clairvoyance.{ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.matcher.{MatchResult, Matcher}
+import clairvoyance.ProducesCapturedInputsAndOutputs
+import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
 import java.text.SimpleDateFormat
 import java.util.Date
+import org.specs2.matcher.{MatchResult, Matcher}
 
 class GivenWhenThenExample extends ClairvoyantSpec {
 

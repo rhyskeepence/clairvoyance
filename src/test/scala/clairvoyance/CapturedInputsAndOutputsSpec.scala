@@ -1,5 +1,7 @@
 package clairvoyance
 
+import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
+
 class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
 
   "The Captured Inputs And Outputs" should {

@@ -1,8 +1,9 @@
 package clairvoyance.plugins
 
-import clairvoyance.{CapturedValue, ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import clairvoyance.plugins.CapturedCollaborators._
-import clairvoyance.plugins.UmlMarkupGeneration._
+import clairvoyance.{CapturedValue, ProducesCapturedInputsAndOutputs}
+import clairvoyance.plugins.CapturedCollaborators.collectCollaborators
+import clairvoyance.plugins.UmlMarkupGeneration.generateUmlMarkup
+import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
 
 class SequenceDiagramSpec extends ClairvoyantSpec {
 

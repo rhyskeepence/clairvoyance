@@ -1,6 +1,6 @@
-package clairvoyance.examples
+package clairvoyance.specs2.examples
 
-import clairvoyance.ClairvoyantSpec
+import clairvoyance.specs2.ClairvoyantSpec
 import org.specs2.specification.Snippets
 
 class MarkdownExample extends ClairvoyantSpec with Snippets {

@@ -1,14 +1,16 @@
 Clairvoyance
 ============
 
-Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provides a few extensions to capture what is happening in your tests, and then produce business and tester friendly documentation.
+Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provides a few extensions to capture what is
+happening in your tests, and then produce business and tester friendly documentation.
 
-It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
+It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan
+Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 
 Example
 -------
 
-The full source to this example is [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/LoggingExample.scala).
+The full source to this example is [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/LoggingExample.scala).
 
 It breaks down like this:
 
@@ -123,9 +125,10 @@ trait context extends ClairvoyantContext {
 Custom Rendering of Interesting Givens & Captured Inputs And Outputs
 --------------------------------------------------------------------
 
-When you capture a value or an interesting given, it will be rendered to the screen. XML and Strings are formatted nicely by default, but you may wish to capture your own domain objects and have them presented in readable format.
+When you capture a value or an interesting given, it will be rendered to the screen. XML and Strings are formatted
+nicely by default, but you may wish to capture your own domain objects and have them presented in readable format.
 
-A full example is here: [clairvoyance/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/CustomRenderingExample.scala)
+A full example is here: [clairvoyance/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/CustomRenderingExample.scala)
 
 The juicy bits are shown below:
 
@@ -147,7 +150,8 @@ And behold, custom rendering of Brains:
 Sequence Diagrams
 -----------------
 
-If your spec describes interactions between many systems, it can be nice to generate a sequence diagram automatically from CapturedInputsAndOutputs. Just add the `SequenceDiagram` trait to your context, ie:
+If your spec describes interactions between many systems, it can be nice to generate a sequence diagram automatically
+from CapturedInputsAndOutputs. Just add the `SequenceDiagram` trait to your context, ie:
 
 ```scala
 trait context extends ClairvoyantContext with SequenceDiagram {
@@ -166,7 +170,7 @@ The name of the captured values should be in the following formats in order to a
 In the last two cases, the default actor will be used, which can be set using this statement in the context:
 `override def defaultSequenceDiagramActor = "Name of my component"`
 
-An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/SequenceDiagramExample.scala),
+An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/SequenceDiagramExample.scala),
 which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
@@ -180,14 +184,15 @@ trait context extends ClairvoyantContext with Graph
 Markdown
 --------
 
-[Markdown](http://en.wikipedia.org/wiki/Markdown) is supported in specification descriptions, to whet your appetite [see this example](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/MarkdownExample.scala).
+[Markdown](http://en.wikipedia.org/wiki/Markdown) is supported in specification descriptions, to whet your appetite
+[see this example](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/MarkdownExample.scala).
 
 OTHER COOL STUFF!!!
 -------------------
 
-* [ScalaCheck](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/ScalaCheckExample.scala)
-* [Graphs](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/GraphExample.scala)
-* [G/W/T](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/examples/GivenWhenThenExample.scala)
+* [ScalaCheck](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/ScalaCheckExample.scala)
+* [Graphs](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GraphExample.scala)
+* [G/W/T](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GivenWhenThenExample.scala)
 
 TODO
 ----

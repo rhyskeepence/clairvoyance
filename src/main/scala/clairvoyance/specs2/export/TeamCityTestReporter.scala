@@ -1,13 +1,12 @@
-package clairvoyance.export
+package clairvoyance.specs2.export
 
-import org.specs2.main.Arguments
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedSpecification}
 
 trait TeamCityTestReporter {
 
   private lazy val teamCityProjectName = Option(System.getenv("TEAMCITY_PROJECT_NAME"))
 
-  def printTeamCityLog(spec: ExecutedSpecification)(implicit args: Arguments): Unit = {
+  def printTeamCityLog(spec: ExecutedSpecification): Unit = {
     spec.fragments.foldLeft("") {
       (latestHeading, fragment) =>
         fragment match {
