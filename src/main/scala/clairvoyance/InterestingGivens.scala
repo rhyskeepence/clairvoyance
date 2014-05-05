@@ -1,6 +1,6 @@
-package org.specs2.clairvoyance
+package clairvoyance
 
-import org.specs2.clairvoyance.Imports.KeyValue
+import clairvoyance.Imports.KeyValue
 import scala.collection.mutable.ListBuffer
 
 trait InterestingGivens {

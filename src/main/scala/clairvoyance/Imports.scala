@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance
+package clairvoyance
 
 object Imports {
   type KeyValue = Pair[String, AnyRef]

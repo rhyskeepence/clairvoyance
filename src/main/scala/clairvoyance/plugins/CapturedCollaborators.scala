@@ -1,6 +1,6 @@
-package org.specs2.clairvoyance.plugins
+package clairvoyance.plugins
 
-import org.specs2.clairvoyance.CapturedValue
+import clairvoyance.CapturedValue
 
 object CapturedCollaborators {
   def collectCollaborators(capturedValues: Seq[CapturedValue], defaultActor: String) = {

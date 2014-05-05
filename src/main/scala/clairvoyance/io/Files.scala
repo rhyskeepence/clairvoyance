@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.io
+package clairvoyance.io
 
 import java.io.File
 

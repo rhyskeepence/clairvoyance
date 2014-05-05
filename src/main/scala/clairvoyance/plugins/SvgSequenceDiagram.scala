@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.plugins
+package clairvoyance.plugins
 
 import java.io.ByteArrayOutputStream
 import net.sourceforge.plantuml.{FileFormat, FileFormatOption, SourceStringReader}

@@ -1,6 +1,6 @@
 package clairvoyance.examples
 
-import org.specs2.clairvoyance.ClairvoyantSpec
+import clairvoyance.ClairvoyantSpec
 import org.specs2.specification.Snippets
 
 class MarkdownExample extends ClairvoyantSpec with Snippets {
@@ -11,14 +11,16 @@ class MarkdownExample extends ClairvoyantSpec with Snippets {
     |* [Further reading](http://en.wikipedia.org/wiki/Triangular_number)
     |
     |Here we calculate the 6th triangle number, represented by the following diagram:
+    |```
     |       *
     |      **
     |     ***
     |    ****
     |   *****
     |  ******
-  """.stripMargin should {
-    "calculate the sixth triangle number".stripMargin in {
+    |```
+    |""".stripMargin in {
+    "calculate the sixth triangle number" in {
       triangle(6) == 21
     }
   }
@@ -41,5 +43,4 @@ class MarkdownExample extends ClairvoyantSpec with Snippets {
 
   def triangle(n: Int): Int =
     n * (n + 1) / 2
-
 }

@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
 import org.specs2.main.Arguments
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedSpecification}

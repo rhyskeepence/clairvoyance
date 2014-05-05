@@ -1,11 +1,11 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
 import org.specs2.io.ConsoleOutput
 import org.specs2.main.Arguments
-import org.specs2.reporter._
-import org.specs2.specification._
-import scalaz.Scalaz._
+import org.specs2.reporter.{DefaultReporter, Exporter}
+import org.specs2.specification.{ExecutedSpecification, ExecutingSpecification}
 import scala.xml.NodeSeq
+import scalaz.Scalaz.ToIdOps
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
   type ExportType = Unit

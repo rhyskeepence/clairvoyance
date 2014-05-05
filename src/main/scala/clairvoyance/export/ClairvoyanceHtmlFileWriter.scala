@@ -1,12 +1,14 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
-import java.io.{File, Writer}
+import java.io.Writer
 import org.specs2.clairvoyance.io.ClasspathResources
 import org.specs2.main.Arguments
-import org.specs2.reporter.OutputDir
+import scala.util.Properties.{propOrElse, userDir}
 import scala.xml.{Xhtml, NodeSeq}
+import scalax.file.Path
 
-trait ClairvoyanceHtmlFileWriter extends OutputDir {
+trait ClairvoyanceHtmlFileWriter {
+  private val outputDir = propOrElse("specs2.outDir", s"$userDir/target/specs2-reports/")
 
   def writeFiles(implicit args: Arguments = Arguments()) = (htmlFiles: Seq[ClairvoyanceHtml]) => {
     copyResources()
@@ -14,9 +16,9 @@ trait ClairvoyanceHtmlFileWriter extends OutputDir {
   }
 
   protected def writeFile = (file: ClairvoyanceHtml) => {
-    val reportFile = reportPath(file.url)
-    fileWriter.write(reportFile)(writeXml(file.xml))
-    println(s"Output:\n${new File(reportFile).getAbsolutePath}")
+    val reportFile = Path.fromString(outputDir + file.url)
+    reportFile.write(Xhtml.toXhtml(file.xml))
+    println(s"Output:\n${reportFile.toAbsolute.path}")
   }
 
   protected def writeXml(xml: NodeSeq)(out: Writer): Unit = { out.write(Xhtml.toXhtml(xml)) }

@@ -1,6 +1,6 @@
-package org.specs2.clairvoyance.rendering
+package clairvoyance.rendering
 
-import org.specs2.clairvoyance.plugins.{GraphVizDiagram, SvgSequenceDiagram}
+import clairvoyance.plugins.{GraphVizDiagram, SvgSequenceDiagram}
 import scala.xml.{XML, NodeSeq, PrettyPrinter}
 
 trait Renderer[T] {

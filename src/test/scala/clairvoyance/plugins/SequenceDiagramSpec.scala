@@ -1,9 +1,8 @@
 package clairvoyance.plugins
 
-import org.specs2.clairvoyance.Imports._
-import org.specs2.clairvoyance.{CapturedValue, ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
-import org.specs2.clairvoyance.plugins.CapturedCollaborators._
-import org.specs2.clairvoyance.plugins.UmlMarkupGeneration._
+import clairvoyance.{CapturedValue, ClairvoyantContext, ProducesCapturedInputsAndOutputs, ClairvoyantSpec}
+import clairvoyance.plugins.CapturedCollaborators._
+import clairvoyance.plugins.UmlMarkupGeneration._
 
 class SequenceDiagramSpec extends ClairvoyantSpec {
 
@@ -56,4 +55,3 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     }
   }
 }
-

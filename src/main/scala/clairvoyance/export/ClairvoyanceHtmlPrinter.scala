@@ -1,8 +1,9 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
-import org.specs2.specification.ExecutedSpecification
+import org.specs2.clairvoyance.export.ClairvoyanceHtmlFormat
 import org.specs2.main.Arguments
 import org.specs2.runner.SpecificationsFinder
+import org.specs2.specification.ExecutedSpecification
 
 trait ClairvoyanceHtmlPrinter {
 

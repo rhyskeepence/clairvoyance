@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.plugins
+package clairvoyance.plugins
 
 object UmlMarkupGeneration {
 

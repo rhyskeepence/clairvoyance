@@ -1,6 +1,6 @@
-package org.specs2.clairvoyance.plugins
+package clairvoyance.plugins
 
-import org.specs2.clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
+import clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
 
 trait SequenceDiagram extends CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 

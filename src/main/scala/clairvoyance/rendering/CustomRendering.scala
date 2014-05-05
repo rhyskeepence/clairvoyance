@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.rendering
+package clairvoyance.rendering
 
 trait CustomRendering {
   def customRendering: PartialFunction[Any, String]

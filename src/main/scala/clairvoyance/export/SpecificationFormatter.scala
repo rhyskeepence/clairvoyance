@@ -1,4 +1,4 @@
-package org.specs2.clairvoyance.export
+package clairvoyance.export
 
 import java.util.regex.Matcher
 import org.specs2.execute.{Result, Failure}
