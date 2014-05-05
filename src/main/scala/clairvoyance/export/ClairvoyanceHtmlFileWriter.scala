@@ -1,7 +1,7 @@
 package clairvoyance.export
 
+import clairvoyance.io.ClasspathResources
 import java.io.Writer
-import org.specs2.clairvoyance.io.ClasspathResources
 import org.specs2.main.Arguments
 import scala.util.Properties.{propOrElse, userDir}
 import scala.xml.{Xhtml, NodeSeq}
