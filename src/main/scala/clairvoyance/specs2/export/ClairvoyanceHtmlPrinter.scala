@@ -2,20 +2,20 @@ package clairvoyance.specs2.export
 
 import clairvoyance.export.ClairvoyanceHtml
 import org.specs2.runner.SpecificationsFinder
-import org.specs2.specification.ExecutedSpecification
 import org.specs2.main.Arguments
+import org.specs2.specification.ExecutedSpecification
 
 trait ClairvoyanceHtmlPrinter {
 
   def print(executedSpec: ExecutedSpecification)(implicit args: Arguments): Seq[ClairvoyanceHtml] =
-    Seq(ClairvoyanceHtml(executedSpec.name.url, printHtml(executedSpec).xml))
+    Seq(ClairvoyanceHtml(executedSpec.name.url, printHtml(executedSpec.name.title, executedSpec).xml))
 
-  private def printHtml(spec: ExecutedSpecification)(implicit args: Arguments): ClairvoyanceHtmlFormat =
+  private def printHtml(specificationTitle: String, spec: ExecutedSpecification)(implicit args: Arguments): ClairvoyanceHtmlFormat =
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
-        .printHead(spec)
+        .printHead(specificationTitle)
         .printSidebar(SpecificationsFinder.specifications(pattern = ".*[Example|Spec]"))
-        .printBody(spec, printFragmentsOf(spec).xml)
+        .printBody(specificationTitle, spec, printFragmentsOf(spec).xml)
         .xml
     )
 

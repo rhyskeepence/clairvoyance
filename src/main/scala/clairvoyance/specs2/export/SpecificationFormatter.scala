@@ -38,7 +38,7 @@ object SpecificationFormatter {
     }
   }
 
-  private def failureLineNumber(result: Result, source: List[(Int, String)]) = {
+  private def failureLineNumber(result: Result, source: List[(Int, String)]): Option[Int] = {
     val lineNumbers = source.map(_._1)
     val stackTrace: Seq[StackTraceElement] = result match {
       case Failure(_, _, st, _) => st

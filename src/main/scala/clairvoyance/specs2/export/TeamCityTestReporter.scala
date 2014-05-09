@@ -1,10 +1,9 @@
 package clairvoyance.specs2.export
 
 import org.specs2.specification.{ExecutedText, ExecutedResult, ExecutedSpecification}
+import scala.util.Properties.envOrNone
 
 trait TeamCityTestReporter {
-
-  private lazy val teamCityProjectName = Option(System.getenv("TEAMCITY_PROJECT_NAME"))
 
   def printTeamCityLog(spec: ExecutedSpecification): Unit = {
     spec.fragments.foldLeft("") {
@@ -52,13 +51,11 @@ trait TeamCityTestReporter {
 
   private def teamcityReport(messageName: String, attributes: (String, String)*): Unit = {
     if (shouldLog) {
-      val attributeString = attributes.map {
-        case (k, v) => k + "='" + tidy(v) + "'"
-      }.mkString(" ")
-
-      printf("##teamcity[%s %s]\n", messageName, attributeString)
+      val formattedAttributes = attributes.map { case (k, v) => s"$k='${tidy(v)}'" }.mkString(" ")
+      println(s"##teamcity[$messageName $formattedAttributes}]")
     }
   }
 
+  private lazy val teamCityProjectName = envOrNone("TEAMCITY_PROJECT_NAME")
   private def shouldLog = teamCityProjectName.isDefined
 }
