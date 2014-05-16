@@ -32,13 +32,12 @@ abstract class HtmlFormat(val xml: NodeSeq) {
     val givens = testState.map(_.interestingGivens).getOrElse(Seq())
 
     givens match {
-      case Nil =>
-        NodeSeq.Empty
+      case Nil => NodeSeq.Empty
       case _ =>
         <h3 class="logKey">Interesting Givens</h3>
-          <table class="interestingGivens logValue">
-            {mapInterestingGivenRows(givens, rendering)}
-          </table>
+        <table class="interestingGivens logValue">
+          {mapInterestingGivenRows(givens, rendering)}
+        </table>
     }
   }
 

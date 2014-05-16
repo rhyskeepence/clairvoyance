@@ -1,13 +1,12 @@
-package clairvoyance.specs2.export
+package clairvoyance.export
 
 import java.util.regex.Matcher
-import org.specs2.execute.{Failure, Result}
 
 object SpecificationFormatter {
   val formattingChain = replaceSyntaxWithSpaces andThen replaceCamelCaseWithSentence andThen capitaliseFirstCharacterOfEachLine andThen formatGWTStyle andThen formatGWTStyleWithoutBrace
 
-  def format(result: Result, sourceLines: List[(Int, String)]) = {
-    val withHighlightedFailures = formatFailures(result, sourceLines)
+  def format(sourceLines: List[(Int, String)], stackTrace: Seq[StackTraceElement] = Seq.empty) = {
+    val withHighlightedFailures = formatFailures(sourceLines, stackTrace)
     val codeAsString = withHighlightedFailures.mkString("\n")
     formattingChain(codeAsString)
   }
@@ -27,23 +26,15 @@ object SpecificationFormatter {
   private def formatGWTStyleWithoutBrace: String => String =
     "\"(.*?)\"\\s+===>\\s+.*".r.replaceAllIn(_, m => Matcher.quoteReplacement(m.group(1)))
 
-  private def formatFailures(result: Result, sourceLines: List[(Int, String)]) = {
-    val failureLine = failureLineNumber(result, sourceLines).getOrElse(-1)
+  private def formatFailures(sourceLines: List[(Int, String)], stackTrace: Seq[StackTraceElement]) = {
+    val failureLine = failureLineNumber(sourceLines, stackTrace).getOrElse(-1)
     sourceLines.map {
-      case (line: Int, source: String) =>
-        if (failureLine == line)
-          "-- " + source
-        else
-          source
+      case (line: Int, source: String) => if (failureLine == line) "-- " + source else source
     }
   }
 
-  private def failureLineNumber(result: Result, source: List[(Int, String)]): Option[Int] = {
+  private def failureLineNumber(source: List[(Int, String)], stackTrace: Seq[StackTraceElement]): Option[Int] = {
     val lineNumbers = source.map(_._1)
-    val stackTrace: Seq[StackTraceElement] = result match {
-      case Failure(_, _, st, _) => st
-      case _ => Seq.empty
-    }
     stackTrace
       .filter(!_.getClassName.startsWith("org.specs2"))
       .map(_.getLineNumber)

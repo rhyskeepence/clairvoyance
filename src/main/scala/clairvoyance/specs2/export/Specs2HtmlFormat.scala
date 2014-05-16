@@ -1,9 +1,10 @@
 package clairvoyance.specs2.export
 
-import clairvoyance.export.{FromSource, HtmlFormat}
+import clairvoyance.export.{FromSource, HtmlFormat, SpecificationFormatter}
 import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.state.TestStates
 import org.specs2.clairvoyance.Specs2Spy.{fragmentsOf, Classes, Markdown}
+import org.specs2.execute.Failure
 import org.specs2.main.Arguments
 import org.specs2.specification.{Example, ExecutedFragment, ExecutedResult, ExecutedSpecification, ExecutedText, SpecificationStructure, Text}
 import scala.io.Source
@@ -78,12 +79,18 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
           val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](specificationFullName, printMessage = false, printStackTrace = false)
           val rendering = new Rendering(optionalCustomRenderer)
 
+          val sourceLines = FromSource.getCodeFrom(executedResult.location.toString(), executedResult.location.lineNumber)
+          val stackTrace: Seq[StackTraceElement] = executedResult.result match {
+            case Failure(_, _, st, _) => st
+            case _ => Seq.empty
+          }
+
           <a id={linkNameOf(executedResult.s.toString())}></a>
           <div class="testmethod">
             {markdownToXhtml("## " +executedResult.s.raw)}
             <div class="scenario" id={executedResult.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(executedResult.result, FromSource.getCodeFrom(executedResult.location.toString(), executedResult.location.lineNumber))}</pre>
+              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace)}</pre>
               <h2>Test results:</h2>
               <pre class={resultCss}>{resultOutput + " in " + executedResult.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
