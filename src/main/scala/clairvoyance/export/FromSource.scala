@@ -3,15 +3,18 @@ package clairvoyance.export
 import clairvoyance.io.Files.{currentWorkingDirectory, listFiles}
 import java.io.File
 import scala.annotation.tailrec
+import scala.util.Properties.isWin
 
 object FromSource {
+  val fileSeparator = if (isWin) "\\\\" else "/"
+
   /**
    * @param location   a string containing class name, file name, and line number
    * @param lineNumber the line number related to the location
    * @return
    */
   def getCodeFrom(location: String, lineNumber: Int): List[(Int, String)] = {
-    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", "/") + ".scala"
+    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", fileSeparator) + ".scala"
     val sourceFile = listFiles(currentWorkingDirectory).find(_.getPath.endsWith(sourceFilePath))
     val content = readLines(sourceFile).getOrElse(Seq.empty)
     readToEndOfMethod(content, lineNumber)

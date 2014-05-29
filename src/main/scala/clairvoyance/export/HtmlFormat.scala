@@ -3,6 +3,7 @@ package clairvoyance.export
 import clairvoyance.CapturedValue
 import clairvoyance.rendering.Rendering
 import clairvoyance.state.TestState
+import scala.util.Properties.lineSeparator
 import scala.xml.{NodeBuffer, NodeSeq}
 
 abstract class HtmlFormat(val xml: NodeSeq) {
@@ -65,5 +66,5 @@ abstract class HtmlFormat(val xml: NodeSeq) {
   protected def wordify(title: String): String =
     "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])".r.replaceAllIn(title, " ")
 
-  protected def formatShortExampleName: String => String = _.split('\n').head
+  protected def formatShortExampleName: String => String = _.split(lineSeparator).head
 }

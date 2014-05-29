@@ -4,7 +4,7 @@ import clairvoyance.export.ClairvoyanceHtmlFileWriter.{copyResourcesOnlyOnce, ou
 import clairvoyance.io.ClasspathResources
 import java.io.Writer
 import java.util.concurrent.atomic.AtomicBoolean
-import scala.util.Properties.{propOrElse, userDir}
+import scala.util.Properties.{lineSeparator, propOrElse, userDir}
 import scala.xml.{Xhtml, NodeSeq}
 import scalax.file.Path
 
@@ -17,8 +17,12 @@ trait ClairvoyanceHtmlFileWriter {
 
   protected def writeFile = (file: ClairvoyanceHtml) => {
     val reportFile = Path.fromString(outputDir + file.url)
-    reportFile.write(Xhtml.toXhtml(file.xml))
-    println(s"Output:\n${reportFile.toAbsolute.path}")
+    reportFile.write(
+      s"""<?xml version="1.0" encoding="UTF-8"?>
+          |<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+          |
+          |${Xhtml.toXhtml(file.xml)}""".stripMargin)
+    println(s"Output:$lineSeparator${reportFile.toAbsolute.path}")
   }
 
   protected def writeXml(xml: NodeSeq)(out: Writer): Unit = out.write(Xhtml.toXhtml(xml))
