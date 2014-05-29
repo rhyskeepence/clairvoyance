@@ -25,7 +25,7 @@ object ClasspathResources {
   }
 
   private def unjar(jarUrl: URL, dirPath: String, regexFilter: String): Unit = {
-    Path(dirPath).createDirectory(createParents = true)
+    Path.fromString(dirPath).createDirectory(createParents = true, failIfExists = false)
     val zis = new ZipInputStream(new BufferedInputStream(jarUrl.openStream()))
 
     @tailrec
@@ -34,10 +34,10 @@ object ClasspathResources {
         if (entry.getName.matches(regexFilter)) {
           val destination = Path.fromString(dirPath + "/" + entry.getName)
           if (entry.isDirectory)
-            destination.createDirectory()
+            destination.createDirectory(createParents = true, failIfExists = false)
           else {
 //            Resource.fromInputStream(zis).copyDataTo(destination)
-            destination.createFile()
+            destination.createFile(createParents = true, failIfExists = false)
             val fos = new FileOutputStream(dirPath + "/" + entry.getName)
             val dest = new BufferedOutputStream(fos, 2048)
             FileUtils.copy(zis, dest)
