@@ -1,6 +1,6 @@
 package clairvoyance
 
 object Imports {
-  type KeyValue = Pair[String, AnyRef]
+  type KeyValue = (String, AnyRef)
   type KeyValueSequence = Seq[KeyValue]
 }
