@@ -7,7 +7,7 @@ before_script: ./publish/prepublish.sh
 script: sbt test publishSigned sonatypeRelease
 env:
   global:
-  - LIB_VERSION=$TRAVIS_BUILD_NUMBER
+  - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
   - secure: RjxypYwzeOgdI5wTMbXJylavApF3gb2oCBBFy6+WxZ19iGnuEzyBP1jVCEsddVQL45JOanzSIn3WOSJfUZTUid98oWjUna1/BQ6j67LXwdMNYAXTJjzdJSmuV+3abfE4qSV865WbkeikrotTvY0CMfYdbFg8F3Ntl4Up2RaDRaE=
   - secure: YiItkHA1A5jITEwPxO/J0J70eRqNhc7+JX/Uni0ICwSES5JhEDOlNfyVEgMnCY3U5GOJfWJXVx6WvGEyVLrGJu3xvjLPb3fHeZl92ER2Oo60Q+Ewd6t38/RkU5KAsa55EEfbO2gBlwr4jYfN/GJMl+l64Y1WzeQt5LDnQpmLu9M=
   - secure: C36DzktLLfg0/CuEVECAMPIrrs+ndrczMNhacxTdbymESFbG9UhVt27tk5JJLKsykvt3+LnmpFUckEQJ38fEkyRrkD4hRRdx1r+scOyF1LoPA46oVmYunUdyMQUunbiGEVb2fRieVtlmnHhzjiO72yUCJ9zOVJAnixBrMS4/9+M=
