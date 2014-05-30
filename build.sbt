@@ -7,11 +7,11 @@ version := "33"
 scalaVersion := "2.10.4"
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
-  "org.specs2" %% "specs2" % "2.3.11",
+  "org.specs2" %% "specs2" % "2.3.12",
   "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
   "org.pegdown" % "pegdown" % "1.4.2",
-  "net.sourceforge.plantuml" % "plantuml" % "7933",
-  "org.scalacheck" %% "scalacheck" % "1.11.3" % "optional",
+  "net.sourceforge.plantuml" % "plantuml" % "7999",
+  "org.scalacheck" %% "scalacheck" % "1.11.4" % "optional",
   "org.scala-lang" % "scala-compiler" % scala_version  % "optional"
 )}
 
