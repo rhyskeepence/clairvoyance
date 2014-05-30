@@ -9,8 +9,14 @@ import org.specs2.matcher.{MatchResult, Matcher}
 class GivenWhenThenExample extends ClairvoyantSpec {
 
   "The coordinator" should {
+    "not invoke the Doomsday Device on the 20th of December 2012" in new context {
+      "Given the date is 20/12/2012"                      ===> givenTheDateIs("20/12/2012")
+      "When the coordinator runs"                         ===> theCoordinatorRuns
+      "Then the Doomsday device should not be unleashed"  ===> doomsdayDeviceIsNotUnleashed
+    }
+
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
-      "Given the date is ${21/12/2012}"               ===> givenTheDateIs
+      "Given the date is 21/12/2012"                  ===> givenTheDateIs("21/12/2012")
       "When the coordinator runs"                     ===> theCoordinatorRuns
       "Then the Doomsday device should be unleashed"  ===> doomsdayDeviceIsUnleashed
     }
@@ -20,20 +26,19 @@ class GivenWhenThenExample extends ClairvoyantSpec {
     val theDoomsdayDevice = new StubDoomsdayDevice
     val clock = new StubClock
 
-    def toDate(ddMMyyyy: String) = new SimpleDateFormat("dd/MM/yyyy").parse(ddMMyyyy)
-
     override def capturedInputsAndOutputs = Seq(theDoomsdayDevice)
 
     def beUnleashed: Matcher[StubDoomsdayDevice] = (d: StubDoomsdayDevice) =>
       (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
 
-    def givenTheDateIs: (String) => Unit = {
-      (s: String) =>
-        clock.setDateTo(toDate(s))
-    }
+    def givenTheDateIs(date: String): Unit = clock.setDateTo(new SimpleDateFormat("dd/MM/yyyy").parse(date))
 
     def theCoordinatorRuns(): Unit = {
       new MasterCoordinator(theDoomsdayDevice, clock).runIt()
+    }
+
+    def doomsdayDeviceIsNotUnleashed: MatchResult[StubDoomsdayDevice] = {
+      theDoomsdayDevice should beUnleashed.not
     }
 
     def doomsdayDeviceIsUnleashed: MatchResult[StubDoomsdayDevice] = {
@@ -43,9 +48,10 @@ class GivenWhenThenExample extends ClairvoyantSpec {
 }
 
 class StubDoomsdayDevice extends ProducesCapturedInputsAndOutputs {
+  val formatter = new SimpleDateFormat("dd/MM/yyyy")
   var unleashed = false
 
-  def unleash(date: Date): Unit = { unleashed = true }
+  def unleash(date: Date): Unit = { unleashed = formatter.format(date).equals("21/12/2012") }
 
   def wasUnleashed = unleashed
 }
