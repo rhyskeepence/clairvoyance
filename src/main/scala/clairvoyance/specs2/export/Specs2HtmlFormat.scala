@@ -50,11 +50,10 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
     val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
       fragment match {
         case executedResult: ExecutedResult =>
-          val listClass = if (executedResult.stats.isSuccess) "test-passed" else "test-failed"
           val link = "#" + linkNameOf(executedResult.s.toString())
 
           val htmlListItemForResult =
-            <li class={listClass}>
+            <li class={cssClassOf(executedResult)}>
               <a href={link}>{ formatShortExampleName(accumulator._1) + " " + formatShortExampleName(executedResult.s.raw) }</a>
             </li>
 
@@ -72,8 +71,7 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
     print(<ul>
       {fragment match {
         case executedResult: ExecutedResult =>
-          val resultCss    = if (executedResult.isSuccess) "highlight results test-passed highlighted" else "highlight results test-failed highlighted"
-          val resultOutput = if (executedResult.stats.isSuccess) "Test Passed" else executedResult.result.message
+          val resultOutput = if (executedResult.isSuccess) "Test Passed" else executedResult.result.message
           val testState    = TestStates.dequeue(specificationFullName)
 
           val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](specificationFullName, printMessage = false, printStackTrace = false)
@@ -87,12 +85,12 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
 
           <a id={linkNameOf(executedResult.s.toString())}></a>
           <div class="testmethod">
-            {markdownToXhtml("## " +executedResult.s.raw)}
+            {markdownToXhtml("## " + executedResult.s.raw)}
             <div class="scenario" id={executedResult.hashCode().toString}>
               <h2>Specification</h2>
               <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace)}</pre>
               <h2>Test results:</h2>
-              <pre class={resultCss}>{resultOutput + " in " + executedResult.stats.time}</pre>
+              <pre class={s"highlight results ${cssClassOf(executedResult)} highlighted"}>{resultOutput + " in " + executedResult.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
               {loggedInputsAndOutputs(testState, rendering)}
             </div>
@@ -104,6 +102,9 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
     </ul>
     )
   }
+
+  private def cssClassOf(executedResult: ExecutedResult): String =
+    if (executedResult.isSuccess) "test-passed" else if (executedResult.isSuspended) "test-not-run" else "test-failed"
 
   private def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq =
     XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar(markdownText) + "</text>"))
