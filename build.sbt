@@ -1,8 +1,11 @@
+import scala.util.Try
+import SonatypeKeys._
+
 name := "clairvoyance"
 
 organization := "com.github.rhyskeepence"
 
-version := "33"
+version := Try(sys.env("BUILD_NUMBER")).map("1.0." + _).getOrElse("1.0-SNAPSHOT")
 
 scalaVersion := "2.10.4"
 
@@ -23,6 +26,12 @@ resolvers ++= Seq(
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter")
+
+sonatypeSettings
+
+pgpPassphrase := Some(Try(sys.env("SECRET")).getOrElse("goaway").toCharArray)
+
+pgpSecretRing := file("./publish/sonatype.asc")
 
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
