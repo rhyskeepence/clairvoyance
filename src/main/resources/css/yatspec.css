@@ -94,6 +94,10 @@ li.test-not-run, li.test-passed {
     border: none;
 }
 
+li.test-failed {
+    border: 1px solid #FDA8A8;
+}
+
 ul.contents a {
     text-transform: capitalize;
 }
@@ -166,10 +170,6 @@ div.contents, div.testmethod {
 
 h2 {
     margin-top: 10px;
-}
-
-pre {
-    margin-bottom: 32px;
 }
 
 div.example {

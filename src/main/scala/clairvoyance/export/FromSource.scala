@@ -20,13 +20,30 @@ object FromSource {
     readToEndOfMethod(content, lineNumber)
   }
 
+  def getCodeFrom(location: String, testName: String): List[(Int, String)] = {
+    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", "/") + ".scala"
+    val sourceFile = listFiles(currentWorkingDirectory).find(_.getPath.endsWith(sourceFilePath))
+    val content = readLines(sourceFile).getOrElse(Seq.empty)
+    val lineNumber = content.indexWhere(_.contains(testName))
+    val line = content(lineNumber).trim()
+    readToEndOfMethod(content, if (line.matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1)
+  }
+
   @tailrec
-  def readToEndOfMethod(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[(Int, String)] = List()): List[(Int, String)] = {
+  private def readToEndOfMethod(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[(Int, String)] = List()): List[(Int, String)] = {
     if (content.size < lineNumber || lineNumber < 1) {
       res.reverse
 
-    } else if (content(lineNumber).trim().endsWith("{")) {
+    } else if (content(lineNumber).trim().endsWith("{") || content(lineNumber).trim().endsWith("=")) {
       readToEndOfMethod(content, lineNumber + 1, indentLevel + 1, addLine(lineNumber, content, res))
+
+    } else if (content(lineNumber).trim().matches(".+\\{.+\\}")) {
+      val line = content(lineNumber).trim()
+      (lineNumber, line.substring(line.indexOf("{") + 1, line.lastIndexOf("}")).trim) :: res.reverse
+
+    } else if (content(lineNumber).trim().matches(".+ =\\s+[^\\{]+")) {
+      val line = content(lineNumber).trim()
+      (lineNumber, line.substring(line.indexOf("=") + 1).trim) :: res.reverse
 
     } else if (content(lineNumber).trim().startsWith("}") && indentLevel == 0) {
       res.reverse
@@ -34,14 +51,17 @@ object FromSource {
     } else if (content(lineNumber).trim().startsWith("}")) {
       readToEndOfMethod(content, lineNumber + 1, indentLevel - 1, addLine(lineNumber, content, res))
 
+    } else if (content(lineNumber).trim().endsWith("}")) {
+      res.reverse
+
     } else {
       readToEndOfMethod(content, lineNumber + 1, indentLevel, addLine(lineNumber, content, res))
     }
   }
 
-  def addLine(lineNumber: Int, content: Seq[String], lines: List[(Int, String)]): List[(Int, String)] =
+  private def addLine(lineNumber: Int, content: Seq[String], lines: List[(Int, String)]): List[(Int, String)] =
     (lineNumber + 1, content(lineNumber).trim()) :: lines
 
-  def readLines(path: Option[File]) =
+  private def readLines(path: Option[File]) =
     path.map(scala.io.Source.fromFile(_).getLines().toIndexedSeq)
 }

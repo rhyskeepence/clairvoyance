@@ -4,7 +4,7 @@ import clairvoyance.CapturedValue
 import clairvoyance.rendering.Rendering
 import clairvoyance.state.TestState
 import scala.util.Properties.lineSeparator
-import scala.xml.{NodeBuffer, NodeSeq}
+import scala.xml.{NodeBuffer, NodeSeq, Unparsed}
 
 abstract class HtmlFormat(val xml: NodeSeq) {
   type Self <: HtmlFormat
@@ -26,6 +26,25 @@ abstract class HtmlFormat(val xml: NodeSeq) {
       <script src="javascript/xregexp.js" type="text/javascript"></script>
       <script src="javascript/yatspec.js" type="text/javascript"></script>
       <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
+      <script type="text/javascript">{
+        Unparsed( s"""
+         |function toggleDetails(contentId, linkId) {
+         |  var content  = document.getElementById(contentId);
+         |  var linkText = document.getElementById(linkId);
+         |  if (content.style.display == \"block\") {
+         |    content.style.display = \"none\";
+         |    linkText.innerHTML = \"(Show Details)\";
+         |  } else {
+         |    content.style.display = \"block\";
+         |    linkText.innerHTML = \"(Hide Details)\";
+         |  }
+         |}
+         |
+         |function hideOpenInNewTabIfRequired() {
+         |  if (top === self) { document.getElementById('printlink').style.display = 'none'; }
+         |}
+         |""".stripMargin)
+        }</script>
     </head>
   }
 

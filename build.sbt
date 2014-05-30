@@ -8,6 +8,7 @@ scalaVersion := "2.10.4"
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
   "org.specs2" %% "specs2" % "2.3.12",
+  "org.scalatest" %% "scalatest" % "2.2.0-RC1",
   "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
   "org.pegdown" % "pegdown" % "1.4.2",
   "net.sourceforge.plantuml" % "plantuml" % "7999",
@@ -20,6 +21,8 @@ resolvers ++= Seq(
 )
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
+
+testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter")
 
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
