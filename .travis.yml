@@ -5,7 +5,7 @@ jdk:
 - oraclejdk7
 
 before_script: ./publish/prepublish.sh
-script: sbt test publishSigned sonatypeReleaseAll
+script: sbt "+ test" "+ publishSigned" sonatypeReleaseAll
 
 env:
   global:
