@@ -1,10 +1,12 @@
 language: scala
 scala:
-- 2.11.0
+- 2.11.1
 jdk:
 - oraclejdk7
+
 before_script: ./publish/prepublish.sh
-script: sbt test publishSigned sonatypeRelease
+script: sbt test publishSigned sonatypeReleaseAll
+
 env:
   global:
   - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER

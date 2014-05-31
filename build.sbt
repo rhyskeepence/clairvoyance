@@ -7,7 +7,9 @@ organization := "com.github.rhyskeepence"
 
 version := Try(sys.env("BUILD_NUMBER")).map("1.0." + _).getOrElse("1.0-SNAPSHOT")
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.1"
+
+crossScalaVersions := Seq("2.10.4", "2.11.1")
 
 libraryDependencies <<= scalaVersion { scala_version => Seq(
   "org.specs2" %% "specs2" % "2.3.12",
@@ -18,6 +20,13 @@ libraryDependencies <<= scalaVersion { scala_version => Seq(
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "optional",
   "org.scala-lang" % "scala-compiler" % scala_version  % "optional"
 )}
+
+libraryDependencies := {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, scalaMajor)) if scalaMajor >= 11 => libraryDependencies.value :+ "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
+    case _ => libraryDependencies.value
+  }
+}
 
 resolvers ++= Seq(
   "sonatype releases"  at "http://oss.sonatype.org/content/repositories/releases"
