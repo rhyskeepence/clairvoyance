@@ -1,6 +1,7 @@
-package clairvoyance.rendering
+package clairvoyance.specs2.rendering
 
 import clairvoyance.ProducesCapturedInputsAndOutputs
+import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
 import scala.xml.PrettyPrinter
 

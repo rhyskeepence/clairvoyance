@@ -1,4 +1,4 @@
-package clairvoyance.plugins
+package clairvoyance.specs2.plugins
 
 import clairvoyance.{CapturedValue, ProducesCapturedInputsAndOutputs}
 import clairvoyance.plugins.CapturedCollaborators.collectCollaborators

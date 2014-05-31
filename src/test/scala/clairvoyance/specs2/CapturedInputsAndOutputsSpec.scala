@@ -1,6 +1,6 @@
-package clairvoyance
+package clairvoyance.specs2
 
-import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
+import clairvoyance.ProducesCapturedInputsAndOutputs
 
 class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
 
