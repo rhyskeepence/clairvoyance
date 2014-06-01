@@ -30,7 +30,7 @@ trait ClairvoyanceHtmlFileWriter {
 }
 
 private object ClairvoyanceHtmlFileWriter {
-  private val outputDir = propOrElse("specs2.outDir", s"$userDir/target/specs2-reports/")
+  private val outputDir = propOrElse("clairvoyance.output.dir", s"$userDir/target/clairvoyance-reports/")
   private[this] val resourcesNotCopied = new AtomicBoolean(true)
 
   private def copyResourcesOnlyOnce(): Unit = {
