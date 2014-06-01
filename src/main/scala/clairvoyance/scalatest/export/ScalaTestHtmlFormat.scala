@@ -1,18 +1,16 @@
 package clairvoyance.scalatest.export
 
 import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
-import clairvoyance.rendering.{Rendering, CustomRendering}
+import clairvoyance.rendering.Markdown.markdownToXhtml
+import clairvoyance.rendering.{CustomRendering, Reflection, Rendering}
 import clairvoyance.state.TestStates
 import java.util.UUID
-import org.pegdown.{LinkRenderer, ToHtmlSerializer, Extensions, PegDownProcessor}
+import org.pegdown.PegDownProcessor
 import org.scalatest.events._
 import org.scalatest.exceptions
 import org.scalatest.tools.clairvoyance.ScalaTestSpy.SuiteResult
-import org.specs2.clairvoyance.Specs2Spy.Classes  // TODO either inline or replace with scala.reflect
-import scala.io.Source
 import scala.util.Properties.lineSeparator
-import scala.xml.{XML, NodeSeq}
-import scala.xml.parsing.XhtmlParser
+import scala.xml.{NodeSeq, XML}
 
 case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) extends HtmlFormat(xml) {
   type Self = ScalaTestHtmlFormat
@@ -105,7 +103,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       (event.suiteClassName, event.testName, event.testText, event.duration)
 
     val testState = TestStates.dequeue(testName)
-    val rendering = new Rendering(Classes.tryToCreateObject[CustomRendering](testName, printMessage = false, printStackTrace = false))
+    val rendering = new Rendering(Reflection.tryToCreateObject[CustomRendering](testName))
 
     <a id={linkNameOf(testText)}></a>
     <div class="testmethod">
@@ -123,7 +121,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): NodeSeq = {
     val testState = TestStates.dequeue(event.testName)
-    val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](event.testName, printMessage = false, printStackTrace = false)
+    val optionalCustomRenderer = Reflection.tryToCreateObject[CustomRendering](event.testName)
     val rendering = new Rendering(optionalCustomRenderer)
 
     val linkId    = UUID.randomUUID.toString
@@ -178,12 +176,6 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     </div>
   }
 
-  private def markdownToXhtml(markdownText: String): NodeSeq = {
-    val pegDown = new PegDownProcessor(Extensions.ALL & ~Extensions.QUOTES & ~Extensions.SMARTS, 2000L)
-    val html = new ToHtmlSerializer(new LinkRenderer).toHtml(pegDown.parseMarkdown(markdownText.replace("\\\\n", "\n").toCharArray))
-    XhtmlParser(Source.fromString(s"<text>$html</text>"))
-  }
-
   private def renderFragmentForBody(event: MarkupProvided, cssClass: String): NodeSeq =
     markup(generateElementId, event.text, getIndentLevel(event.formatter) + 1, cssClass)
 
@@ -202,7 +194,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def generateElementId = UUID.randomUUID.toString
 
-  // TODO: show the exception in the HTML report rather than blowing up the reporter
+  // TODO show the exception in the HTML report rather than blowing up the reporter
   // because that means the whole suite doesn't get recorded. May want to do this more generally though.
   private def markup(elementId: String, text: String, indentLevel: Int, styleName: String) = {
     val pegDown = new PegDownProcessor

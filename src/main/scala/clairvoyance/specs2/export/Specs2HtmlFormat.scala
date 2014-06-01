@@ -1,15 +1,13 @@
 package clairvoyance.specs2.export
 
 import clairvoyance.export.{FromSource, HtmlFormat, SpecificationFormatter}
-import clairvoyance.rendering.{CustomRendering, Rendering}
+import clairvoyance.rendering.{CustomRendering, Reflection, Rendering}
+import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.state.TestStates
-import org.specs2.clairvoyance.Specs2Spy.{fragmentsOf, Classes, Markdown}
 import org.specs2.execute.Failure
 import org.specs2.main.Arguments
-import org.specs2.specification.{Example, ExecutedFragment, ExecutedResult, ExecutedSpecification, ExecutedText, SpecificationStructure, Text}
-import scala.io.Source
+import org.specs2.specification._
 import scala.xml.NodeSeq
-import scala.xml.parsing.XhtmlParser
 
 case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends HtmlFormat(xml) {
   type Self = Specs2HtmlFormat
@@ -28,8 +26,10 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
   def printSidebar(structure: Seq[SpecificationStructure]): Self = print(sidebar(structure))
 
   private def sidebar(structures: Seq[SpecificationStructure]): NodeSeq = {
-    val structure = structures.map { s =>
+    def fragmentsOf(s: SpecificationStructure): Seq[Fragment] =
+      s.formatFragments(s.map(Fragments.withCreationPaths(Fragments.withSpecName(s.is, s)))).fragments
 
+    val structure = structures.map { s =>
       val specFragments = fragmentsOf(s).flatMap {
         case Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
         case Example(name, _, _, _, _) => Some(<li> - {formatShortExampleName(name.raw)}</li>)
@@ -74,7 +74,7 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
           val resultOutput = if (executedResult.isSuccess) "Test Passed" else executedResult.result.message
           val testState    = TestStates.dequeue(specificationFullName)
 
-          val optionalCustomRenderer = Classes.tryToCreateObject[CustomRendering](specificationFullName, printMessage = false, printStackTrace = false)
+          val optionalCustomRenderer = Reflection.tryToCreateObject[CustomRendering](specificationFullName)
           val rendering = new Rendering(optionalCustomRenderer)
 
           val sourceLines = FromSource.getCodeFrom(executedResult.location.toString(), executedResult.location.lineNumber)
@@ -105,7 +105,4 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
 
   private def cssClassOf(executedResult: ExecutedResult): String =
     if (executedResult.isSuccess) "test-passed" else if (executedResult.isSuspended) "test-not-run" else "test-failed"
-
-  private def markdownToXhtml(markdownText: String)(implicit args: Arguments): NodeSeq =
-    XhtmlParser(Source.fromString("<text>" + Markdown.toHtmlNoPar(markdownText) + "</text>"))
 }
