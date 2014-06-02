@@ -1,6 +1,6 @@
 package clairvoyance.export
 
-import clairvoyance.export.ClairvoyanceHtmlFileWriter.{copyResourcesOnlyOnce, outputDir}
+import clairvoyance.export.ClairvoyanceHtmlFileWriter.copyResourcesOnlyOnceTo
 import clairvoyance.io.ClasspathResources
 import java.io.Writer
 import java.util.concurrent.atomic.AtomicBoolean
@@ -9,6 +9,7 @@ import scala.xml.{Xhtml, NodeSeq}
 import scalax.file.Path
 
 trait ClairvoyanceHtmlFileWriter {
+  val outputDir: String = propOrElse("clairvoyance.output.dir", s"$userDir/target/clairvoyance-reports/")
 
   def writeFiles = (htmlFiles: Seq[ClairvoyanceHtml]) => {
     copyResources()
@@ -26,14 +27,13 @@ trait ClairvoyanceHtmlFileWriter {
   }
 
   protected def writeXml(xml: NodeSeq)(out: Writer): Unit = out.write(Xhtml.toXhtml(xml))
-  protected def copyResources(): Unit = copyResourcesOnlyOnce()
+  protected def copyResources(): Unit = copyResourcesOnlyOnceTo(outputDir)
 }
 
 private object ClairvoyanceHtmlFileWriter {
-  private val outputDir = propOrElse("clairvoyance.output.dir", s"$userDir/target/clairvoyance-reports/")
   private[this] val resourcesNotCopied = new AtomicBoolean(true)
 
-  private def copyResourcesOnlyOnce(): Unit = {
+  private def copyResourcesOnlyOnceTo(outputDir: String): Unit = {
     if (resourcesNotCopied.getAndSet(false)) {
       Seq("css", "javascript").foreach(ClasspathResources.copyResource(_, outputDir))
     }
