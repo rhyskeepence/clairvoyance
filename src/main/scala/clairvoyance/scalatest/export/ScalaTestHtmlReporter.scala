@@ -32,7 +32,8 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
 
         val sortedSuiteEvents = suiteEvents.sorted
         if (sortedSuiteEvents.length == 0)
-          throw new IllegalStateException("Expected SuiteStarting for completion event: " + event + " in the head of suite events, but we got no suite event at all")
+          throw new IllegalStateException(
+            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
 
         sortedSuiteEvents.head match {
           case suiteStarting: SuiteStarting =>
@@ -67,7 +68,8 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
 
         val sortedSuiteEvents = suiteEvents.sorted
         if (sortedSuiteEvents.length == 0)
-          throw new IllegalStateException(s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
+          throw new IllegalStateException(
+            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
 
         sortedSuiteEvents.head match {
           case suiteStarting: SuiteStarting =>
@@ -124,8 +126,7 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
       case e: RunCompleted => writeResults("runCompleted", e.duration)
       case e: RunStopped   => writeResults("runStopped",   e.duration)
       case e: RunAborted   => writeResults("runAborted",   e.duration)
-      case other =>
-        throw new IllegalStateException("Expected run ending event only, but got: " + other.getClass.getName)
+      case other => throw new IllegalStateException(s"Expected run ending event only, but got: ${other.getClass.getName}")
     }
     // if no run end event (like when run in sbt), just use 'runCompleted' with the sum of the suites' duration
     case None => writeResults("runCompleted", Some(results.totalDuration))
