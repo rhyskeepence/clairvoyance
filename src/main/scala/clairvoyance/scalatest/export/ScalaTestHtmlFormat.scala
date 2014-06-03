@@ -150,8 +150,10 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
         <h2>Execution</h2>
         <div class="highlight results test-failed highlighted" style="margin-bottom: 1em">
           { event.duration.fold(NodeSeq.Empty)(milliseconds => <span>{event.name} after {milliseconds} ms</span><br/>)}
-          <span>&gt; { event.message }</span>
-          <span class="detailstoggle"><a id={ linkId } href="#" onclick={ s"toggleDetails('$contentId', '$linkId'); return false"}>(Show Details)</a></span>
+          <pre>&gt; { event.message }</pre>
+          <span class="detailstoggle">
+            <a id={ linkId } href="#" onclick={ s"toggleDetails('$contentId', '$linkId'); return false"}>[ show stacktrace ]</a>
+          </span>
           <div id={ contentId } style="display: none; margin-top: 1em">
             { grayStackTraceElements.map((ste: StackTraceElement)  => <div style="color: #CCADAD">{ ste.toString }</div>) }
             { <div style="color: #9C3636; font-weight: bold">{ blackStackTraceElements.head.toString }</div> }

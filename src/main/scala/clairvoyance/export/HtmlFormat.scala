@@ -33,10 +33,10 @@ abstract class HtmlFormat(val xml: NodeSeq) {
          |  var linkText = document.getElementById(linkId);
          |  if (content.style.display == \"block\") {
          |    content.style.display = \"none\";
-         |    linkText.innerHTML = \"(Show Details)\";
+         |    linkText.innerHTML = \"[ show stacktrace ]\";
          |  } else {
          |    content.style.display = \"block\";
-         |    linkText.innerHTML = \"(Hide Details)\";
+         |    linkText.innerHTML = \"[ hide stacktrace ]\";
          |  }
          |}
          |
