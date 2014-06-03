@@ -19,12 +19,17 @@ object build extends Build {
     scalacOptions in GlobalScope ++= Seq("-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
   )
 
-  lazy val clairvoyance = (project in file(".")).settings(publicationSettings: _*).settings(
-    publishArtifact := false
-  ).aggregate(core, specs2, scalatest)
+  lazy val moduleSettings = commonSettings ++ publicationSettings
+
+  lazy val clairvoyance = (project in file(".")).
+    settings(moduleSettings: _*).
+    settings(
+      publishArtifact := false,
+      publishSigned := {}
+    ).aggregate(core, specs2, scalatest)
 
   lazy val core = (project in file("core")).
-    settings(commonSettings: _*).
+    settings(moduleSettings: _*).
     settings(
       libraryDependencies <<= scalaVersion { scala_version => Seq(
         "org.specs2" %% "specs2" % "2.3.12",
@@ -41,8 +46,8 @@ object build extends Build {
       testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter")
     )
 
-  lazy val specs2 = (project in file("specs2")) settings (commonSettings: _*) settings (name := "clairvoyance-specs2") dependsOn core
-  lazy val scalatest = (project in file("scalatest")) settings (commonSettings: _*) settings (name := "clairvoyance-scalatest") dependsOn core
+  lazy val specs2 = (project in file("specs2")) settings (moduleSettings: _*) settings (name := "clairvoyance-specs2") dependsOn core
+  lazy val scalatest = (project in file("scalatest")) settings (moduleSettings: _*) settings (name := "clairvoyance-scalatest") dependsOn core
 
   lazy val publicationSettings: Seq[Settings] = Seq(
     pgpPassphrase := Some(Try(sys.env("SECRET")).getOrElse("goaway").toCharArray),
