@@ -21,7 +21,7 @@ object FromSource {
   }
 
   def getCodeFrom(location: String, testName: String): List[(Int, String)] = {
-    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", "/") + ".scala"
+    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", fileSeparator) + ".scala"
     val sourceFile = listFiles(currentWorkingDirectory).find(_.getPath.endsWith(sourceFilePath))
     val content = readLines(sourceFile).getOrElse(Seq.empty)
     val lineNumber = content.indexWhere(_.contains(testName))
