@@ -5,17 +5,13 @@ import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.rendering.{CustomRendering, Reflection, Rendering}
 import clairvoyance.state.TestStates
 import java.util.UUID
-import org.pegdown.PegDownProcessor
 import org.scalatest.events._
 import org.scalatest.exceptions
 import org.scalatest.tools.clairvoyance.ScalaTestSpy.SuiteResult
-import scala.util.Properties.lineSeparator
-import scala.xml.{NodeSeq, XML}
+import scala.xml.NodeSeq
 
 case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) extends HtmlFormat(xml) {
   type Self = ScalaTestHtmlFormat
-
-  private val specIndent = 15
 
   protected def print(xml2: NodeSeq): Self = ScalaTestHtmlFormat(xml ++ xml2)
 
@@ -178,13 +174,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     </div>
   }
 
-  private def renderFragmentForBody(event: MarkupProvided, cssClass: String): NodeSeq =
-    markup(generateElementId, event.text, getIndentLevel(event.formatter) + 1, cssClass)
-
-  private def getIndentLevel(formatter: Option[Formatter]): Int = formatter match {
-    case Some(IndentedText(formattedText, rawText, indentationLevel)) => indentationLevel
-    case _ => 0
-  }
+  private def renderFragmentForBody(event: MarkupProvided, cssClass: String): NodeSeq = markdownToXhtml(event.text)
 
   private def stringToPrintWhenNoError(formatter: Option[Formatter], suiteName: String): Option[String] = {
     formatter match {
@@ -192,34 +182,5 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       case Some(MotionToSuppress) => None
       case _ => Some(suiteName)
     }
-  }
-
-  private def generateElementId = UUID.randomUUID.toString
-
-  // TODO show the exception in the HTML report rather than blowing up the reporter
-  // because that means the whole suite doesn't get recorded. May want to do this more generally though.
-  private def markup(elementId: String, text: String, indentLevel: Int, styleName: String) = {
-    val pegDown = new PegDownProcessor
-    val htmlString = convertSingleParagraphToDefinition(pegDown.markdownToHtml(text))
-    <div id={ elementId } class={ styleName } style={ "margin-left: " + (specIndent * twoLess(indentLevel)) + "px;" }>
-      {
-        try XML.loadString(htmlString)
-        catch {
-          case e: Exception => XML.loadString(s"<div>$htmlString</div>")
-        }
-      }
-    </div>
-  }
-
-  private def convertSingleParagraphToDefinition(html: String): String = {
-    val firstOpenParagraph = html.indexOf("<p>")
-    if (firstOpenParagraph == 0 && html.indexOf("<p>", 1) == -1 && html.indexOf("</p>") == html.length - 4)
-      html.replace("<p>", s"<dl>$lineSeparator<dt>").replace("</p>", s"</dt>$lineSeparator</dl>")
-    else html
-  }
-
-  private def twoLess(indentationLevel: Int): Int = indentationLevel - 2 match {
-    case level if level < 0 => 0
-    case level => level
   }
 }
