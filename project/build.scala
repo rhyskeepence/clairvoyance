@@ -19,7 +19,7 @@ object build extends Build {
     scalacOptions in GlobalScope ++= Seq("-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
   )
 
-  lazy val clairvoyance = (project in file(".")).settings(
+  lazy val clairvoyance = (project in file(".")).settings(publicationSettings: _*).settings(
     publishArtifact := false
   ).aggregate(core, specs2, scalatest)
 
