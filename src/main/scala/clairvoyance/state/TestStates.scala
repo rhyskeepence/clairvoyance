@@ -10,8 +10,8 @@ object TestStates {
   */
   private val testStates = new mutable.HashMap[String, mutable.Queue[TestState]]()
 
-  def +=(instanceToTestState: (AnyRef, TestState)): Unit = {
-    val key = keyNameOf(instanceToTestState._1.getClass)
+  def +=(instanceToTestState: (String, TestState)): Unit = {
+    val key = instanceToTestState._1
     if (testStates contains key)
       testStates(key) += instanceToTestState._2
     else
@@ -20,8 +20,6 @@ object TestStates {
   }
 
   def dequeue(key: String) = testStates.getOrElse(key, new mutable.Queue).dequeueFirst(_ => true)
-
-  private def keyNameOf(spec: Class[_]) = spec.getName.split("\\$")(0)
 }
 
 case class TestState(interestingGivens: KeyValueSequence, capturedInputsAndOutputs: Seq[CapturedValue])

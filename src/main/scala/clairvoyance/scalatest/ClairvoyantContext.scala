@@ -2,21 +2,24 @@ package clairvoyance.scalatest
 
 import clairvoyance.{CapturedInputsAndOutputs, InterestingGivens}
 import clairvoyance.state.{TestState, TestStates}
-import org.scalatest.{Suite, BeforeAndAfterEach}
+import org.scalatest.{TestData, BeforeAndAfterEachTestData, Suite, BeforeAndAfterEach}
 
-trait ClairvoyantContext extends BeforeAndAfterEach with InterestingGivens with CapturedInputsAndOutputs {
+trait ClairvoyantContext extends BeforeAndAfterEachTestData with InterestingGivens with CapturedInputsAndOutputs {
   this: Suite =>
 
-  override protected def afterEach(): Unit = {
-    tearDown()
+  protected def beforeExecution(): Unit = ()
+  protected def afterExecution():  Unit = ()
 
-    TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
+  override protected final def beforeEach(testData: TestData): Unit = beforeExecution()
+  override protected final def afterEach(testData: TestData):  Unit = {
+    TestStates += (testData.name -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
+
+    afterExecution()
   }
 
-  protected def tearDown(): Unit = ()
-
   implicit def stringToStep(description: String) = new ClairvoyantStep(description)
+
   class ClairvoyantStep(description: String) {
     def ===>[T](step: T): T = step
   }

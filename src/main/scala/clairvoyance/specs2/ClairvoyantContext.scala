@@ -11,10 +11,11 @@ trait ClairvoyantContext extends After with InterestingGivens with CapturedInput
   def after: Unit = {
     tearDown()
 
-    TestStates += (this -> TestState(interestingGivens.toList, gatherCapturedValues))
+    TestStates += (keyNameOf(getClass) -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
   }
 
+  private def keyNameOf(spec: Class[_]) = spec.getName.split("\\$")(0)
 
   implicit def stringToStep(description: String) = new ClairvoyantStep(description)
   class ClairvoyantStep(description: String) {
