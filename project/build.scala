@@ -6,6 +6,7 @@ import scala.util.Try
 import com.typesafe.sbt.pgp.PgpKeys._
 
 import xerial.sbt.Sonatype._
+import SonatypeKeys._
 
 object build extends Build {
   type Settings = Def.Setting[_]
@@ -24,8 +25,8 @@ object build extends Build {
   lazy val clairvoyance = (project in file(".")).
     settings(moduleSettings: _*).
     settings(
-      publishArtifact := false,
-      publishSigned := {}
+      aggregate in sonatypeReleaseAll := false,
+      packagedArtifacts := Map.empty
     ).aggregate(core, specs2, scalatest)
 
   lazy val core = (project in file("core")).
