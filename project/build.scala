@@ -50,9 +50,6 @@ object build extends Build {
   lazy val scalatest = (project in file("scalatest")) settings (moduleSettings: _*) settings (name := "clairvoyance-scalatest") dependsOn core
 
   lazy val publicationSettings: Seq[Settings] = Seq(
-    pgpPassphrase := Some(Try(sys.env("SECRET")).getOrElse("goaway").toCharArray),
-    pgpSecretRing := file("./publish/sonatype.asc"),
-
     publishTo <<= version { v: String =>
       val nexus = "https://oss.sonatype.org/"
       if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
