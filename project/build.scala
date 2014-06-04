@@ -31,6 +31,7 @@ object build extends Build {
   lazy val core = (project in file("core")).
     settings(moduleSettings: _*).
     settings(
+      name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
         "org.specs2" %% "specs2" % "2.3.12",
         "org.scalatest" %% "scalatest" % "2.2.0-RC1",
@@ -60,6 +61,8 @@ object build extends Build {
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
 
+    credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD")),
+
     pomExtra :=
       <url>http://www.github.com/rhyskeepence/clairvoyance</url>
         <licenses>
@@ -85,5 +88,6 @@ object build extends Build {
             <url>https://github.com/franckrasolo</url>
           </developer>
         </developers>
+
   ) ++ sonatypeSettings
 }
