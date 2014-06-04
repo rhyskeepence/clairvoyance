@@ -10,13 +10,13 @@ import scalax.io.support.FileUtils
 object ClasspathResources {
 
   def copyResource(src: String, outputDir: String): Unit = {
-    val selfUrl = Thread.currentThread.getContextClassLoader.getResource(getClass.getName.replace(".", "/") + ".class")
+    val selfUrl = getClass.getClassLoader.getResource(getClass.getName.replace(".", "/") + ".class")
     for (url <- Option(selfUrl) if url.getProtocol == "jar") {
       val jarUrl = new URL(url.getPath.takeWhile(_ != '!').mkString)
       unjar(jarUrl, outputDir, ".*" + src + "/.*")
     }
 
-    val folderUrl = Thread.currentThread.getContextClassLoader.getResource(src)
+    val folderUrl = getClass.getClassLoader.getResource(src)
     for (path <- Path(folderUrl.toURI) if !folderUrl.toString.startsWith("jar")) {
       val target = Path.fromString(outputDir + src)
       target.deleteRecursively(force = true)
