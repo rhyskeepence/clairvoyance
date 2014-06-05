@@ -39,7 +39,7 @@ object build extends Build {
         "org.pegdown" % "pegdown" % "1.4.2",
         "org.scala-lang" % "scala-compiler" % scala_version % "optional"
       ) ++ (CrossVersion.partialVersion(scala_version) match {
-        case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq("org.scala-lang.modules" %% "scala-xml" % "1.0.2")
+        case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq("org.scala-lang.modules" %% "scala-xml" % "1.0.1")
         case _ => Seq.empty
       })}
     )
