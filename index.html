@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Clairvoyance by rhyskeepence</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Clairvoyance</h1>
+          <h2>A Scala Specs2 extension, producing human readable documentation à la Yatspec.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/rhyskeepence/clairvoyance/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/rhyskeepence/clairvoyance/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/rhyskeepence/clairvoyance" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="clairvoyance" class="anchor" href="#clairvoyance"><span class="octicon octicon-link"></span></a>Clairvoyance</h1>
+
+<p>Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provides a few extensions to capture what is
+happening in your tests, and then produce business and tester friendly documentation.</p>
+
+<p>It's a pastiche of <a href="http://code.google.com/p/yatspec">Yatspec</a>, a Java testing library written by my colleague Dan
+Bodart. It addresses the deficiencies we experienced with Fit and Concordion.</p>
+
+<p><a href="http://travis-ci.org/rhyskeepence/clairvoyance"><img src="https://secure.travis-ci.org/rhyskeepence/clairvoyance.svg" alt="Build Status"></a></p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<p>The full source to this example is <a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/LoggingExample.scala">here</a>.</p>
+
+<p>It breaks down like this:</p>
+
+<ul>
+<li>Create a Spec which extends <code>ClairvoyantSpec</code>
+</li>
+<li>Write the spec in the mutable spec style (for various historical reasons)</li>
+<li>Create a context which extends <code>ClairvoyantContext</code>
+</li>
+<li>
+<code>InterestingGivens</code> can be added with statements such as <code>interestingGivens += ("Current date" -&gt; "21/12/2012")</code>
+</li>
+<li>The Scala code within the spec method is interpreted into a text specification, to encourage readability.</li>
+</ul><div class="highlight highlight-scala"><pre><span class="k">class</span> <span class="nc">LoggingExample</span> <span class="k">extends</span> <span class="nc">ClairvoyantSpec</span> <span class="o">{</span>
+  <span class="s">"The coordinator"</span> <span class="n">should</span> <span class="o">{</span>
+    <span class="s">"invoke the Doomsday Device on the 21st of December 2012"</span> <span class="n">in</span> <span class="k">new</span> <span class="n">context</span> <span class="o">{</span>
+      <span class="n">givenTheDateIs</span><span class="o">(</span><span class="s">"21/12/2012"</span><span class="o">)</span>
+      <span class="n">whenTheCoordinatorRuns</span>
+      <span class="n">theDoomsdayDevice</span> <span class="n">should</span> <span class="n">beUnleashed</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">trait</span> <span class="nc">context</span> <span class="k">extends</span> <span class="nc">ClairvoyantContext</span> <span class="o">{</span>
+    <span class="c1">// test set up and fixtures</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Here is the output of this spec.
+<img src="http://github.com/rhyskeepence/clairvoyance/raw/master/doc/example-output.jpg" alt="Example output"></p>
+
+<h2>
+<a name="get-this-party-started" class="anchor" href="#get-this-party-started"><span class="octicon octicon-link"></span></a>Get This Party Started</h2>
+
+<p>Add this to your SBT build:</p>
+
+<pre><code>libraryDependencies ++= Seq(
+    "com.github.rhyskeepence" %% "clairvoyance" % "1.0.&lt;latest travis build number&gt;"
+    //  or, for scala 2.9.2: 
+    //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
+)
+resolvers ++= Seq(
+    "releases"  at "http://oss.sonatype.org/content/repositories/releases"
+)
+</code></pre>
+
+<p>Or in Maven:</p>
+
+<div class="highlight highlight-xml"><pre>    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>com.github.rhyskeepence<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>clairvoyance_2.10.0<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.latest travis build number<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+
+    ....
+
+    <span class="nt">&lt;repository&gt;</span>
+        <span class="nt">&lt;id&gt;</span>sonatype-releases<span class="nt">&lt;/id&gt;</span>
+        <span class="nt">&lt;name&gt;</span>sonatype releases<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;snapshots&gt;</span>
+            <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;/snapshots&gt;</span>
+        <span class="nt">&lt;url&gt;</span>http://oss.sonatype.org/content/repositories/releases<span class="nt">&lt;/url&gt;</span>
+    <span class="nt">&lt;/repository&gt;</span>
+</pre></div>
+
+<h2>
+<a name="interesting-givens" class="anchor" href="#interesting-givens"><span class="octicon octicon-link"></span></a>Interesting Givens</h2>
+
+<p>These are inputs into your test, which may not be specified in the spec, but should be logged to the output:</p>
+
+<div class="highlight highlight-scala"><pre>  <span class="n">interestingGivens</span> <span class="o">+=</span> <span class="o">(</span><span class="s">"Current date"</span> <span class="o">-&gt;</span> <span class="s">"21/12/2012"</span><span class="o">)</span>
+</pre></div>
+
+<p>or</p>
+
+<div class="highlight highlight-scala"><pre>  <span class="o">(</span><span class="s">"Current date"</span> <span class="o">-&gt;</span> <span class="s">"21/12/2012"</span><span class="o">).</span><span class="n">isInteresting</span>
+</pre></div>
+
+<h2>
+<a name="captured-inputs-and-outputs" class="anchor" href="#captured-inputs-and-outputs"><span class="octicon octicon-link"></span></a>Captured Inputs And Outputs</h2>
+
+<p>These are the inputs or outputs to your system, which may not be practical to assert upon, but should be logged.</p>
+
+<p>Perhaps you are using a stub rather than communicating with a third party in your spec:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">class</span> <span class="nc">StubGizmometer</span> <span class="k">extends</span> <span class="nc">Gizmometer</span> <span class="o">{</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>To capture inputs and outputs, just add the <code>ProducesCapturedInputsAndOutputs</code> trait and call <code>captureValue</code>:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">class</span> <span class="nc">StubGizmometer</span> <span class="k">extends</span> <span class="nc">Gizmometer</span> <span class="k">with</span> <span class="nc">ProducesCapturedInputsAndOutputs</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">scan</span><span class="o">(</span><span class="n">brain</span><span class="k">:</span> <span class="kt">Brain</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">captureValue</span><span class="o">(</span><span class="s">"Brain"</span> <span class="o">-&gt;</span> <span class="n">brain</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>and in your context, register the stub so that clairvoyant knows about it:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">trait</span> <span class="nc">context</span> <span class="k">extends</span> <span class="nc">ClairvoyantContext</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">gizmometer</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StubGizmometer</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">capturedInputsAndOutputs</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">gizmometer</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<h2>
+<a name="custom-rendering-of-interesting-givens--captured-inputs-and-outputs" class="anchor" href="#custom-rendering-of-interesting-givens--captured-inputs-and-outputs"><span class="octicon octicon-link"></span></a>Custom Rendering of Interesting Givens &amp; Captured Inputs And Outputs</h2>
+
+<p>When you capture a value or an interesting given, it will be rendered to the screen. XML and Strings are formatted
+nicely by default, but you may wish to capture your own domain objects and have them presented in readable format.</p>
+
+<p>A full example is here: <a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/CustomRenderingExample.scala">clairvoyance/specs2/examples/CustomRenderingExample.scala</a></p>
+
+<p>The juicy bits are shown below:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">class</span> <span class="nc">CustomRenderingExample</span> <span class="k">extends</span> <span class="nc">ClairvoyantSpec</span> <span class="k">with</span> <span class="nc">CustomRendering</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">customRendering</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Brain</span><span class="o">(</span><span class="n">iq</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="s">"a Brain with an IQ of %d"</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="n">iq</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p><code>customRendering</code> is a partial function, which will be run before the default rendering.</p>
+
+<p>And behold, custom rendering of Brains:</p>
+
+<p><img src="http://github.com/rhyskeepence/clairvoyance/raw/master/doc/custom-rendering.jpg" alt="Custom Rendering of Brains"></p>
+
+<h2>
+<a name="sequence-diagrams" class="anchor" href="#sequence-diagrams"><span class="octicon octicon-link"></span></a>Sequence Diagrams</h2>
+
+<p>If your spec describes interactions between many systems, it can be nice to generate a sequence diagram automatically
+from CapturedInputsAndOutputs. Just add the <code>SequenceDiagram</code> trait to your context, ie:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">trait</span> <span class="nc">context</span> <span class="k">extends</span> <span class="nc">ClairvoyantContext</span> <span class="k">with</span> <span class="nc">SequenceDiagram</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">capturedInputsAndOutputs</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">system_x</span><span class="o">,</span> <span class="n">system_y</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The name of the captured values should be in the following formats in order to appear on the diagram:</p>
+
+<p><code>captureValue("SOMETHING from X to Y" -&gt; ...)</code> or</p>
+
+<p><code>captureValue("SOMETHING from X" -&gt; ...)</code> or</p>
+
+<p><code>captureValue("SOMETHING to Y" -&gt; ...)</code></p>
+
+<p>In the last two cases, the default actor will be used, which can be set using this statement in the context:
+<code>override def defaultSequenceDiagramActor = "Name of my component"</code></p>
+
+<p>An example can be found <a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/SequenceDiagramExample.scala">here</a>,
+which produces the following output:</p>
+
+<p><img src="http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg" alt="Sequence Diagram"></p>
+
+<p>Alternatively, a graph can be produced:</p>
+
+<div class="highlight highlight-scala"><pre><span class="k">trait</span> <span class="nc">context</span> <span class="k">extends</span> <span class="nc">ClairvoyantContext</span> <span class="k">with</span> <span class="nc">Graph</span>
+</pre></div>
+
+<h2>
+<a name="markdown" class="anchor" href="#markdown"><span class="octicon octicon-link"></span></a>Markdown</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> is supported in specification descriptions, to whet your appetite
+<a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/MarkdownExample.scala">see this example</a>.</p>
+
+<h2>
+<a name="other-cool-stuff" class="anchor" href="#other-cool-stuff"><span class="octicon octicon-link"></span></a>OTHER COOL STUFF!!!</h2>
+
+<ul>
+<li><a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/ScalaCheckExample.scala">ScalaCheck</a></li>
+<li><a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GraphExample.scala">Graphs</a></li>
+<li><a href="https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GivenWhenThenExample.scala">G/W/T</a></li>
+</ul><h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ul>
+<li>Scenario tables</li>
+</ul>
+        </section>
+
+        <footer>
+          Clairvoyance is maintained by <a href="https://github.com/rhyskeepence">rhyskeepence</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
