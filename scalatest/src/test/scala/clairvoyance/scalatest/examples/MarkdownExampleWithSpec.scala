@@ -22,7 +22,7 @@ class MarkdownExampleWithSpec extends Spec with Clairvoyance {
         |```
         |""".stripMargin
     }
-    def `can calculate the sixth triangle number` {
+    def `can calculate the sixth triangle number`() {
       triangle(6) == 21
     }
   }
@@ -35,7 +35,7 @@ class MarkdownExampleWithSpec extends Spec with Clairvoyance {
         |* [Further reading](http://en.wikipedia.org/wiki/Factorial)
       """.stripMargin
     }
-    def `can calculate the factorial of 3` {
+    def `can calculate the factorial of 3`() {
       factorial(3) == 6
     }
   }

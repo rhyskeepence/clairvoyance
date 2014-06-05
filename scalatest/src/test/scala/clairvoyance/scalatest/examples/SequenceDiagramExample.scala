@@ -8,7 +8,7 @@ import org.scalatest.{Suite, Spec}
 class SequenceDiagramExample extends Spec with Clairvoyance with LdapAuthenticationContext {
 
   object `The Web Site must` {
-    def `authenticate the user using LDAP` {
+    def `authenticate the user using LDAP`() {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
       thenTheUserIsShownSecrets()
     }

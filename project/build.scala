@@ -34,22 +34,36 @@ object build extends Build {
     settings(
       name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
-        "org.specs2" %% "specs2" % "2.3.12",
-        "org.scalatest" %% "scalatest" % "2.2.0-RC1",
         "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
-        "org.pegdown" % "pegdown" % "1.4.2",
         "net.sourceforge.plantuml" % "plantuml" % "7999",
-        "org.scalacheck" %% "scalacheck" % "1.11.4" % "optional",
-        "org.scala-lang" % "scala-compiler" % scala_version  % "optional"
+        "org.pegdown" % "pegdown" % "1.4.2",
+        "org.scala-lang" % "scala-compiler" % scala_version % "optional"
       ) ++ (CrossVersion.partialVersion(scala_version) match {
-        case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq("org.scala-lang.modules" %% "scala-xml" % "1.0.1")
+        case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq("org.scala-lang.modules" %% "scala-xml" % "1.0.2")
         case _ => Seq.empty
-      })},
-      testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter")
+      })}
     )
 
-  lazy val specs2 = (project in file("specs2")) settings (moduleSettings: _*) settings (name := "clairvoyance-specs2") dependsOn core
-  lazy val scalatest = (project in file("scalatest")) settings (moduleSettings: _*) settings (name := "clairvoyance-scalatest") dependsOn core
+  lazy val specs2 = (project in file("specs2"))
+    .settings(moduleSettings: _*)
+    .settings(name := "clairvoyance-specs2",
+      libraryDependencies := Seq(
+        "org.specs2"     %% "specs2"     % "2.3.12",
+        "org.scalacheck" %% "scalacheck" % "1.11.4" % "optional"
+      )) dependsOn core
+
+  lazy val scalatest = (project in file("scalatest"))
+    .settings(moduleSettings: _*)
+    .settings(name := "clairvoyance-scalatest",
+      libraryDependencies := Seq(
+        "org.scalatest"  %% "scalatest"   % "2.2.0-RC1",
+        "org.scalaz"     %% "scalaz-core" % "7.0.6",
+        "org.scalacheck" %% "scalacheck"  % "1.11.4" % "optional"
+      ),
+      testOptions in Test += Tests.Argument(
+        TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter"
+      )
+    ) dependsOn core
 
   lazy val publicationSettings: Seq[Settings] = Seq(
     publishTo <<= version { v: String =>
