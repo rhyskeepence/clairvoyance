@@ -1,9 +1,9 @@
 package clairvoyance.scalatest.examples
 
-import clairvoyance.scalatest.Clairvoyance
-import org.scalatest.Spec
+import org.scalatest.{MustMatchers, Spec}
 
-class HelloWorldSpec extends Spec with Clairvoyance {
+class HelloWorldSpec extends Spec with MustMatchers {
+
   object `The 'Hello world' string must` {
     def `contain 11 characters`() {
       "Hello world" must have size 11

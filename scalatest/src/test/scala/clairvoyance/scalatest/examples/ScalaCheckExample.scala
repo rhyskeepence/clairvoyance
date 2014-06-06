@@ -1,10 +1,10 @@
 package clairvoyance.scalatest.examples
 
-import clairvoyance.scalatest.{Clairvoyance, ClairvoyantContext}
-import org.scalatest.{Spec, Suite}
+import clairvoyance.scalatest.ClairvoyantContext
+import org.scalatest.{MustMatchers, Spec, Suite}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
-class ScalaCheckExample extends Spec with Clairvoyance with ScalaCheckContext {
+class ScalaCheckExample extends Spec with ScalaCheckContext with MustMatchers {
 
   object `Strings must` {
     def `support startsWith`() {
