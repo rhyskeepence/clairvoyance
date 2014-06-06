@@ -2,10 +2,12 @@ package clairvoyance.scalatest
 
 import clairvoyance.{CapturedInputsAndOutputs, InterestingGivens}
 import clairvoyance.state.{TestState, TestStates}
-import org.scalatest.{TestData, BeforeAndAfterEachTestData, Suite, BeforeAndAfterEach}
+import org.scalatest._
 
-trait ClairvoyantContext extends BeforeAndAfterEachTestData with InterestingGivens with CapturedInputsAndOutputs {
-  this: Suite =>
+trait ClairvoyantContext extends BeforeAndAfterEachTestData
+  with OneInstancePerTest
+  with InterestingGivens
+  with CapturedInputsAndOutputs { this: Suite =>
 
   protected def beforeExecution(): Unit = ()
   protected def afterExecution():  Unit = ()
