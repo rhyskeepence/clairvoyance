@@ -34,10 +34,10 @@ object build extends Build {
     settings(
       name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
-        "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
-        "net.sourceforge.plantuml" % "plantuml" % "7999",
-        "org.pegdown" % "pegdown" % "1.4.2",
-        "org.scala-lang" % "scala-compiler" % scala_version % "optional"
+        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3",
+        "net.sourceforge.plantuml"      %  "plantuml"       % "7999",
+        "org.pegdown"                   %  "pegdown"        % "1.4.2",
+        "org.scala-lang"                %  "scala-compiler" % scala_version % "optional"
       ) ++ (CrossVersion.partialVersion(scala_version) match {
         case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
           "org.scala-lang.modules" %% "scala-xml" % "1.0.2",
@@ -52,7 +52,7 @@ object build extends Build {
     .settings(name := "clairvoyance-specs2",
       libraryDependencies := Seq(
         "org.specs2"     %% "specs2"     % "2.3.12",
-        "org.scalacheck" %% "scalacheck" % "1.11.4" % "optional"
+        "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
       )) dependsOn core
 
   lazy val scalatest = (project in file("scalatest"))
@@ -61,7 +61,7 @@ object build extends Build {
       libraryDependencies := Seq(
         "org.scalatest"  %% "scalatest"   % "2.2.0-RC2",
         "org.scalaz"     %% "scalaz-core" % "7.0.6",
-        "org.scalacheck" %% "scalacheck"  % "1.11.4" % "optional"
+        "org.scalacheck" %% "scalacheck"  % "1.11.4" % "test"
       ),
       testOptions in Test += Tests.Argument(
         TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter"

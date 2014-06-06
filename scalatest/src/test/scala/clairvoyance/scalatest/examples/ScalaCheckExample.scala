@@ -10,7 +10,7 @@ class ScalaCheckExample extends Spec with Clairvoyance with ScalaCheckContext {
     def `support startsWith`() {
       givenTwoStrings((a: String, b: String) =>
         (a + b).startsWith(a) mustBe true)
-  }
+    }
 
     def `support endsWith`() {
       givenTwoStrings((a: String, b: String) =>
