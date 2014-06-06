@@ -12,16 +12,6 @@ Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 Example
 -------
 
-The full source to this example is [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/LoggingExample.scala).
-
-It breaks down like this:
-
-* Create a Spec which extends `ClairvoyantSpec`
-* Write the spec in the mutable spec style (for various historical reasons)
-* Create a context which extends `ClairvoyantContext`
-* `InterestingGivens` can be added with statements such as `interestingGivens += ("Current date" -> "21/12/2012")`
-* The Scala code within the spec method is interpreted into a text specification, to encourage readability.
-
 ```scala
 class LoggingExample extends ClairvoyantSpec {
   "The coordinator" should {
@@ -37,6 +27,16 @@ class LoggingExample extends ClairvoyantSpec {
   }
 }
 ```
+
+It breaks down like this:
+
+* Create a Spec which extends `ClairvoyantSpec`
+* Write the spec in the mutable spec style (for various historical reasons)
+* Create a context which extends `ClairvoyantContext`
+* `InterestingGivens` can be added with statements such as `interestingGivens += ("Current date" -> "21/12/2012")`
+* The Scala code within the spec method is interpreted into a text specification, to encourage readability.
+
+The full source to this example is [here](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/LoggingExample.scala).
 
 Here is the output of this spec.
 ![Example output](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/example-output.jpg)
@@ -60,8 +60,8 @@ Or in Maven:
 ```xml
     <dependency>
         <groupId>com.github.rhyskeepence</groupId>
-        <artifactId>clairvoyance_2.10.0</artifactId>
-        <version>1.0.latest travis build number</version>
+        <artifactId>clairvoyance-specs2_2.10</artifactId>
+        <version>1.0.${latest.travis.build.number}</version>
         <scope>test</scope>
     </dependency>
 
@@ -130,7 +130,8 @@ Custom Rendering of Interesting Givens & Captured Inputs And Outputs
 When you capture a value or an interesting given, it will be rendered to the screen. XML and Strings are formatted
 nicely by default, but you may wish to capture your own domain objects and have them presented in readable format.
 
-A full example is here: [clairvoyance/specs2/examples/CustomRenderingExample.scala](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/CustomRenderingExample.scala)
+A full example is here: [clairvoyance/specs2/examples/CustomRenderingExample.scala]
+(https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/CustomRenderingExample.scala)
 
 The juicy bits are shown below:
 
@@ -172,7 +173,7 @@ The name of the captured values should be in the following formats in order to a
 In the last two cases, the default actor will be used, which can be set using this statement in the context:
 `override def defaultSequenceDiagramActor = "Name of my component"`
 
-An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/SequenceDiagramExample.scala),
+An example can be found [here](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/SequenceDiagramExample.scala),
 which produces the following output:
 
 ![Sequence Diagram](http://github.com/rhyskeepence/clairvoyance/raw/master/doc/sequence.jpg)
@@ -187,14 +188,14 @@ Markdown
 --------
 
 [Markdown](http://en.wikipedia.org/wiki/Markdown) is supported in specification descriptions, to whet your appetite
-[see this example](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/MarkdownExample.scala).
+[see this example](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/MarkdownExample.scala).
 
 OTHER COOL STUFF!!!
 -------------------
 
-* [ScalaCheck](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/ScalaCheckExample.scala)
-* [Graphs](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GraphExample.scala)
-* [G/W/T](https://github.com/rhyskeepence/clairvoyance/blob/master/src/test/scala/clairvoyance/specs2/examples/GivenWhenThenExample.scala)
+* [ScalaCheck](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/ScalaCheckExample.scala)
+* [Graphs](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/GraphExample.scala)
+* [G/W/T](https://github.com/rhyskeepence/clairvoyance/blob/master/specs2/src/test/scala/clairvoyance/specs2/examples/GivenWhenThenExample.scala)
 
 TODO
 ----
