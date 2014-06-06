@@ -4,11 +4,11 @@ import clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInput
 
 trait SequenceDiagram extends CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 
-  def defaultSequenceDiagramActor = "Default"
+  def defaultActor = "Default"
 
   abstract override def gatherCapturedValues = {
     val gatheredValues = super.gatherCapturedValues
-    val collaborators = CapturedCollaborators.collectCollaborators(gatheredValues, defaultSequenceDiagramActor)
+    val collaborators = CapturedCollaborators.collectCollaborators(gatheredValues, defaultActor)
     val sequenceDiagram = CapturedValue(CapturedValueSequence.nextId, "Sequence Diagram", SvgSequenceDiagram(collaborators))
 
     gatheredValues :+ sequenceDiagram

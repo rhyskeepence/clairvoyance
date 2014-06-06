@@ -1,33 +1,20 @@
-package clairvoyance.specs2.examples
+package clairvoyance.scalatest.examples
 
 import clairvoyance.ProducesCapturedInputsAndOutputs
-import clairvoyance.plugins.SequenceDiagram
-import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
-import org.specs2.execute.Success
+import clairvoyance.scalatest.ClairvoyantContext
+import org.scalatest.Suite
 
-class SequenceDiagramExample extends ClairvoyantSpec {
+trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
+  val ldap = new Ldap
+  val webServer = new WebServer(ldap)
 
-  "The Web Site" should {
-    "authenticate the user using LDAP" in new context {
-      whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
-      thenTheUserIsShownSecrets()
-    }
+  def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String): Unit = {
+    webServer.login(user, password)
   }
 
-  trait context extends ClairvoyantContext with SequenceDiagram {
-    val ldap = new Ldap
-    val webServer = new WebServer(ldap)
+  def thenTheUserIsShownSecrets(): Unit = ()
 
-    override def defaultActor = "Web Server"
-
-    def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String): Unit = {
-      webServer.login(user, password)
-    }
-
-    def thenTheUserIsShownSecrets(): Unit = { Success }
-
-    override def capturedInputsAndOutputs = Seq(webServer, ldap)
-  }
+  override def capturedInputsAndOutputs = Seq(webServer, ldap)
 
   class WebServer(ldap: Ldap) extends ProducesCapturedInputsAndOutputs {
     def login(user: String, password: String): Unit = {
