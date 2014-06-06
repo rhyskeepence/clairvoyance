@@ -18,7 +18,7 @@ class GraphExample extends ClairvoyantSpec {
     val ldap = new Ldap
     val webServer = new WebServer(ldap)
 
-    override def defaultSequenceDiagramActor = "Web Server"
+    override def defaultActor = "Web Server"
 
     def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String): Unit = {
       webServer.login(user, password)
