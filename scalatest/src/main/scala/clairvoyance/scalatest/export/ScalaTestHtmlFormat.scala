@@ -99,7 +99,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       (event.suiteClassName, event.testName, event.testText, event.duration)
 
     val testState = TestStates.dequeue(testName)
-    val rendering = new Rendering(Reflection.tryToCreateObject[CustomRendering](testName))
+    val rendering = renderingFor(event.suiteClassName)
 
     <a id={linkNameOf(testText)}></a>
     <div class="testmethod">
@@ -117,8 +117,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): NodeSeq = {
     val testState = TestStates.dequeue(event.testName)
-    val optionalCustomRenderer = Reflection.tryToCreateObject[CustomRendering](event.testName)
-    val rendering = new Rendering(optionalCustomRenderer)
+    val rendering = renderingFor(event.suiteClassName)
 
     val linkId    = UUID.randomUUID.toString
     val contentId = UUID.randomUUID.toString
@@ -182,5 +181,10 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       case Some(MotionToSuppress) => None
       case _ => Some(suiteName)
     }
+  }
+
+  private def renderingFor(suiteClassName: Option[String]): Rendering = suiteClassName match {
+    case Some(className) => new Rendering(Reflection.tryToCreateObject[CustomRendering](className))
+    case None => new Rendering(None)
   }
 }
