@@ -1,7 +1,7 @@
 package clairvoyance.scalatest.examples
 
-import org.scalatest.Spec
 import clairvoyance.plugins.SequenceDiagram
+import org.scalatest.Spec
 
 class SequenceDiagramExample extends Spec with LdapAuthenticationContext with SequenceDiagram {
 
