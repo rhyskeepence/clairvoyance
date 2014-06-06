@@ -59,7 +59,7 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies := Seq(
-        "org.scalatest"  %% "scalatest"   % "2.2.0-RC1",
+        "org.scalatest"  %% "scalatest"   % "2.2.0-RC2",
         "org.scalaz"     %% "scalaz-core" % "7.0.6",
         "org.scalacheck" %% "scalacheck"  % "1.11.4" % "optional"
       ),
