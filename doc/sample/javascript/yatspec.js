@@ -105,7 +105,7 @@ $(document).ready(function () {
                 ];
             }).get();
 
-        $('.logKey', this).prepend("<span style='margin-top: 2px; margin-right: 30px; float: left;' class='ui-icon ui-icon-circle-triangle-e'></span>");
+        $('.logKey', this).prepend("<span style='margin-top: 2px; margin-right: 7px; float: left;' class='ui-icon ui-icon-circle-triangle-e'></span>");
         $('.logKey', this).click(function() {
             $(this).next(".logValue").toggleClass("hide");
             $(this).children("span").toggleClass("ui-icon-circle-triangle-s");
