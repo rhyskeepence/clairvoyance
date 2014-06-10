@@ -6,7 +6,7 @@ import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
 class ScalaCheckExample extends Spec with ScalaCheckContext with MustMatchers {
 
-  object `Strings must` {
+  object `String must` {
     def `support startsWith`() {
       givenTwoStrings((a: String, b: String) =>
         (a + b).startsWith(a) mustBe true)

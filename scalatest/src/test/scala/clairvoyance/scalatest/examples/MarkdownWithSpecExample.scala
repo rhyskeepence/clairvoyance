@@ -2,7 +2,7 @@ package clairvoyance.scalatest.examples
 
 import org.scalatest.Spec
 
-class MarkdownExampleWithSpec extends Spec {
+class MarkdownWithSpecExample extends Spec {
 
   object `The Triangle Number Calculator` {
     markup {

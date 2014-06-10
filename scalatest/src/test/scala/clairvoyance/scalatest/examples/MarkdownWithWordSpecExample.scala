@@ -2,7 +2,7 @@ package clairvoyance.scalatest.examples
 
 import org.scalatest.WordSpec
 
-class MarkdownExampleWithWordSpec extends WordSpec {
+class MarkdownWithWordSpecExample extends WordSpec {
 
   """The Triangle Number Calculator
     |###Rules
@@ -19,7 +19,7 @@ class MarkdownExampleWithWordSpec extends WordSpec {
     |  ******
     |```
     | """.stripMargin can {
-    "calculate the sixth triangle number" in {
+    "can calculate the sixth triangle number" in {
       triangle(6) == 21
     }
   }
@@ -30,7 +30,7 @@ class MarkdownExampleWithWordSpec extends WordSpec {
     |* *Non-negative* integers only
     |* [Further reading](http://en.wikipedia.org/wiki/Factorial)
   """.stripMargin can {
-    "calculate the factorial of 3" in {
+    "can calculate the factorial of 3" in {
       factorial(3) == 6
     }
   }
