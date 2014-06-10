@@ -13,7 +13,7 @@ object Reflection {
    * This is useful to instantiate nested classes which are referencing their outer class in their constructor
    */
   def tryToCreateObject[T <: AnyRef](className: String,
-                                     loader: ClassLoader = Thread.currentThread.getContextClassLoader,
+                                     loader: ClassLoader = getClass.getClassLoader,
                                      printMessage: Boolean = false,
                                      printStackTrace: Boolean = false)
                                     (implicit m: ClassTag[T]): Option[T] =
