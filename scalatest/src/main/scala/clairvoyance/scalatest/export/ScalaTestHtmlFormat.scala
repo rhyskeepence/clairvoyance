@@ -7,7 +7,6 @@ import clairvoyance.state.TestStates
 import java.util.UUID
 import org.scalatest.events._
 import org.scalatest.exceptions
-import org.scalatest.tools.clairvoyance.ScalaTestSpy.SuiteResult
 import scala.xml.NodeSeq
 
 case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) extends HtmlFormat(xml) {
@@ -95,8 +94,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     }
 
   private def renderFragmentForBody(event: TestSucceeded): NodeSeq = {
-    val (suiteClassName, testName, testText, duration) =
-      (event.suiteClassName, event.testName, event.testText, event.duration)
+    val (suiteClassName, testName, testText, duration) = (event.suiteClassName, event.testName, event.testText, event.duration)
 
     val testState = TestStates.dequeue(testName)
     val rendering = renderingFor(event.suiteClassName)

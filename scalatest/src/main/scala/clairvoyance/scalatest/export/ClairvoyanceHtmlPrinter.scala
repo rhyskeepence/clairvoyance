@@ -1,7 +1,6 @@
 package clairvoyance.scalatest.export
 
 import clairvoyance.export.ClairvoyanceHtml
-import org.scalatest.tools.clairvoyance.ScalaTestSpy.SuiteResult
 
 trait ClairvoyanceHtmlPrinter {
 

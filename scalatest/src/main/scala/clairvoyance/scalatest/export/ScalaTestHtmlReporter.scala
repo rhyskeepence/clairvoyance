@@ -2,7 +2,6 @@ package clairvoyance.scalatest.export
 
 import clairvoyance.export.ClairvoyanceHtmlFileWriter
 import org.scalatest.ResourcefulReporter
-import org.scalatest.tools.clairvoyance.ScalaTestSpy.{SuiteResultHolder, SuiteResult}
 import org.scalatest.events._
 import scala.collection.mutable.ListBuffer
 import scalaz.Scalaz.ToIdOps
@@ -13,95 +12,59 @@ class ScalaTestHtmlReporterWithLocation extends ScalaTestHtmlReporter
 class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter {
   type ExportType = Unit
 
-  private val results   = new SuiteResultHolder
+  private val results   = new SuiteResults
   private var eventList = new ListBuffer[Event]
   private var runEndEvent: Option[Event] = None
 
-  def apply(event: Event): Unit = {
-    event match {
-      case _: DiscoveryStarting  =>
-      case _: DiscoveryCompleted =>
-      case _: RunStarting  =>
-      case _: RunCompleted => runEndEvent = Some(event)
-      case _: RunStopped   => runEndEvent = Some(event)
-      case _: RunAborted   => runEndEvent = Some(event)
+  def apply(event: Event): Unit = event match {
+    case _: DiscoveryStarting  =>
+    case _: DiscoveryCompleted =>
+    case _: RunStarting        =>
+    case _: RunCompleted       => runEndEvent = Some(event)
+    case _: RunStopped         => runEndEvent = Some(event)
+    case _: RunAborted         => runEndEvent = Some(event)
+    case e: SuiteCompleted     => addSuiteResult(e, e.suiteName, e.suiteId, e.suiteClassName, e.duration, completed = true)
+    case e: SuiteAborted       => addSuiteResult(e, e.suiteName, e.suiteId, e.suiteClassName, e.duration, completed = false)
+    case _ => eventList += event
+  }
 
-      case SuiteCompleted(ordinal, suiteName, suiteId, suiteClassName, duration, formatter, location, rerunner, payload, threadName, timeStamp) =>
-        val (suiteEvents, otherEvents) = extractSuiteEvents(suiteId)
-        eventList = otherEvents
+  private def addSuiteResult(event: Event, suiteName: String, suiteId: String, suiteClassName: Option[String], duration: Option[Long], completed: Boolean): Unit = {
+    val (suiteEvents, otherEvents) = extractSuiteEvents(suiteId)
+    eventList = otherEvents
 
-        val sortedSuiteEvents = suiteEvents.sorted
-        if (sortedSuiteEvents.length == 0)
-          throw new IllegalStateException(
-            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
+    val sortedSuiteEvents = suiteEvents.sorted
+    if (sortedSuiteEvents.length == 0)
+      throw new IllegalStateException(
+        s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
 
-        sortedSuiteEvents.head match {
-          case suiteStarting: SuiteStarting =>
-            val accumulatedResult = SuiteResult(
-              suiteId, suiteName, suiteClassName, duration, suiteStarting, event, Vector.empty ++ sortedSuiteEvents.tail,
-              testsSucceededCount = 0, testsFailedCount   = 0, testsIgnoredCount = 0, testsPendingCount = 0,
-              testsCanceledCount  = 0, scopesPendingCount = 0, isCompleted = true)
+    sortedSuiteEvents.head match {
+      case suiteStarting: SuiteStarting =>
+        val accumulatedResult = SuiteResult(
+          suiteId, suiteName, suiteClassName, duration, suiteStarting, event, Vector.empty ++ sortedSuiteEvents.tail,
+          testsPassedCount    = 0, testsFailedCount   = 0, testsIgnoredCount = 0, testsPendingCount = 0,
+          testsCancelledCount = 0, scopesPendingCount = 0, isCompleted = completed)
 
-            val suiteResult = sortedSuiteEvents.foldLeft(accumulatedResult) {
-              case (r, e) => e match {
-                case _: TestSucceeded => r.copy(testsSucceededCount = r.testsSucceededCount + 1)
-                case _: TestFailed    => r.copy(testsFailedCount    = r.testsFailedCount    + 1)
-                case _: TestIgnored   => r.copy(testsIgnoredCount   = r.testsIgnoredCount   + 1)
-                case _: TestPending   => r.copy(testsPendingCount   = r.testsPendingCount   + 1)
-                case _: TestCanceled  => r.copy(testsCanceledCount  = r.testsCanceledCount  + 1)
-                case _: ScopePending  => r.copy(scopesPendingCount  = r.scopesPendingCount  + 1)
-                case _ => r
-              }
-            }
-
-            val suiteStartingEvent = sortedSuiteEvents.head.asInstanceOf[SuiteStarting]
-            if (suiteStartingEvent.formatter != Some(MotionToSuppress)) {
-              results += suiteResult
-            }
-          case other => throw new IllegalStateException(
-            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got: $other")
+        val suiteResult = sortedSuiteEvents.foldLeft(accumulatedResult) {
+          case (r, e) => e match {
+            case _: TestSucceeded => r.copy(testsPassedCount    = r.testsPassedCount     + 1)
+            case _: TestFailed    => r.copy(testsFailedCount    = r.testsFailedCount     + 1)
+            case _: TestIgnored   => r.copy(testsIgnoredCount   = r.testsIgnoredCount    + 1)
+            case _: TestPending   => r.copy(testsPendingCount   = r.testsPendingCount    + 1)
+            case _: TestCanceled  => r.copy(testsCancelledCount = r.testsCancelledCount  + 1)
+            case _: ScopePending  => r.copy(scopesPendingCount  = r.scopesPendingCount   + 1)
+            case _ => r
+          }
         }
-
-      case SuiteAborted(_, _, suiteName, suiteId, suiteClassName, _, duration, _, _, _, _, _, _) =>
-        val (suiteEvents, otherEvents) = extractSuiteEvents(suiteId)
-        eventList = otherEvents
-
-        val sortedSuiteEvents = suiteEvents.sorted
-        if (sortedSuiteEvents.length == 0)
-          throw new IllegalStateException(
-            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got no suite event at all")
-
-        sortedSuiteEvents.head match {
-          case suiteStarting: SuiteStarting =>
-            val accumulatedResult = SuiteResult(
-              suiteId, suiteName, suiteClassName, duration, suiteStarting, event, Vector.empty ++ sortedSuiteEvents.tail,
-              testsSucceededCount = 0, testsFailedCount   = 0, testsIgnoredCount = 0, testsPendingCount = 0,
-              testsCanceledCount  = 0, scopesPendingCount = 0, isCompleted = false)
-
-            val suiteResult = sortedSuiteEvents.foldLeft(accumulatedResult) {
-              case (r, e) => e match {
-                case _: TestSucceeded => r.copy(testsSucceededCount = r.testsSucceededCount + 1)
-                case _: TestFailed    => r.copy(testsFailedCount    = r.testsFailedCount    + 1)
-                case _: TestIgnored   => r.copy(testsIgnoredCount   = r.testsIgnoredCount   + 1)
-                case _: TestPending   => r.copy(testsPendingCount   = r.testsPendingCount   + 1)
-                case _: TestCanceled  => r.copy(testsCanceledCount  = r.testsCanceledCount  + 1)
-                case _: ScopePending  => r.copy(scopesPendingCount  = r.scopesPendingCount  + 1)
-                case _ => r
-              }
-            }
-            results += suiteResult
-          case other => throw new IllegalStateException(
-            s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got: $other")
+        if (!completed || sortedSuiteEvents.head.asInstanceOf[SuiteStarting].formatter != Some(MotionToSuppress)) {
+          results += suiteResult
         }
-      case _ => eventList += event
+      case other => throw new IllegalStateException(
+        s"Expected SuiteStarting for completion event: $event in the head of suite events, but we got: $other")
     }
   }
 
   private def extractSuiteEvents(suiteId: String): (ListBuffer[Event], ListBuffer[Event]) = {
-    def relatedToSuite(nameInfoOption: Option[NameInfo]): Boolean = nameInfoOption match {
-      case Some(nameInfo) => nameInfo.suiteId == suiteId
-      case None => false
-    }
+    def relatedToSuite(nameInfo: Option[NameInfo]): Boolean = nameInfo.fold(false)(_.suiteId == suiteId)
     eventList partition {
       case e: TestStarting   => e.suiteId == suiteId
       case e: TestSucceeded  => e.suiteId == suiteId
