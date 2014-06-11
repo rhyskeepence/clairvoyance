@@ -1,9 +1,8 @@
 package clairvoyance.scalatest.export
 
-import org.scalatest.events.{Summary, Event, SuiteStarting}
+import org.scalatest.events.{Event, SuiteStarting}
 import scala.collection.mutable.ListBuffer
 
-private[export]
 case class SuiteResult(suiteId: String,
                        suiteName: String,
                        suiteClassName: Option[String],

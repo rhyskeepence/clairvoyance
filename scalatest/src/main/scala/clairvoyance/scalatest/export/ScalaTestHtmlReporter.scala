@@ -4,6 +4,7 @@ import clairvoyance.export.ClairvoyanceHtmlFileWriter
 import org.scalatest.ResourcefulReporter
 import org.scalatest.events._
 import scala.collection.mutable.ListBuffer
+import scala.util.Properties.{propOrElse, userDir}
 import scalaz.Scalaz.ToIdOps
 
 /** required by IDEA's ScalaTest runner only */
@@ -95,7 +96,12 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
     case None => writeResults("runCompleted", Some(results.totalDuration))
   }
 
-  def allSuiteResults: Seq[SuiteResult] = results.suites.toSeq
+  protected def allSuiteResults: Seq[SuiteResult] = {
+    val (specs, examples) = results.suites.sortBy(_.suiteName).toSeq.partition(_.suiteName endsWith "Spec")
+    examples ++ specs
+  }
+
+  protected def outputDir = propOrElse("scalatest.output.dir", s"$userDir/target/clairvoyance-reports/")
 
   private def writeResults(resourceName: String, duration: Option[Long]): Unit = results.suites.map(print) |> writeFiles
 }

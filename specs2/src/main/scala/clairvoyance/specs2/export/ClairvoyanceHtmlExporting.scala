@@ -5,6 +5,7 @@ import org.specs2.io.ConsoleOutput
 import org.specs2.main.Arguments
 import org.specs2.reporter.{DefaultReporter, Exporter}
 import org.specs2.specification.{ExecutedSpecification, ExecutingSpecification}
+import scala.util.Properties.{propOrElse, userDir}
 import scalaz.Scalaz.ToIdOps
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
@@ -17,6 +18,8 @@ class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter wi
     printTeamCityLog(executed)
     executed
   }
+
+  protected def outputDir = propOrElse("specs2.outDir", s"$userDir/target/clairvoyance-reports/")
 }
 
 trait HtmlReporter extends DefaultReporter with ClairvoyanceHtmlFileWriter with ConsoleOutput

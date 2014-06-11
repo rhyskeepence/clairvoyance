@@ -4,8 +4,6 @@ import clairvoyance.export.ClairvoyanceHtml
 
 trait ClairvoyanceHtmlPrinter {
 
-  def allSuiteResults: Seq[SuiteResult]
-
   def print(suiteResult: SuiteResult): ClairvoyanceHtml = {
     val suiteFileName = asFileName(suiteResult)
     ClairvoyanceHtml(s"$suiteFileName.html", printHtml(suiteFileName, suiteResult).xml)
@@ -27,5 +25,6 @@ trait ClairvoyanceHtmlPrinter {
     )
   }
 
+  protected def allSuiteResults: Seq[SuiteResult]
   private def clairvoyanceFormat = new ScalaTestHtmlFormat()
 }
