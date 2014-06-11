@@ -1,16 +1,28 @@
 import sbt._
 import sbt.Keys._
+import com.typesafe.sbt.SbtGhPages.ghpages
+import com.typesafe.sbt.SbtGit.git
+import com.typesafe.sbt.SbtSite.site
+import com.typesafe.sbt.SbtSite.SiteKeys.{siteSourceDirectory, siteMappings}
 
 import scala.util.Properties.{propOrEmpty, setProp}
 import scala.util.Try
-
-import com.typesafe.sbt.pgp.PgpKeys._
 
 import xerial.sbt.Sonatype._
 import SonatypeKeys._
 
 object build extends Build {
+
   type Settings = Def.Setting[_]
+
+  lazy val websiteSettings = site.settings ++ ghpages.settings ++ Seq[Setting[_]](
+      git.remoteRepo := "git@github.com:rhyskeepence/clairvoyance.git",
+      siteSourceDirectory <<= baseDirectory / "site",
+      siteMappings <++= baseDirectory map { (b) =>
+        (b / "specs2" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "specs2" / "target" / "clairvoyance-reports", "clairvoyance-reports/specs2")) ++
+        (b / "scalatest" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "scalatest" / "target" / "clairvoyance-reports", "clairvoyance-reports/scalatest"))
+      }
+    )
 
   lazy val commonSettings = Seq(
     organization := "com.github.rhyskeepence",
@@ -21,7 +33,7 @@ object build extends Build {
     scalacOptions in GlobalScope ++= Seq("-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
   )
 
-  lazy val moduleSettings = commonSettings ++ publicationSettings
+  lazy val moduleSettings = commonSettings ++ publicationSettings ++ websiteSettings
 
   lazy val clairvoyance = (project in file(".")).
     settings(moduleSettings: _*).
