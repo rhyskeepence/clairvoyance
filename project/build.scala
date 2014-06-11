@@ -1,6 +1,7 @@
 import sbt._
 import sbt.Keys._
 
+import scala.util.Properties.{propOrEmpty, setProp}
 import scala.util.Try
 
 import com.typesafe.sbt.pgp.PgpKeys._
@@ -29,9 +30,9 @@ object build extends Build {
       packagedArtifacts := Map.empty
     ).aggregate(core, specs2, scalatest)
 
-  lazy val core = (project in file("core")).
-    settings(moduleSettings: _*).
-    settings(
+  lazy val core = (project in file("core"))
+    .settings(moduleSettings: _*)
+    .settings(
       name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
         "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3",
@@ -53,7 +54,13 @@ object build extends Build {
       libraryDependencies := Seq(
         "org.specs2"     %% "specs2"     % "2.3.12",
         "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
-      )) dependsOn core
+      ),
+      testOptions in Test += Tests.Setup(() => {
+        setProp("specs2.outDir",     s"${target.value.getAbsolutePath}/clairvoyance-reports/")
+        setProp("specs2.srcTestDir", (scalaSource in Test).value.getAbsolutePath)
+        setProp("specs2.statsDir",   s"${propOrEmpty("specs2.outDir")}/stats/")
+      })
+    ) dependsOn core
 
   lazy val scalatest = (project in file("scalatest"))
     .settings(moduleSettings: _*)
@@ -63,6 +70,9 @@ object build extends Build {
         "org.scalaz"     %% "scalaz-core" % "7.0.6",
         "org.scalacheck" %% "scalacheck"  % "1.11.4" % "test"
       ),
+      testOptions in Test += Tests.Setup(() => {
+        setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
+      }),
       testOptions in Test += Tests.Argument(
         TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter"
       )

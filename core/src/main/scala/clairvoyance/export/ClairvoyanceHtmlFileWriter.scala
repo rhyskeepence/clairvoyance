@@ -4,12 +4,11 @@ import clairvoyance.export.ClairvoyanceHtmlFileWriter.copyResourcesOnlyOnceTo
 import clairvoyance.io.ClasspathResources
 import java.io.Writer
 import java.util.concurrent.atomic.AtomicBoolean
-import scala.util.Properties.{lineSeparator, propOrElse, userDir}
+import scala.util.Properties.lineSeparator
 import scala.xml.{Xhtml, NodeSeq}
 import scalax.file.Path
 
 trait ClairvoyanceHtmlFileWriter {
-  val outputDir: String = propOrElse("clairvoyance.output.dir", s"$userDir/target/clairvoyance-reports/")
 
   def writeFiles = (htmlFiles: Seq[ClairvoyanceHtml]) => {
     copyResources()
@@ -28,6 +27,7 @@ trait ClairvoyanceHtmlFileWriter {
 
   protected def writeXml(xml: NodeSeq)(out: Writer): Unit = out.write(Xhtml.toXhtml(xml))
   protected def copyResources(): Unit = copyResourcesOnlyOnceTo(outputDir)
+  protected def outputDir: String
 }
 
 private object ClairvoyanceHtmlFileWriter {
