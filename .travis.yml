@@ -4,8 +4,8 @@ scala:
 jdk:
 - oraclejdk7
 
-before_script: ./publish/prepublish.sh
-script: sbt test "+ publishSigned" sonatypeReleaseAll
+before_script: ./scripts/prepublish.sh
+script: ./scripts/ci_build.sh
 
 env:
   global:
