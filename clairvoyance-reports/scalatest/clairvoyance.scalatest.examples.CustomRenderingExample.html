@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html><head>
+      <title>clairvoyance.scalatest.examples.CustomRenderingExample</title>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all" />
+
+      <script src="javascript/xregexp.js" type="text/javascript"></script>
+      <script src="javascript/yatspec.js" type="text/javascript"></script>
+      <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
+      <script type="text/javascript">
+function toggleDetails(contentId, linkId) {
+  var content  = document.getElementById(contentId);
+  var linkText = document.getElementById(linkId);
+  if (content.style.display == "block") {
+    content.style.display = "none";
+    linkText.innerHTML = "[ show stacktrace ]";
+  } else {
+    content.style.display = "block";
+    linkText.innerHTML = "[ hide stacktrace ]";
+  }
+}
+
+function hideOpenInNewTabIfRequired() {
+  if (top === self) { document.getElementById('printlink').style.display = 'none'; }
+}
+</script>
+    </head><div id="sidebar"><ul><li>
+        <a href="clairvoyance.scalatest.examples.CustomRenderingExample.html">CustomRenderingExample</a><ul>
+        <li><em>The Custom Renderer should</em></li><li> - be invoked</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.GivenWhenThenExample.html">GivenWhenThenExample</a><ul>
+        <li><em>The coordinator must</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li><li> - not invoke the Doomsday Device on the 20th of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.GraphExample.html">GraphExample</a><ul>
+        <li><em>The Web Site must</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.LoggingExample.html">LoggingExample</a><ul>
+        <li><em>The coordinator must</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.MarkdownWithSpecExample.html">MarkdownWithSpecExample</a><ul>
+        <li><em>The Calculator</em></li><li> - can calculate the factorial of 3</li><li><em>The Triangle Number Calculator</em></li><li> - can calculate the sixth triangle number</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.MarkdownWithWordSpecExample.html">MarkdownWithWordSpecExample</a><ul>
+        <li><em>The Triangle Number Calculator</em></li><li> - can calculate the sixth triangle number</li><li><em>The Calculator</em></li><li> - can calculate the factorial of 3</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.ScalaCheckExample.html">ScalaCheckExample</a><ul>
+        <li><em>String must</em></li><li> - support concat</li><li> - support endsWith</li><li> - support startsWith</li><li> - support substring</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.SequenceDiagramExample.html">SequenceDiagramExample</a><ul>
+        <li><em>The Web Site must</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.scalatest.examples.HelloWorldSpec.html">HelloWorldSpec</a><ul>
+        <li><em>The 'Hello world' string must</em></li><li> - contain 11 characters</li><li> - end with 'world'</li><li> - start with 'Hello'</li>
+        </ul>
+      </li></ul></div><body>
+      <div id="container">
+        <h1> Custom Rendering Example </h1>
+        <ul class="contents">
+    <li class="test-passed">
+      <a href="#beinvoked">
+        The Custom Renderer should be invoked
+      </a>
+    </li>
+    </ul>
+        <text><h1>The Custom Renderer should</h1></text><a id="beinvoked"></a><div class="testmethod">
+      <text><h2>be invoked</h2></text>
+      <div class="scenario" id="1598898303">
+        <h2>Specification</h2>
+        <pre class="highlight specification">Interesting givens +=  &quot;brain&quot; -&gt; Brain 130  </pre>
+        <h2>Execution</h2>
+        <pre class="highlight results test-passed highlighted">Passed in 2 ms</pre>
+        <h3 class="logKey">Interesting Givens</h3><table class="interestingGivens logValue">
+          <tr>
+        <th class="key">brain</th>
+        <td class="interestingGiven"><span>a Brain with an IQ of 130</span></td>
+      </tr>
+        </table>
+        
+      </div>
+    </div>
+      </div>
+    </body></html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html><head>
+      <title>GivenWhenThenExample</title>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/base/jquery-ui.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="css/yatspec.css" type="text/css" media="all" />
+
+      <script src="javascript/xregexp.js" type="text/javascript"></script>
+      <script src="javascript/yatspec.js" type="text/javascript"></script>
+      <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
+      <script type="text/javascript">
+function toggleDetails(contentId, linkId) {
+  var content  = document.getElementById(contentId);
+  var linkText = document.getElementById(linkId);
+  if (content.style.display == "block") {
+    content.style.display = "none";
+    linkText.innerHTML = "[ show stacktrace ]";
+  } else {
+    content.style.display = "block";
+    linkText.innerHTML = "[ hide stacktrace ]";
+  }
+}
+
+function hideOpenInNewTabIfRequired() {
+  if (top === self) { document.getElementById('printlink').style.display = 'none'; }
+}
+</script>
+    </head><div id="sidebar"><ul><li>
+        <a href="clairvoyance.specs2.examples.CustomRenderingExample.html">CustomRenderingExample</a><ul>
+        <li><em>The Custom Renderer should</em></li><li> - be invoked</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.GivenWhenThenExample.html">GivenWhenThenExample</a><ul>
+        <li><em>The coordinator should</em></li><li> - not invoke the Doomsday Device on the 20th of December 2012</li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.GraphExample.html">GraphExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.LoggingExample.html">LoggingExample</a><ul>
+        <li><em>The coordinator should</em></li><li> - invoke the Doomsday Device on the 21st of December 2012</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.MarkdownExample.html">MarkdownExample</a><ul>
+        <li><em>The Triangle Number Calculator</em></li><li> - calculate the sixth triangle number</li><li><em>The Calculator should</em></li><li> - Calculate the factorial of 3</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.ScalaCheckExample.html">ScalaCheckExample</a><ul>
+        <li><em>String should</em></li><li> - support startsWith</li><li> - support endsWith</li><li> - support concat</li><li> - support substring</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.SequenceDiagramExample.html">SequenceDiagramExample</a><ul>
+        <li><em>The Web Site should</em></li><li> - authenticate the user using LDAP</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.CapturedInputsAndOutputsSpec.html">CapturedInputsAndOutputsSpec</a><ul>
+        <li><em>The Captured Inputs And Outputs should</em></li><li> - include outputs from registered producers</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.examples.HelloWorldSpec.html">HelloWorldSpec</a><ul>
+        <li><em>The 'Hello world' string should</em></li><li> - contain 11 characters</li><li> - start with 'Hello'</li><li> - end with 'world'</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.InterestingGivensSpec.html">InterestingGivensSpec</a><ul>
+        <li><em>The Interesting Givens list should</em></li><li> - include default Interesting Givens</li><li> - include both default and context specific Interesting Givens</li><li> - not include Interesting Givens from the previous context</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.rendering.RenderingSpec.html">RenderingSpec</a><ul>
+        <li><em>The Renderer should</em></li><li> - render objects as strings</li><li> - render XML as escaped XML</li><li> - use the custom renderer</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.plugins.SequenceDiagramSpec.html">SequenceDiagramSpec</a><ul>
+        <li><em>The Sequence Diagrammer should</em></li><li> - identify captured values in the format `SOME MESSAGE from X to Y`</li><li> - identify captured values in the format `SOME MESSAGE to Y`, using Donkey Kong as the default</li><li> - identify captured values in the format `SOME MESSAGE from Y`, using Donkey Kong as the default</li><li> - be case insensitive</li><li> - ignored captured values which do not match the `From/To` format</li>
+        </ul>
+      </li><li>
+        <a href="clairvoyance.specs2.plugins.SvgSequenceDiagramSpec.html">SvgSequenceDiagramSpec</a><ul>
+        <li><em>The Rendered SVG Sequence Diagram should</em></li><li> - contain actor named Bees</li><li> - contain actor named Human</li><li> - contain actor named Robots</li><li> - contain clickable message</li>
+        </ul>
+      </li></ul></div><body>
+      <div id="container">
+        <h1>Given When Then Example</h1>
+        <ul class="contents"><li class="test-passed">
+              <a href="#notinvoketheDoomsdayDeviceonthe20thofDecember2012">The coordinator should not invoke the Doomsday Device on the 20th of December 2012</a>
+            </li><li class="test-passed">
+              <a href="#invoketheDoomsdayDeviceonthe21stofDecember2012">The coordinator should invoke the Doomsday Device on the 21st of December 2012</a>
+            </li></ul>
+        <ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <text><h1>The coordinator should</h1></text>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <a id="notinvoketheDoomsdayDeviceonthe20thofDecember2012"></a><div class="testmethod">
+            <text><h2>not invoke the Doomsday Device on the 20th of December 2012</h2></text>
+            <div class="scenario" id="-1964226139">
+              <h2>Specification</h2>
+              <pre class="highlight specification">Given the date is 20/12/2012
+When the coordinator runs
+Then the Doomsday device should not be unleashed</pre>
+              <h2>Test results:</h2>
+              <pre class="highlight results test-passed highlighted">Test Passed in 95 ms</pre>
+              
+              
+            </div>
+          </div>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <a id="invoketheDoomsdayDeviceonthe21stofDecember2012"></a><div class="testmethod">
+            <text><h2>invoke the Doomsday Device on the 21st of December 2012</h2></text>
+            <div class="scenario" id="1211587860">
+              <h2>Specification</h2>
+              <pre class="highlight specification">Given the date is 21/12/2012
+When the coordinator runs
+Then the Doomsday device should be unleashed</pre>
+              <h2>Test results:</h2>
+              <pre class="highlight results test-passed highlighted">Test Passed in 11 ms</pre>
+              
+              
+            </div>
+          </div>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul><ul>
+      <span></span>
+    </ul>
+      </div>
+    </body></html>
