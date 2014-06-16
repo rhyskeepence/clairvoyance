@@ -1,4 +1,5 @@
 #!/bin/sh
 sbt test "+ publishSigned" sonatypeReleaseAll
-sbt make-site
-./scripts/pushsite.sh
+
+#sbt make-site
+#./scripts/pushsite.sh
