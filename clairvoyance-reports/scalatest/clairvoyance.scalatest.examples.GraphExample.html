@@ -83,12 +83,12 @@ function hideOpenInNewTabIfRequired() {
         <pre class="highlight specification">When the user logs in to the web site using the credentials user=&quot;mario&quot;, password=&quot;luigi&quot; 
 Then the user is shown secrets  </pre>
         <h2>Execution</h2>
-        <pre class="highlight results test-passed highlighted">Passed in 0 ms</pre>
+        <pre class="highlight results test-passed highlighted">Passed in 26 ms</pre>
         
-        <h3 class="logKey" logkey="5">Login Submitted from User</h3><div class="logValue highlight String"><span>user: mario, password: luigi</span></div><h3 class="logKey" logkey="6">Username and Password to LDAP</h3><div class="logValue highlight Elem"><span>&lt;authRequest&gt;
+        <h3 class="logKey" logkey="0">Login Submitted from User</h3><div class="logValue highlight String"><span>user: mario, password: luigi</span></div><h3 class="logKey" logkey="1">Username and Password to LDAP</h3><div class="logValue highlight Elem"><span>&lt;authRequest&gt;
   &lt;user&gt;mario&lt;/user&gt;
   &lt;pass&gt;luigi&lt;/pass&gt;
-&lt;/authRequest&gt;</span></div><h3 class="logKey" logkey="7">Credentials for User from LDAP</h3><div class="logValue highlight Elem"><span>&lt;authResponse&gt;
+&lt;/authRequest&gt;</span></div><h3 class="logKey" logkey="2">Credentials for User from LDAP</h3><div class="logValue highlight Elem"><span>&lt;authResponse&gt;
   &lt;user&gt;
     &lt;name&gt;mario&lt;/name&gt;
     &lt;credentials&gt;
@@ -98,7 +98,7 @@ Then the user is shown secrets  </pre>
       &lt;admin/&gt;
     &lt;/credentials&gt;
   &lt;/user&gt;
-&lt;/authResponse&gt;</span></div><h3 class="logKey" logkey="8">Response to User</h3><div class="logValue highlight String"><span>Forwarding to showSecrets.html</span></div><h3 class="logKey" logkey="9">Graph</h3><div class="logValue highlight GraphVizDiagram"><div class="nohighlight"><img src="https://chart.googleapis.com/chart?cht=gv&amp;chl=digraph g {&quot;User&quot; -&gt; &quot;Web Server&quot; [label=&quot;Login Submitted&quot;]
+&lt;/authResponse&gt;</span></div><h3 class="logKey" logkey="3">Response to User</h3><div class="logValue highlight String"><span>Forwarding to showSecrets.html</span></div><h3 class="logKey" logkey="4">Graph</h3><div class="logValue highlight GraphVizDiagram"><div class="nohighlight"><img src="https://chart.googleapis.com/chart?cht=gv&amp;chl=digraph g {&quot;User&quot; -&gt; &quot;Web Server&quot; [label=&quot;Login Submitted&quot;]
 &quot;Web Server&quot; -&gt; &quot;LDAP&quot; [label=&quot;Username and Password&quot;]
 &quot;LDAP&quot; -&gt; &quot;Web Server&quot; [label=&quot;Credentials for User&quot;]
 &quot;Web Server&quot; -&gt; &quot;User&quot; [label=&quot;Response&quot;]}" /></div></div>
