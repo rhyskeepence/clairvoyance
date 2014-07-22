@@ -104,7 +104,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(event))}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName.get, event))}</pre>
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
@@ -113,10 +113,10 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     </div>
   }
 
-  private def getCodeFrom(event: TestSucceeded): List[(Int, String)] = {
+  private def getCodeFrom(location: String, event: TestSucceeded): List[(Int, String)] = {
     event.location match {
-      case Some(LineInFile(ln, _)) => FromSource.getCodeFrom(event.testText, ln)
-      case a@_ => FromSource.getCodeFrom(event.suiteClassName.get, event.testText)
+      case Some(LineInFile(ln, _)) => FromSource.getCodeFrom(location, ln)
+      case a@_ => FromSource.getCodeFrom(location, event.testText)
     }
   }
 
