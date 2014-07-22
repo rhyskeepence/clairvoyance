@@ -104,13 +104,20 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(suiteClassName.get, testText))}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(event))}</pre>
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
         {loggedInputsAndOutputs(testState, rendering)}
       </div>
     </div>
+  }
+
+  private def getCodeFrom(event: TestSucceeded): List[(Int, String)] = {
+    event.location match {
+      case Some(LineInFile(ln, _)) => FromSource.getCodeFrom(event.testText, ln)
+      case a@_ => FromSource.getCodeFrom(event.suiteClassName.get, event.testText)
+    }
   }
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): NodeSeq = {
