@@ -22,12 +22,13 @@ object FromSource {
   }
 
   def getCodeFrom(location: String, testName: String): List[(Int, String)] = {
-    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", fileSeparator) + ".scala"
+    val sourceFilePath = location.split(" ")(0).replaceAll("\\.", "/") + ".scala"
     val sourceFile = listFiles(currentWorkingDirectory).find(_.getPath.endsWith(sourceFilePath))
-    val content = join(readLines(sourceFile).getOrElse(Seq.empty))
-    val lineNumber = content.indexWhere(_.contains(testName))
-    val line = content(lineNumber).trim()
-    readToEndOfMethod(content, if (line.matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1)
+    val content: Seq[String] = readLines(sourceFile).getOrElse(Seq.empty)
+    val zippedContent: Seq[(String, Int)] = content.zipWithIndex
+    val joined = join(zippedContent)
+    val (line, lineNumber) = joined.find(_._1.contains(testName)).get
+    readToEndOfMethod(content, if (line.trim().matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1)
   }
 
   @tailrec
