@@ -12,7 +12,7 @@ object NaiveMultilineMethodNameJoiner {
       case (accum, line) =>
         val last = accum.lastOption.getOrElse(("",0))
 
-        if (quoteses(last._1) == 1) accum.init :+ (last._1 + "\n" + line._1, line._2) else accum :+ line
+        if (quoteses(last._1) == 1) accum.init.:+((last._1 + "\n" + line._1, line._2)) else accum :+ line
     }
   }
 
