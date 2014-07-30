@@ -104,7 +104,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName.get, event))}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName.get, event), suiteClassName = suiteClassName.get)}</pre>
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
@@ -145,7 +145,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
         <h2>Specification</h2>
         <pre class="highlight specification">{
           val sourceLines = FromSource.getCodeFrom(event.suiteClassName.get, event.testText)
-          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList)
+          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName.get)
           }</pre>
         <h2>Execution</h2>
         <div class="highlight results test-failed highlighted" style="margin-bottom: 1em">
@@ -171,7 +171,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     <div class="testmethod">
       {markdownToXhtml("## " + event.testText)}<div class="scenario" id={event.testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName.get, event.testText))}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName.get, event.testText), suiteClassName = event.suiteClassName.get)}</pre>
         <h2>Execution</h2>
         <pre class="highlight specification test-not-run">{event.name}</pre>
       </div>

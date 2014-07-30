@@ -88,7 +88,7 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
             {markdownToXhtml("## " + executedResult.s.raw)}
             <div class="scenario" id={executedResult.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace)}</pre>
+              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace, specificationFullName)}</pre>
               <h2>Test results:</h2>
               <pre class={s"highlight results ${cssClassOf(executedResult)} highlighted"}>{resultOutput + " in " + executedResult.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
