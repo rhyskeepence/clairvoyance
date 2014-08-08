@@ -52,7 +52,7 @@ trait TeamCityTestReporter {
   private def teamcityReport(messageName: String, attributes: (String, String)*): Unit = {
     if (shouldLog) {
       val formattedAttributes = attributes.map { case (k, v) => s"$k='${tidy(v)}'" }.mkString(" ")
-      println(s"##teamcity[$messageName $formattedAttributes}]")
+      println(s"##teamcity[$messageName $formattedAttributes]")
     }
   }
 
