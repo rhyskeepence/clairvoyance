@@ -27,7 +27,7 @@ object FromSource {
     val content: Seq[String] = readLines(sourceFile).getOrElse(Seq.empty)
     val zippedContent: Seq[(String, Int)] = content.zipWithIndex
     val joined = join(zippedContent)
-    val (line, lineNumber) = joined.find(_._1.contains(testName)).get
+    val (line, lineNumber) = joined.find(_._1.replace("\"", "").contains(testName)).get
     readToEndOfMethod(content, if (line.trim().matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1)
   }
 
