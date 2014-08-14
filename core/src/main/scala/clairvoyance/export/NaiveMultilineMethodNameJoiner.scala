@@ -16,8 +16,8 @@ object NaiveMultilineMethodNameJoiner {
     }
   }
 
-  private def doStripLine(s: String): String = {
-    "\"\"\"(.*\n.*)*\"\"\".stripMargin".r.findFirstMatchIn(s).map { m =>
+  private[export] def doStripLine(s: String): String = {
+    "\"\"\"(.*\n.*)*\"\"\"".r.findFirstMatchIn(s).map { m =>
       m.group(0).stripMargin
     }.getOrElse(s)
   }
