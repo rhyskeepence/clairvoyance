@@ -12,8 +12,8 @@ trait ClairvoyantContext extends BeforeAndAfterEachTestData
   protected def beforeExecution(): Unit = ()
   protected def afterExecution():  Unit = ()
 
-  override protected final def beforeEach(testData: TestData): Unit = beforeExecution()
-  override protected final def afterEach(testData: TestData):  Unit = {
+  override protected def beforeEach(testData: TestData): Unit = beforeExecution()
+  override protected def afterEach(testData: TestData):  Unit = {
     TestStates += (testData.name -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
 
