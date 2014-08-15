@@ -6,7 +6,6 @@ import org.specs2.main.Arguments
 import org.specs2.reporter.{DefaultReporter, Exporter}
 import org.specs2.specification.{ExecutedSpecification, ExecutingSpecification}
 import scala.util.Properties.{propOrElse, userDir}
-import scalaz.Scalaz.ToIdOps
 
 class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter with ClairvoyanceHtmlFileWriter with TeamCityTestReporter {
   type ExportType = Unit
@@ -14,7 +13,7 @@ class ClairvoyanceHtmlExporting extends Exporter with ClairvoyanceHtmlPrinter wi
   def export(implicit arguments: Arguments): ExecutingSpecification => ExecutedSpecification = (spec: ExecutingSpecification) => {
     val executed = spec.execute
     val args = arguments <| executed.arguments
-    print(executed)(args) |> writeFiles
+    writeFiles(print(executed)(args))
     printTeamCityLog(executed)
     executed
   }

@@ -5,7 +5,6 @@ import org.scalatest.ResourcefulReporter
 import org.scalatest.events._
 import scala.collection.mutable.ListBuffer
 import scala.util.Properties.{propOrElse, userDir}
-import scalaz.Scalaz.ToIdOps
 
 /** required by IDEA's ScalaTest runner only */
 class ScalaTestHtmlReporterWithLocation extends ScalaTestHtmlReporter
@@ -103,5 +102,5 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
 
   protected def outputDir = propOrElse("scalatest.output.dir", s"$userDir/target/clairvoyance-reports/")
 
-  private def writeResults(resourceName: String, duration: Option[Long]): Unit = results.suites.map(print) |> writeFiles
+  private def writeResults(resourceName: String, duration: Option[Long]): Unit = writeFiles(results.suites.map(print))
 }
