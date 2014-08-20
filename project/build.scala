@@ -24,8 +24,8 @@ object build extends Build {
   lazy val commonSettings = Seq(
     organization := "com.github.rhyskeepence",
     version := Try(sys.env("BUILD_NUMBER")).map("1.0." + _).getOrElse("1.0-SNAPSHOT"),
-    scalaVersion := "2.10.4",
-    crossScalaVersions := Seq("2.10.4", "2.11.1"),
+    scalaVersion := "2.11.2",
+    crossScalaVersions := Seq("2.10.4", "2.11.2"),
     javacOptions ++= Seq("-Xmx3G", "-Xms512m", "-Xss4m"),
     scalacOptions in GlobalScope ++= Seq("-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
   )
@@ -61,7 +61,7 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-specs2",
       libraryDependencies := Seq(
-        "org.specs2"     %% "specs2"     % "2.3.12",
+        "org.specs2"     %% "specs2"     % "2.4.1",
         "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
