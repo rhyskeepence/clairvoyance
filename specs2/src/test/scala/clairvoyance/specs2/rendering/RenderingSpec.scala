@@ -19,6 +19,10 @@ class RenderingSpec extends ClairvoyantSpec {
     "use the custom renderer" in new context {
       rendered(ToBeCustomRendered("nine times")) must_== <span>nine times</span>
     }
+    
+    "use the custom renderer with XML output" in new context {
+      rendered(ToBeCustomRenderedInBold("nine times")) must_== <div class='nohighlight'><em>nine times</em></div>
+    }
   }
 
   trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs  {
@@ -41,10 +45,12 @@ class RenderingSpec extends ClairvoyantSpec {
   case class Brain(iq: Int)
 
   case class ToBeCustomRendered(stringToRender: String)
+  case class ToBeCustomRenderedInBold(stringToRender: String)
 
   class CustomRenderer extends CustomRendering {
     def customRendering = {
       case ToBeCustomRendered(x) => x
+      case ToBeCustomRenderedInBold(x) => <em>{x}</em>
     }
   }
 }
