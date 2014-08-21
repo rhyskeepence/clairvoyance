@@ -124,6 +124,15 @@ trait context extends ClairvoyantContext {
 }
 ```
 
+The value that is captured can be of any type. XML is formatted nicely, and HTML can be inlined into the output
+by capturing a value in a Html type:
+
+```scala
+captureValue("Inline HTML" -> Html(<em>Hello!</em>))
+```
+
+All other values are displayed as their String representation, unless a custom renderer has been defined.
+
 Custom Rendering of Interesting Givens & Captured Inputs And Outputs
 --------------------------------------------------------------------
 

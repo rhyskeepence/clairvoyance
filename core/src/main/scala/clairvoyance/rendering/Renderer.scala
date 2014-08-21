@@ -8,7 +8,7 @@ trait Renderer[T] {
 }
 
 class Rendering(specInstance: Option[CustomRendering]) {
-  val defaultRenderer = new ToStringRender
+  val defaultRenderer = new UnformattedRender
   val nodeSeqRenderer = new NodeSeqRenderer
   val umlRenderer = new SvgSequenceDiagramRenderer
   val graphVizRenderer = new GraphVizRenderer
@@ -27,12 +27,13 @@ class Rendering(specInstance: Option[CustomRendering]) {
 
   def renderToXml(anything: Any) = render(anything) match {
     case xml: NodeSeq   => <div class='nohighlight'>{xml}</div>
-    case string: String => <span>{string}</span>
+    case Html(html)     => <div class='nohighlight'>{html}</div>
+    case any            => <span>{any.toString}</span>
   }
 }
 
-class ToStringRender extends Renderer[Any] {
-  def render = something => something.toString
+class UnformattedRender extends Renderer[Any] {
+  def render = identity
 }
 
 class NodeSeqRenderer extends Renderer[NodeSeq] {

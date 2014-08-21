@@ -1,7 +1,7 @@
 package clairvoyance.specs2.rendering
 
 import clairvoyance.ProducesCapturedInputsAndOutputs
-import clairvoyance.rendering.{CustomRendering, Rendering}
+import clairvoyance.rendering.{Html, CustomRendering, Rendering}
 import clairvoyance.specs2.{ClairvoyantSpec, ClairvoyantContext}
 import scala.xml.PrettyPrinter
 
@@ -14,6 +14,10 @@ class RenderingSpec extends ClairvoyantSpec {
 
     "render XML as escaped XML" in new context {
       rendered(xml) must_== <span>{formattedXml}</span>
+    }
+
+    "render HTML as inline HTML" in new context {
+      rendered(Html(<em>inline html</em>)) must_== <div class='nohighlight'><em>inline html</em></div>
     }
 
     "use the custom renderer" in new context {
