@@ -20,7 +20,7 @@ trait ScalaTestEvent {
 }
 
 case class TestFailedOrCancelled(message: String,
-                                 suiteClassName: Option[String],
+                                 suiteClassName: String,
                                  testName: String,
                                  testText: String,
                                  recordedEvents: IndexedSeq[RecordableEvent],
@@ -34,13 +34,13 @@ case class TestFailedOrCancelled(message: String,
 
 object TestFailedOrCancelled {
   def unapply(event: Event): Option[TestFailedOrCancelled] = event match {
-    case TestFailed  (_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName, testName, testText, recordedEvents, throwable, duration, failed = true))
-    case TestCanceled(_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName, testName, testText, recordedEvents, throwable, duration, failed = false))
+    case TestFailed  (_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, testName, testText, recordedEvents, throwable, duration, failed = true))
+    case TestCanceled(_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, testName, testText, recordedEvents, throwable, duration, failed = false))
     case _ => None
   }
 }
 
-case class TestPendingOrIgnored(suiteClassName: Option[String],
+case class TestPendingOrIgnored(suiteClassName: String,
                                 testName: String,
                                 testText: String,
                                 recordedEvents: IndexedSeq[RecordableEvent],
@@ -52,8 +52,8 @@ case class TestPendingOrIgnored(suiteClassName: Option[String],
 
 object TestPendingOrIgnored {
   def unapply(event: Event): Option[TestPendingOrIgnored] = event match {
-    case TestPending(_, _, _, suiteClassName, testName, testText, recordedEvents, _, _, _, _, _, _) => Some(TestPendingOrIgnored(suiteClassName, testName, testText, recordedEvents, pending = true))
-    case TestIgnored(_, _, _, suiteClassName, testName, testText, _, _, _, _, _) => Some(TestPendingOrIgnored(suiteClassName, testName, testText, IndexedSeq.empty, pending = false))
+    case TestPending(_, _, _, suiteClassName, testName, testText, recordedEvents, _, _, _, _, _, _) => Some(TestPendingOrIgnored(suiteClassName.get, testName, testText, recordedEvents, pending = true))
+    case TestIgnored(_, _, _, suiteClassName, testName, testText, _, _, _, _, _) => Some(TestPendingOrIgnored(suiteClassName.get, testName, testText, IndexedSeq.empty, pending = false))
     case _ => None
   }
 }

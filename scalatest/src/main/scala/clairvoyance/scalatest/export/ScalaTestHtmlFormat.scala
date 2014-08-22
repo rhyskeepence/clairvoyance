@@ -94,17 +94,17 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     }
 
   private def renderFragmentForBody(event: TestSucceeded): NodeSeq = {
-    val (suiteClassName, testName, testText, duration) = (event.suiteClassName, event.testName, event.testText, event.duration)
+    val (suiteClassName, testName, testText, duration) = (event.suiteClassName.get, event.testName, event.testText, event.duration)
 
     val testState = TestStates.dequeue(testName)
-    val rendering = renderingFor(event.suiteClassName)
+    val rendering = renderingFor(suiteClassName)
 
     <a id={linkNameOf(testText)}></a>
     <div class="testmethod">
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName.get, event), suiteClassName = suiteClassName.get)}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName, event), suiteClassName = suiteClassName)}</pre>
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
@@ -144,8 +144,8 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       <div class="scenario" id={event.testName.hashCode().toString}>
         <h2>Specification</h2>
         <pre class="highlight specification">{
-          val sourceLines = FromSource.getCodeFrom(event.suiteClassName.get, event.testText)
-          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName.get)
+          val sourceLines = FromSource.getCodeFrom(event.suiteClassName, event.testText)
+          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName)
           }</pre>
         <h2>Execution</h2>
         <div class="highlight results test-failed highlighted" style="margin-bottom: 1em">
@@ -171,7 +171,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     <div class="testmethod">
       {markdownToXhtml("## " + event.testText)}<div class="scenario" id={event.testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName.get, event.testText), suiteClassName = event.suiteClassName.get)}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName, event.testText), suiteClassName = event.suiteClassName)}</pre>
         <h2>Execution</h2>
         <pre class="highlight specification test-not-run">{event.name}</pre>
       </div>
@@ -188,8 +188,5 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     }
   }
 
-  private def renderingFor(suiteClassName: Option[String]): Rendering = suiteClassName match {
-    case Some(className) => new Rendering(Reflection.tryToCreateObject[CustomRendering](className))
-    case None => new Rendering(None)
-  }
+  private def renderingFor(className: String): Rendering = new Rendering(Reflection.tryToCreateObject[CustomRendering](className))
 }
