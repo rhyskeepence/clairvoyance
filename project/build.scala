@@ -45,7 +45,7 @@ object build extends Build {
       name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
         "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3",
-        "net.sourceforge.plantuml"      %  "plantuml"       % "7999",
+        "net.sourceforge.plantuml"      %  "plantuml"       % "8002",
         "org.pegdown"                   %  "pegdown"        % "1.4.2",
         "org.scala-lang"                %  "scala-compiler" % scala_version % "optional"
       ) ++ (CrossVersion.partialVersion(scala_version) match {
@@ -62,7 +62,7 @@ object build extends Build {
     .settings(name := "clairvoyance-specs2",
       libraryDependencies := Seq(
         "org.specs2"     %% "specs2"     % "2.4.1",
-        "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
+        "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("specs2.outDir",     s"${target.value.getAbsolutePath}/clairvoyance-reports/")
@@ -75,8 +75,8 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies := Seq(
-        "org.scalatest"  %% "scalatest"  % "2.2.0-RC2",
-        "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
+        "org.scalatest"  %% "scalatest"  % "2.2.1",
+        "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
