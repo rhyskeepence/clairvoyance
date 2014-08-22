@@ -2,7 +2,9 @@ package clairvoyance.scalatest.export
 
 import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
 import clairvoyance.rendering.Markdown.markdownToXhtml
-import clairvoyance.rendering.{CustomRendering, Reflection, Rendering}
+import clairvoyance.rendering.{CustomRendering, Rendering}
+import clairvoyance.rendering.Reflection.tryToCreateObject
+import clairvoyance.scalatest.{skipSpecification, skipInteractions}
 import clairvoyance.state.TestStates
 import java.util.UUID
 import org.scalatest.events._
@@ -95,16 +97,19 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderFragmentForBody(event: TestSucceeded): NodeSeq = {
     val (suiteClassName, testName, testText, duration) = (event.suiteClassName.get, event.testName, event.testText, event.duration)
+    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.location)
 
-    val testState = TestStates.dequeue(testName)
+    val testState = TestStates.dequeue(testName).map(x ⇒ if (skipInteractions) x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*"))) else x)
     val rendering = renderingFor(suiteClassName)
 
     <a id={linkNameOf(testText)}></a>
     <div class="testmethod">
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
+        { if (!skipSpecification)
         <h2>Specification</h2>
         <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName, event), suiteClassName = suiteClassName)}</pre>
+        }
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
@@ -188,5 +193,11 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     }
   }
 
-  private def renderingFor(className: String): Rendering = new Rendering(Reflection.tryToCreateObject[CustomRendering](className))
+  private def renderingFor(className: String): Rendering = new Rendering(tryToCreateObject[CustomRendering](className))
+
+  private def checkAnnotationsAt(location: Option[Location]): (Boolean, Boolean) = {
+    val topOfMethod = location.get.asInstanceOf[TopOfMethod]
+    val test = Class.forName(topOfMethod.className).getDeclaredMethods.find(_.toString == topOfMethod.methodId).get
+    (test.isAnnotationPresent(classOf[skipSpecification]), test.isAnnotationPresent(classOf[skipInteractions]))
+  }
 }
