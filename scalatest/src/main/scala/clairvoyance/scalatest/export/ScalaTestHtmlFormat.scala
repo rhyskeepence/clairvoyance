@@ -1,12 +1,11 @@
 package clairvoyance.scalatest.export
 
 import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
-import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.rendering.{CustomRendering, Rendering}
-import clairvoyance.rendering.Reflection.tryToCreateObject
+import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.scalatest.ClairvoyantContext.tagNames
+import clairvoyance.rendering.Reflection.tryToCreateObject
 import clairvoyance.scalatest.tags.{skipInteractions, skipSpecification}
-import clairvoyance.scalatest.{SkipInteractions, SkipSpecification}
 import clairvoyance.state.TestStates
 import java.util.UUID
 import org.scalatest.events._
@@ -128,7 +127,8 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
   }
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): NodeSeq = {
-    val testState = TestStates.dequeue(event.testName)
+    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.suiteName, event.testName)
+    val testState = TestStates.dequeue(event.testName).map(x ⇒ if (skipInteractions) x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*"))) else x)
     val rendering = renderingFor(event.suiteClassName)
 
     val linkId    = UUID.randomUUID.toString
@@ -149,11 +149,13 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     <div class="testmethod">
       {markdownToXhtml("## " + event.testText)}
       <div class="scenario" id={event.testName.hashCode().toString}>
+        { if (!skipSpecification)
         <h2>Specification</h2>
         <pre class="highlight specification">{
           val sourceLines = FromSource.getCodeFrom(event.suiteClassName, event.testText)
           SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName)
           }</pre>
+        }
         <h2>Execution</h2>
         <div class="highlight results test-failed highlighted" style="margin-bottom: 1em">
           { event.duration.fold(NodeSeq.Empty)(milliseconds => <span>{event.name} after {milliseconds} ms</span><br/>)}

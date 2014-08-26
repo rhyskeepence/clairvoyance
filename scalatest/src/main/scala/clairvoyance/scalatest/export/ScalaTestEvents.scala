@@ -21,6 +21,7 @@ trait ScalaTestEvent {
 
 case class TestFailedOrCancelled(message: String,
                                  suiteClassName: String,
+                                 suiteName: String,
                                  testName: String,
                                  testText: String,
                                  recordedEvents: IndexedSeq[RecordableEvent],
@@ -34,8 +35,8 @@ case class TestFailedOrCancelled(message: String,
 
 object TestFailedOrCancelled {
   def unapply(event: Event): Option[TestFailedOrCancelled] = event match {
-    case TestFailed  (_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, testName, testText, recordedEvents, throwable, duration, failed = true))
-    case TestCanceled(_, message, _, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, testName, testText, recordedEvents, throwable, duration, failed = false))
+    case TestFailed  (_, message, suiteName, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, suiteName, testName, testText, recordedEvents, throwable, duration, failed = true))
+    case TestCanceled(_, message, suiteName, _, suiteClassName, testName, testText, recordedEvents, throwable, duration, _, _, _, _, _, _) => Some(TestFailedOrCancelled(message, suiteClassName.get, suiteName, testName, testText, recordedEvents, throwable, duration, failed = false))
     case _ => None
   }
 }
