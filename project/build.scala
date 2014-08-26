@@ -14,7 +14,7 @@ object build extends Build {
   type Settings = Def.Setting[_]
 
   lazy val websiteSettings = site.settings ++ Seq[Setting[_]](
-      siteSourceDirectory <<= baseDirectory / "site",
+      siteSourceDirectory <<= baseDirectory (_ / "site"),
       siteMappings <++= baseDirectory map { (b) =>
         (b / "specs2" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "specs2" / "target" / "clairvoyance-reports", "clairvoyance-reports/specs2")) ++
         (b / "scalatest" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "scalatest" / "target" / "clairvoyance-reports", "clairvoyance-reports/scalatest"))
