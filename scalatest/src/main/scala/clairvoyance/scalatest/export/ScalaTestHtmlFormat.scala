@@ -4,7 +4,9 @@ import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
 import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.rendering.Reflection.tryToCreateObject
-import clairvoyance.scalatest.{skipSpecification, skipInteractions}
+import clairvoyance.scalatest.ClairvoyantContext.tagNames
+import clairvoyance.scalatest.tags.{skipInteractions, skipSpecification}
+import clairvoyance.scalatest.{SkipInteractions, SkipSpecification}
 import clairvoyance.state.TestStates
 import java.util.UUID
 import org.scalatest.events._
@@ -97,7 +99,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderFragmentForBody(event: TestSucceeded): NodeSeq = {
     val (suiteClassName, testName, testText, duration) = (event.suiteClassName.get, event.testName, event.testText, event.duration)
-    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.location)
+    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.suiteName, event.testName)
 
     val testState = TestStates.dequeue(testName).map(x ⇒ if (skipInteractions) x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*"))) else x)
     val rendering = renderingFor(suiteClassName)
@@ -195,9 +197,8 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderingFor(className: String): Rendering = new Rendering(tryToCreateObject[CustomRendering](className))
 
-  private def checkAnnotationsAt(location: Option[Location]): (Boolean, Boolean) = {
-    val topOfMethod = location.get.asInstanceOf[TopOfMethod]
-    val test = Class.forName(topOfMethod.className).getDeclaredMethods.find(_.toString == topOfMethod.methodId).get
-    (test.isAnnotationPresent(classOf[skipSpecification]), test.isAnnotationPresent(classOf[skipInteractions]))
+  private def checkAnnotationsAt(suiteName: String, testName: String): (Boolean, Boolean) = {
+    val tags = tagNames((suiteName, testName))
+    (tags.contains(classOf[skipSpecification].getName), tags.contains(classOf[skipInteractions].getName))
   }
 }

@@ -1,10 +1,10 @@
 package clairvoyance.scalatest.examples
 
 import clairvoyance.plugins.SequenceDiagram
-import clairvoyance.scalatest.{skipInteractions, skipSpecification}
+import clairvoyance.scalatest.tags.{skipSpecification, skipInteractions}
 import org.scalatest.Spec
 
-class SequenceDiagramExample extends Spec with LdapAuthenticationContext with SequenceDiagram {
+class SequenceDiagramWithSpecExample extends Spec with LdapAuthenticationContext with SequenceDiagram {
 
   override def defaultActor = "Web Server"
 
