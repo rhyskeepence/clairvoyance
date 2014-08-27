@@ -5,11 +5,12 @@ import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.scalatest.ClairvoyantContext.tagNames
 import clairvoyance.rendering.Reflection.tryToCreateObject
+import clairvoyance.scalatest.{SkipInteractions, SkipSpecification, Tags}
 import clairvoyance.scalatest.tags.{skipInteractions, skipSpecification}
-import clairvoyance.state.TestStates
+import clairvoyance.state.{TestState, TestStates}
 import java.util.UUID
 import org.scalatest.events._
-import org.scalatest.exceptions
+import org.scalatest.{Tag, exceptions}
 import scala.xml.NodeSeq
 
 case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) extends HtmlFormat(xml) {
@@ -98,23 +99,23 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderFragmentForBody(event: TestSucceeded): NodeSeq = {
     val (suiteClassName, testName, testText, duration) = (event.suiteClassName.get, event.testName, event.testText, event.duration)
-    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.suiteName, event.testName)
+    val annotations = annotationsFor(event.suiteName, event.testName)
 
-    val testState = TestStates.dequeue(testName).map(x ⇒ if (skipInteractions) x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*"))) else x)
+    val testState = TestStates.dequeue(testName)
     val rendering = renderingFor(suiteClassName)
 
     <a id={linkNameOf(testText)}></a>
     <div class="testmethod">
       {markdownToXhtml(s"## $testText")}
       <div class="scenario" id={testName.hashCode().toString}>
-        { if (!skipSpecification)
+        { if (!annotations.contains(SkipSpecification))
         <h2>Specification</h2>
         <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName, event), suiteClassName = suiteClassName)}</pre>
         }
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
         {interestingGivensTable(testState, rendering)}
-        {loggedInputsAndOutputs(testState, rendering)}
+        {capturedInputsAndOutputs(testState, rendering, annotations)}
       </div>
     </div>
   }
@@ -127,8 +128,8 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
   }
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): NodeSeq = {
-    val (skipSpecification, skipInteractions) = checkAnnotationsAt(event.suiteName, event.testName)
-    val testState = TestStates.dequeue(event.testName).map(x ⇒ if (skipInteractions) x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*"))) else x)
+    val annotations = annotationsFor(event.suiteName, event.testName)
+    val testState = TestStates.dequeue(event.testName)
     val rendering = renderingFor(event.suiteClassName)
 
     val linkId    = UUID.randomUUID.toString
@@ -149,7 +150,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     <div class="testmethod">
       {markdownToXhtml("## " + event.testText)}
       <div class="scenario" id={event.testName.hashCode().toString}>
-        { if (!skipSpecification)
+        { if (!annotations.contains(SkipSpecification))
         <h2>Specification</h2>
         <pre class="highlight specification">{
           val sourceLines = FromSource.getCodeFrom(event.suiteClassName, event.testText)
@@ -170,8 +171,17 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
           </div>
         </div>
         {interestingGivensTable(testState, rendering)}
-        {loggedInputsAndOutputs(testState, rendering)}
+        {capturedInputsAndOutputs(testState, rendering, annotations)}
       </div>
+    </div>
+  }
+
+  private def capturedInputsAndOutputs(testState: Option[TestState], rendering: Rendering, annotations: Set[Tag]): NodeSeq = {
+    <div style={ if (annotations.contains(SkipInteractions)) "display: none" else "display: inline" }>
+    {loggedInputsAndOutputs(testState.map(x => x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filterNot(_.key.matches(".*(Graph|Diagram).*")))), rendering)}
+    </div>
+    <div stye="display: inline">
+    {loggedInputsAndOutputs(testState.map(x => x.copy(x.interestingGivens, x.capturedInputsAndOutputs.filter(_.key.matches(".*(Graph|Diagram).*")))), rendering)}
     </div>
   }
 
@@ -199,8 +209,9 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def renderingFor(className: String): Rendering = new Rendering(tryToCreateObject[CustomRendering](className))
 
-  private def checkAnnotationsAt(suiteName: String, testName: String): (Boolean, Boolean) = {
+  private def annotationsFor(suiteName: String, testName: String): Set[Tag] = {
     val tags = tagNames((suiteName, testName))
     (tags.contains(classOf[skipSpecification].getName), tags.contains(classOf[skipInteractions].getName))
+    Tags.declared.filter(t => tags.contains(t.name))
   }
 }
