@@ -3,10 +3,9 @@ package clairvoyance.scalatest.export
 import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
 import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.rendering.Markdown.markdownToXhtml
-import clairvoyance.scalatest.ClairvoyantContext.tagNames
 import clairvoyance.rendering.Reflection.tryToCreateObject
 import clairvoyance.scalatest.{SkipInteractions, SkipSpecification, Tags}
-import clairvoyance.scalatest.tags.{skipInteractions, skipSpecification}
+import clairvoyance.scalatest.ClairvoyantContext.tagNames
 import clairvoyance.state.{TestState, TestStates}
 import java.util.UUID
 import org.scalatest.events._
@@ -211,7 +210,6 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def annotationsFor(suiteName: String, testName: String): Set[Tag] = {
     val tags = tagNames((suiteName, testName))
-    (tags.contains(classOf[skipSpecification].getName), tags.contains(classOf[skipInteractions].getName))
     Tags.declared.filter(t => tags.contains(t.name))
   }
 }
