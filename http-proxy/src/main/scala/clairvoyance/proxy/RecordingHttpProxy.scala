@@ -6,18 +6,13 @@ import unfiltered.request._
 import unfiltered.response._
 import dispatch._
 import com.ning.http.client.Response
-import clairvoyance.{Imports, ProducesCapturedInputsAndOutputs}
-import scala.concurrent.ExecutionContext
+import clairvoyance._
 import scalax.io.Resource
-import io.netty.handler.codec.http.HttpHeaders
 import scala.util.matching.Regex
-import clairvoyance.Imports.KeyValue
+import scala.concurrent.ExecutionContext
 
-// TODO - proxy all request headers (or at least accept, content-type and cookies)
-// TODO - proxy all response headers
 // TODO - deal with unsupported verbs better
 // TODO - store binary/unknown response bodies - download to file and link to binary in captured value
-
 case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: Int, from: String, to: String, includePaths: Seq[Regex], excludePaths: Seq[Regex])(implicit executor: ExecutionContext) extends ProducesCapturedInputsAndOutputs {
 
   private val client = new Http
@@ -33,29 +28,29 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
   private val plan = netty.future.Planify {
     case GET(req) =>
       val capture = captureIfRequestMatches(req.uri)
-      capture("HTTP GET Request from " + from + " to " + to -> ("GET " + requestToString(req)))
+      capture("HTTP GET request from " + from + " to " + to -> ("GET " + requestToString(req)))
       client(buildRequestFrom(req).GET > ProxyResponseAndCapture(capture))
 
     case PUT(req) =>
       val capture = captureIfRequestMatches(req.uri)
       val requestBody = Resource.fromInputStream(req.inputStream).byteArray
-      capture("HTTP PUT Request from " + from + " to " + to -> ("PUT " + requestToString(req, Some(requestBody))))
+      capture("HTTP PUT request from " + from + " to " + to -> ("PUT " + requestToString(req, Some(requestBody))))
       client(buildRequestFrom(req).PUT.setBody(requestBody) > ProxyResponseAndCapture(capture))
 
     case POST(req) =>
       val capture = captureIfRequestMatches(req.uri)
       val requestBody = Resource.fromInputStream(req.inputStream).byteArray
-      capture("HTTP POST Request from " + from + " to " + to -> ("POST " + requestToString(req, Some(requestBody))))
+      capture("HTTP POST request from " + from + " to " + to -> ("POST " + requestToString(req, Some(requestBody))))
       client(buildRequestFrom(req).POST.setBody(requestBody) > ProxyResponseAndCapture(capture))
 
     case DELETE(req) =>
       val capture = captureIfRequestMatches(req.uri)
-      capture("HTTP DELETE Request from " + from + " to " + to -> ("DELETE " + requestToString(req)))
+      capture("HTTP DELETE request from " + from + " to " + to -> ("DELETE " + requestToString(req)))
       client(buildRequestFrom(req).DELETE > ProxyResponseAndCapture(capture))
 
     case HEAD(req) =>
       val capture = captureIfRequestMatches(req.uri)
-      capture("HTTP HEAD Request from " + from + " to " + to -> ("HEAD " + requestToString(req)))
+      capture("HTTP HEAD request from " + from + " to " + to -> ("HEAD " + requestToString(req)))
       client(buildRequestFrom(req).HEAD > ProxyResponseAndCapture(capture))
 
     case _ =>
@@ -74,9 +69,10 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
   }
 
   def buildRequestFrom(req: HttpRequest[_]): Req = {
-    val accept = req.headers(HttpHeaders.Names.ACCEPT).mkString(", ")
-    val contentType = req.headers(HttpHeaders.Names.CONTENT_TYPE).mkString(", ")
-    url(baseUrl + req.uri).addHeader(HttpHeaders.Names.CONTENT_TYPE, contentType).addHeader(HttpHeaders.Names.ACCEPT, accept)
+    val baseRequest = url(baseUrl + req.uri)
+    req.headerNames.foldLeft(baseRequest) {
+      (r, headerName) => r.setHeader(headerName, req.headers(headerName).mkString(", "))
+    }
   }
 
   def requestToString(req: HttpRequest[_], body: Option[Array[Byte]] = None): String = {
@@ -85,22 +81,19 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
       body.map(b => "\n\n" + new String(b)).getOrElse("")
   }
   
-  case class ProxyResponseAndCapture(capture: KeyValue => Unit) extends (Response => ResponseFunction[Any]) {
+  case class ProxyResponseAndCapture(capture: Imports.KeyValue => Unit) extends (Response => ResponseFunction[Any]) {
     def apply(response: Response): ResponseFunction[Any] = {
       val body = response.getResponseBodyAsBytes
-      val contentType = Option(response.getContentType)
       val status = response.getStatusCode
-      response.getHeader("accept")
 
       captureResponse(response, body)
 
-      Status(status) ~>
-        ResponseBytes(body) ~>
-        contentType.map(t => ContentType(t)).getOrElse(NoOpResponder)
+      Status(status) ~> HeadersFrom(response) ~> ResponseBytes(body)
+
     }
     
     private def captureResponse(response: Response, body: Array[Byte]) = {
-      val label = "HTTP Response (" + response.getStatusCode + " " + response.getStatusText +") from " + to + " to " + from
+      val label = "HTTP response (" + response.getStatusCode + " " + response.getStatusText +") from " + to + " to " + from
 
       Option(response.getContentType) match {
         case Some(contentType) =>
@@ -122,8 +115,13 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
     }
   }
 
-  object NoOpResponder extends Responder[Any] {
-    def respond(res: HttpResponse[Any]) = {}
+  case class HeadersFrom(response: Response) extends Responder[Any] {
+    import scala.collection.JavaConversions._
+    def respond(res: HttpResponse[Any]) = {
+      response.getHeaders.keySet.foreach {
+        headerName => res.header(headerName, response.getHeader(headerName))
+      }
+    }
   }
 }
 
