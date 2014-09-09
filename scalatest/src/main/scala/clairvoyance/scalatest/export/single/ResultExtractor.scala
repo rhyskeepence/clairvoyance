@@ -11,7 +11,7 @@ object ResultExtractor {
   def extract(events: List[Event]): Option[SuiteResult] =
     events.find(isNameInfoable).map(_.asInstanceOf[HasNameInfo]).map { ni =>
       val details: (String, String, Option[String]) = suiteDetails(ni)
-      SuiteResult(details._1, details._2, details._3, None, null, null, events.toIndexedSeq,
+      SuiteResult(details._1, details._2, details._3, None, events.toIndexedSeq,
         events.count(_.isInstanceOf[TestSucceeded]),
         events.count(_.isInstanceOf[TestFailed]),
         events.count(_.isInstanceOf[TestIgnored]),

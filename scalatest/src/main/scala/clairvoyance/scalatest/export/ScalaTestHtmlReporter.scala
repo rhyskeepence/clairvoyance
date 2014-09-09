@@ -40,7 +40,7 @@ class ScalaTestHtmlReporter extends ResourcefulReporter with ClairvoyanceHtmlPri
     sortedSuiteEvents.head match {
       case suiteStarting: SuiteStarting =>
         val accumulatedResult = SuiteResult(
-          suiteId, suiteName, suiteClassName, duration, suiteStarting, event, Vector.empty ++ sortedSuiteEvents.tail,
+          suiteId, suiteName, suiteClassName, duration, Vector.empty ++ sortedSuiteEvents.tail,
           testsPassedCount    = 0, testsFailedCount   = 0, testsIgnoredCount = 0, testsPendingCount = 0,
           testsCancelledCount = 0, scopesPendingCount = 0, isCompleted = completed)
 
