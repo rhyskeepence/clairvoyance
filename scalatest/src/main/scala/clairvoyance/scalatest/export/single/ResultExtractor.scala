@@ -18,7 +18,7 @@ object ResultExtractor {
         events.count(_.isInstanceOf[TestIgnored]),
         events.count(_.isInstanceOf[TestPending]),
         events.count(_.isInstanceOf[TestCanceled]),
-        events.count(_.isInstanceOf[ScopePending]), true)
+        events.count(_.isInstanceOf[ScopePending]), isCompleted = true)
     }
 
 
