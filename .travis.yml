@@ -2,7 +2,7 @@ language: scala
 scala:
 - 2.11.1
 jdk:
-- oraclejdk7
+- openjdk6
 before_script: ./scripts/prepublish.sh
 script: ./scripts/cibuild.sh
 env:
