@@ -4,12 +4,13 @@ import clairvoyance.scalatest.export.SuiteResult
 import org.scalatest.events.{ScopePending, TestCanceled, TestPending, TestIgnored, TestFailed, TestSucceeded, Event, NameInfo}
 
 import scala.collection.mutable.ListBuffer
+import scala.util.Try
 
 object ResultExtractor {
   private type HasNameInfo = {def nameInfo: NameInfo}
 
   def extract(events: ListBuffer[Event], durationInMillis: Long): Option[SuiteResult] =
-    events.find(_.isInstanceOf[HasNameInfo @unchecked]).map(_.asInstanceOf[HasNameInfo]).map { ni =>
+    events.find(isNameInfoable).map(_.asInstanceOf[HasNameInfo]).map { ni =>
       val details: (String, String, Option[String]) = suiteDetails(ni)
       SuiteResult(details._1, details._2, details._3, Some(durationInMillis), events.toIndexedSeq,
         events.count(_.isInstanceOf[TestSucceeded]),
@@ -19,6 +20,8 @@ object ResultExtractor {
         events.count(_.isInstanceOf[TestCanceled]),
         events.count(_.isInstanceOf[ScopePending]), isCompleted = true)
     }
+
+  private def isNameInfoable(e: Event): Boolean = Try(e.getClass.getMethod("nameInfo")).toOption.exists(_.getReturnType == classOf[NameInfo])
 
   private def suiteDetails(event: HasNameInfo): (String, String, Option[String]) = (event.nameInfo.suiteId, event.nameInfo.suiteName, event.nameInfo.suiteClassName)
 }
