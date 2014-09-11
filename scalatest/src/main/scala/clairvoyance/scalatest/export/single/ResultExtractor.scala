@@ -8,11 +8,20 @@ import scala.util.Try
 
 object ResultExtractor {
   private type HasNameInfo = {def nameInfo: NameInfo}
+  private def hasNameInfo(e: Event): Boolean = hasMethod(e, "nameInfo", classOf[NameInfo])
+
+  private type HasSuiteDetails = {def suiteId: String; def suiteName: String; def suiteClassName: Option[String]}
+  private def hasSuiteDetails(e: Event): Boolean =
+    hasMethod(e, "suiteName", classOf[String]) &&
+    hasMethod(e, "suiteId", classOf[String]) &&
+    hasMethod(e, "suiteClassName", classOf[Option[String]])
 
   def extract(events: ListBuffer[Event], durationInMillis: Long): Option[SuiteResult] =
-    events.find(isNameInfoable).map(_.asInstanceOf[HasNameInfo]).map { ni =>
-      val details: (String, String, Option[String]) = suiteDetails(ni)
-      SuiteResult(details._1, details._2, details._3, Some(durationInMillis), events.toIndexedSeq,
+    events.collectFirst {
+      case e if hasNameInfo(e) => e.asInstanceOf[HasNameInfo].nameInfo
+      case e if hasSuiteDetails(e) => e.asInstanceOf[HasSuiteDetails]
+    }.map { suiteDetails =>
+      SuiteResult(suiteDetails.suiteId, suiteDetails.suiteName, suiteDetails.suiteClassName, Some(durationInMillis), events.toIndexedSeq,
         events.count(_.isInstanceOf[TestSucceeded]),
         events.count(_.isInstanceOf[TestFailed]),
         events.count(_.isInstanceOf[TestIgnored]),
@@ -21,7 +30,5 @@ object ResultExtractor {
         events.count(_.isInstanceOf[ScopePending]), isCompleted = true)
     }
 
-  private def isNameInfoable(e: Event): Boolean = Try(e.getClass.getMethod("nameInfo")).toOption.exists(_.getReturnType == classOf[NameInfo])
-
-  private def suiteDetails(event: HasNameInfo): (String, String, Option[String]) = (event.nameInfo.suiteId, event.nameInfo.suiteName, event.nameInfo.suiteClassName)
+  private def hasMethod(e: Event, name: String, returnType: Class[_]): Boolean = Try(e.getClass.getMethod(name)).toOption.exists(_.getReturnType == returnType)
 }
