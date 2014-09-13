@@ -12,12 +12,19 @@ trait ClairvoyantContext extends OneInstancePerTest with InterestingGivens with 
   implicit def stringToStep(description: String) = new ClairvoyantStep(description)
 
   abstract override protected def runTest(testName: String, args: Args): Status = {
-    val status = super.runTest(testName, args)
     tagNames += (((suiteName, testName), tags.withDefaultValue(Set.empty)(testName).map(normaliseTagName)))
+    beforeExecution(testName)
+
+    val status = super.runTest(testName, args)
+
+    afterExecution(testName)
     TestStates += (testName -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
     status
   }
+
+  protected def beforeExecution(testName: String): Unit = ()
+  protected def afterExecution (testName: String): Unit = ()
 
   private def normaliseTagName: (String) => String =
     tagName => if (tagName.startsWith(INTERFACE_PREFIX)) tagName.substring(INTERFACE_PREFIX.length) else tagName
