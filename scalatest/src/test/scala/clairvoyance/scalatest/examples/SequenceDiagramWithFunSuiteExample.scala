@@ -5,7 +5,6 @@ import clairvoyance.scalatest.tags.skipInteractions
 import clairvoyance.scalatest.{SkipInteractions, SkipSpecification}
 import org.scalatest.FunSuite
 
-@skipInteractions
 class SequenceDiagramWithFunSuiteExample extends FunSuite with LdapAuthenticationContext with SequenceDiagram {
 
   override def defaultActor = "Web Server"
