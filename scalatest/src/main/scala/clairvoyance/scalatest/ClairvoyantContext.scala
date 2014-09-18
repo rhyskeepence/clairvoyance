@@ -7,7 +7,7 @@ import org.scalatest._
 
 import scala.collection.mutable
 
-trait ClairvoyantContext extends OneInstancePerTest with InterestingGivens with CapturedInputsAndOutputs { this: Suite =>
+trait ClairvoyantContext extends SuiteMixin with InterestingGivens with CapturedInputsAndOutputs { this: Suite =>
 
   implicit def stringToStep(description: String) = new ClairvoyantStep(description)
 

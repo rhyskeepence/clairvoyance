@@ -4,9 +4,9 @@ import clairvoyance.ProducesCapturedInputsAndOutputs
 import clairvoyance.scalatest.ClairvoyantContext
 import java.text.SimpleDateFormat
 import java.util.Date
-import org.scalatest.{Matchers, Suite}
+import org.scalatest.{Matchers, OneInstancePerTest, Suite}
 
-trait DoomsdayContext extends ClairvoyantContext with Matchers { this: Suite =>
+trait DoomsdayContext extends ClairvoyantContext with OneInstancePerTest with Matchers { this: Suite =>
   val theDoomsdayDevice = new StubDoomsdayDevice
   val clock = new StubClock
 
