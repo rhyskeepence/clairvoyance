@@ -1,7 +1,6 @@
 package clairvoyance.scalatest.export
 
 import clairvoyance.scalatest.export.ResultExtractor.extract
-import clairvoyance.scalatest.export.SingleClairvoyanceHtmlPrinter
 import org.scalatest.Reporter
 import org.scalatest.events.Event
 
