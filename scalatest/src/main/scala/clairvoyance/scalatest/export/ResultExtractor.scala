@@ -1,7 +1,6 @@
-package clairvoyance.scalatest.export.single
+package clairvoyance.scalatest.export
 
-import clairvoyance.scalatest.export.SuiteResult
-import org.scalatest.events.{ScopePending, TestCanceled, TestPending, TestIgnored, TestFailed, TestSucceeded, Event, NameInfo}
+import org.scalatest.events.{Event, NameInfo, ScopePending, TestCanceled, TestFailed, TestIgnored, TestPending, TestSucceeded}
 
 import scala.collection.mutable.ListBuffer
 import scala.util.Try

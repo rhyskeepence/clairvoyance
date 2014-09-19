@@ -1,7 +1,6 @@
-package clairvoyance.scalatest.export.single
+package clairvoyance.scalatest.export
 
 import clairvoyance.export.ClairvoyanceHtml
-import clairvoyance.scalatest.export.{ClairvoyanceHtmlPrinter, SuiteResult}
 
 class SingleClairvoyanceHtmlPrinter extends ClairvoyanceHtmlPrinter {
   private var result: SuiteResult = _

@@ -1,4 +1,4 @@
-package clairvoyance.scalatest.export.single
+package clairvoyance.scalatest.export
 
 import org.scalatest.events.Event
 import org.scalatest.{Reporter, ResourcefulReporter}

@@ -1,6 +1,6 @@
 package clairvoyance.scalatest.export.single
 
-import clairvoyance.scalatest.export.SuiteResult
+import clairvoyance.scalatest.export.{ResultExtractor, SuiteResult}
 import org.scalatest.FlatSpec
 import org.scalatest.events.{Event, NameInfo, ScopeOpened, Ordinal, TestStarting}
 

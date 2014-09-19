@@ -1,4 +1,4 @@
-package clairvoyance.scalatest.export.single
+package clairvoyance.scalatest.export
 
 import clairvoyance.export.{ClairvoyanceHtml, ClairvoyanceHtmlFileWriter}
 

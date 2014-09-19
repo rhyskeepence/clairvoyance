@@ -79,10 +79,7 @@ object build extends Build {
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
-      }),
-      testOptions in Test += Tests.Argument(
-        TestFrameworks.ScalaTest, "-C", "clairvoyance.scalatest.export.ScalaTestHtmlReporter"
-      )
+      })
     ) dependsOn core
 
   lazy val proxy = (project in file("http-proxy"))
