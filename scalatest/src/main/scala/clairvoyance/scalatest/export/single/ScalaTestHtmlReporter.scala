@@ -16,5 +16,5 @@ class ScalaTestHtmlReporter extends Reporter {
 
   def done(): Unit = writeResult(extract(events, System.currentTimeMillis() - startTime))
 
-  private def writeResult(result: Option[SuiteResult]): Unit = result.map(new SingleClairvoyanceHtmlPrinter().print).foreach(new SingleClairvoyanceHtmlFileWriter().writeFile)
+  private def writeResult(result: Option[SuiteResult]): Unit = new SingleClairvoyanceHtmlFileWriter().writeFiles(result.map(new SingleClairvoyanceHtmlPrinter().print).toSeq)
 }
