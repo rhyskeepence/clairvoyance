@@ -6,6 +6,9 @@ import org.scalatest.events.Event
 
 import scala.collection.mutable.ListBuffer
 
+/** required by IDEA's ScalaTest runner only */
+class ScalaTestHtmlReporterWithLocation extends ScalaTestHtmlReporter
+
 class ScalaTestHtmlReporter extends Reporter {
   private var events: ListBuffer[Event] = new ListBuffer[Event]
 
