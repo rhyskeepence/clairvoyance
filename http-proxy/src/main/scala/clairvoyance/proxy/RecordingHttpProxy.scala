@@ -31,17 +31,29 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
       capture("HTTP GET request from " + from + " to " + to -> ("GET " + requestToString(req)))
       client(buildRequestFrom(req).GET > ProxyResponseAndCapture(capture))
 
+    case POST(req) =>
+      val capture = captureIfRequestMatches(req.uri)
+      val requestBody = Resource.fromInputStream(req.inputStream).byteArray
+      capture("HTTP POST request from " + from + " to " + to -> ("POST " + requestToString(req, Some(requestBody))))
+      client(buildRequestFrom(req).POST.setBody(requestBody) > ProxyResponseAndCapture(capture))
+
     case PUT(req) =>
       val capture = captureIfRequestMatches(req.uri)
       val requestBody = Resource.fromInputStream(req.inputStream).byteArray
       capture("HTTP PUT request from " + from + " to " + to -> ("PUT " + requestToString(req, Some(requestBody))))
       client(buildRequestFrom(req).PUT.setBody(requestBody) > ProxyResponseAndCapture(capture))
 
-    case POST(req) =>
+    case PATCH(req) =>
       val capture = captureIfRequestMatches(req.uri)
       val requestBody = Resource.fromInputStream(req.inputStream).byteArray
-      capture("HTTP POST request from " + from + " to " + to -> ("POST " + requestToString(req, Some(requestBody))))
-      client(buildRequestFrom(req).POST.setBody(requestBody) > ProxyResponseAndCapture(capture))
+      capture("HTTP PATCH request from " + from + " to " + to -> ("PATCH " + requestToString(req, Some(requestBody))))
+      client(buildRequestFrom(req).PATCH.setBody(requestBody) > ProxyResponseAndCapture(capture))
+
+    case OPTIONS(req) =>
+      val capture = captureIfRequestMatches(req.uri)
+      val requestBody = Resource.fromInputStream(req.inputStream).byteArray
+      capture("HTTP OPTIONS request from " + from + " to " + to -> ("OPTIONS " + requestToString(req, Some(requestBody))))
+      client(buildRequestFrom(req).OPTIONS.setBody(requestBody) > ProxyResponseAndCapture(capture))
 
     case DELETE(req) =>
       val capture = captureIfRequestMatches(req.uri)
@@ -53,8 +65,8 @@ case class RecordingHttpProxy(listenPort: Int, remoteHost: String, remotePort: I
       capture("HTTP HEAD request from " + from + " to " + to -> ("HEAD " + requestToString(req)))
       client(buildRequestFrom(req).HEAD > ProxyResponseAndCapture(capture))
 
-    case _ =>
-      Future(ResponseString("Not supported"))
+    case req =>
+      Future(MethodNotAllowed ~> ResponseString("Sorry, clairvoyance-proxy doesn't support this type of request."))
   }
 
   private val server = netty.Server.http(listenPort).plan(plan)

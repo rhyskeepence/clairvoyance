@@ -36,7 +36,7 @@ object build extends Build {
     settings(
       aggregate in sonatypeReleaseAll := false,
       packagedArtifacts := Map.empty
-    ).aggregate(core, specs2, scalatest, proxy)
+    ).aggregate(core, specs2, scalatest)
 
   lazy val core = (project in file("core"))
     .settings(moduleSettings: _*)
@@ -82,15 +82,15 @@ object build extends Build {
       })
     ) dependsOn core
 
-  lazy val proxy = (project in file("http-proxy"))
-    .settings(moduleSettings: _*)
-    .settings(name := "clairvoyance-http-proxy",
-      libraryDependencies := Seq(
-        "net.databinder" %% "unfiltered-netty-server" % "0.8.1",
-        "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
-        "org.slf4j" % "slf4j-nop" % "1.7.7" % "test"
-      )
-    ) dependsOn (core, specs2 % "test")
+//  lazy val proxy = (project in file("http-proxy"))
+//    .settings(moduleSettings: _*)
+//    .settings(name := "clairvoyance-http-proxy",
+//      libraryDependencies := Seq(
+//        "net.databinder" %% "unfiltered-netty-server" % "0.8.1",
+//        "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
+//        "org.slf4j" % "slf4j-nop" % "1.7.7" % "test"
+//      )
+//    ) dependsOn (core, specs2 % "test")
 
   lazy val publicationSettings: Seq[Settings] = Seq(
     publishTo <<= version { v: String =>
