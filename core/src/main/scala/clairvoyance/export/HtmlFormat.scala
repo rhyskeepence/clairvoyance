@@ -74,7 +74,7 @@ abstract class HtmlFormat(val xml: NodeSeq) {
     inputsAndOutputs.map {
       case CapturedValue(id, key, value) =>
         <h3 class="logKey" logkey={id.toString}>{key}</h3>
-        <div class={"logValue highlight " + value.getClass.getSimpleName }>{rendering.renderToXml(value)}</div>
+        <div class={s"logValue highlight monospace ${value.getClass.getSimpleName}"}>{rendering.renderToXml(value)}</div>
     }
   }
 

@@ -71,6 +71,10 @@ h6 {
     font-weight: bold;
 }
 
+.monospace {
+    font: 10pt monospace;
+}
+
 pre.test-not-run, .test-not-run, .interestingGiven {
     background-color: #FFF4CC;
     border: 2px solid #FFBB66;
