@@ -24,5 +24,7 @@ trait InterestingGivens {
     def apply(key: String) = values.find(_._1 == key).map(_._2)
 
     def toList = values.toList
+
+    def clear() = values.clear()
   }
 }

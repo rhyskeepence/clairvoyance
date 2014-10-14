@@ -30,6 +30,7 @@ trait ClairvoyantContext extends SuiteMixin with InterestingGivens with Captured
     afterExecution(testName)
     TestStates += (testName -> TestState(interestingGivens.toList, gatherCapturedValues))
     clearCapturedValues()
+    interestingGivens.clear()
     status
   }
 
