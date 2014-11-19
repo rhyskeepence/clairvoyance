@@ -43,10 +43,6 @@ object FromSource {
       val line = content(lineNumber).trim()
       (lineNumber, line.substring(line.indexOf("{") + 1, line.lastIndexOf("}")).trim) :: res.reverse
 
-    } else if (content(lineNumber).trim().matches(".+ =\\s+[^\\{]+")) {
-      val line = content(lineNumber).trim()
-      (lineNumber, line.substring(line.indexOf("=") + 1).trim) :: res.reverse
-
     } else if (content(lineNumber).trim().startsWith("}") && indentLevel == 0) {
       res.reverse
 
