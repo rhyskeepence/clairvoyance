@@ -40,7 +40,7 @@ trait HumanisedCodeFormat extends CodeFormat {
   override def format(line: String): String = {
     def replaceSyntaxWithSpaces: String => String = "[\\(\\);_\\.]".r.replaceAllIn(_, " ")
     
-    def trimSpaces: String => String = "\\h+".r.replaceAllIn(_, " ")
+    def trimSpaces: String => String = "[ \\t]+".r.replaceAllIn(_, " ")
 
     def replaceCamelCaseWithSentence: String => String =
       _.replaceAll(
