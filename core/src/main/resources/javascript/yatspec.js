@@ -72,11 +72,11 @@ $(document).ready(function () {
     $('.highlight.specification').each(function() {
         yatspec.highlight(this, [
             {pattern: '"[^"]*"',     cssClass: "quote" },
-            {pattern: "\\-\\-\\s.*" ,   cssClass: "failure" },
-            {pattern: "Given",       cssClass: "keyword" },
-            {pattern: "And",         cssClass: "keyword" },
-            {pattern: "When",        cssClass: "keyword" },
-            {pattern: "Then",        cssClass: "keyword" },
+            {pattern: "\\-\\-\\s.*", cssClass: "failure" },
+            {pattern: "Given\\s",    cssClass: "keyword" },
+            {pattern: "And\\s",      cssClass: "keyword" },
+            {pattern: "When\\s",     cssClass: "keyword" },
+            {pattern: "Then\\s",     cssClass: "keyword" },
             {pattern: "[A-Z_]{2,}" , cssClass: "constant" },
             {pattern: "[\\d]+" ,     cssClass: "literal" }
         ]);
@@ -93,10 +93,6 @@ $(document).ready(function () {
     })
 
     $('.scenario').each(function() {
-        var escapeRegExp = function(str) {
-            return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-        };
-
         var interestingGivens = $('.interestingGiven', this).filter(function() { return this.innerText != "" }).map(
             function() {
                 return [

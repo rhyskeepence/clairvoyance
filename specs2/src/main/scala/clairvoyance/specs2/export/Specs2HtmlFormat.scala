@@ -1,6 +1,7 @@
 package clairvoyance.specs2.export
 
-import clairvoyance.export.{FromSource, HtmlFormat, SpecificationFormatter}
+import clairvoyance.export._
+import clairvoyance.rendering.Reflection._
 import clairvoyance.rendering.{CustomRendering, Reflection, Rendering}
 import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.state.TestStates
@@ -88,7 +89,7 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
             {markdownToXhtml("## " + executedResult.s.raw)}
             <div class="scenario" id={executedResult.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace, specificationFullName)}</pre>
+              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace, specificationFullName, codeFormatFor(specificationFullName))}</pre>
               <h2>Test results:</h2>
               <pre class={s"highlight results ${cssClassOf(executedResult)} highlighted"}>{resultOutput + " in " + executedResult.stats.time}</pre>
               {interestingGivensTable(testState, rendering)}
@@ -102,6 +103,8 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
     </ul>
     )
   }
+
+  private def codeFormatFor(className: String): CodeFormat = tryToCreateObject[CodeFormat](className).getOrElse(DefaultCodeFormat)
 
   private def cssClassOf(executedResult: ExecutedResult): String =
     if (executedResult.isSuccess) "test-passed" else if (executedResult.isSuspended) "test-not-run" else "test-failed"

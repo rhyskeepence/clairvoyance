@@ -1,6 +1,6 @@
 package clairvoyance.scalatest.export
 
-import clairvoyance.export.{SpecificationFormatter, FromSource, HtmlFormat}
+import clairvoyance.export._
 import clairvoyance.rendering.{CustomRendering, Rendering}
 import clairvoyance.rendering.Markdown.markdownToXhtml
 import clairvoyance.rendering.Reflection.tryToCreateObject
@@ -109,7 +109,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
       <div class="scenario" id={testName.hashCode().toString}>
         { if (!annotations.contains(SkipSpecification))
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName, event), suiteClassName = suiteClassName)}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(getCodeFrom(suiteClassName, event), Seq.empty, suiteClassName, codeFormatFor(suiteClassName))}</pre>
         }
         <h2>Execution</h2>
         <pre class="highlight results test-passed highlighted">{duration.fold("")(milliseconds => s"Passed in $milliseconds ms")}</pre>
@@ -153,7 +153,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
         <h2>Specification</h2>
         <pre class="highlight specification">{
           val sourceLines = FromSource.getCodeFrom(event.suiteClassName, event.testText)
-          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName)
+          SpecificationFormatter.format(sourceLines, event.throwable.get.getStackTrace.toList, event.suiteClassName, codeFormatFor(event.suiteClassName))
           }</pre>
         }
         <h2>Execution</h2>
@@ -189,7 +189,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
     <div class="testmethod">
       {markdownToXhtml("## " + event.testText)}<div class="scenario" id={event.testName.hashCode().toString}>
         <h2>Specification</h2>
-        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName, event.testText), suiteClassName = event.suiteClassName)}</pre>
+        <pre class="highlight specification">{SpecificationFormatter.format(FromSource.getCodeFrom(event.suiteClassName, event.testText), Seq.empty, event.suiteClassName, codeFormatFor(event.suiteClassName))}</pre>
         <h2>Execution</h2>
         <pre class="highlight specification test-not-run">{event.name}</pre>
       </div>
@@ -207,6 +207,8 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
   }
 
   private def renderingFor(className: String): Rendering = new Rendering(tryToCreateObject[CustomRendering](className))
+  
+  private def codeFormatFor(className: String): CodeFormat = tryToCreateObject[CodeFormat](className).getOrElse(DefaultCodeFormat)
 
   private def annotationsFor(suiteName: String, testName: String): Set[Tag] = {
     val tags = tagNames((suiteName, testName))

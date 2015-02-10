@@ -64,6 +64,10 @@ h6 {
     text-decoration: line-through;
 }
 
+.specification {
+    font: 10pt monospace;
+}
+
 .highlight.specification .literal,
 .highlight.specification .keyword,
 .highlight.specification .constant,
