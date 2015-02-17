@@ -32,27 +32,23 @@ object FromSource {
   }
 
   @tailrec
-  private def readToEndOfMethod(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[(Int, String)] = List()): List[(Int, String)] = {
+  def readToEndOfMethod(content: Seq[String], lineNumber: Int, indentLevel: Int = 0, res: List[(Int, String)] = List()): List[(Int, String)] = {
     if (content.size < lineNumber || lineNumber < 1) {
       res.reverse
 
-    } else if (content(lineNumber).trim().endsWith("{") || content(lineNumber).trim().endsWith("=")) {
+    } else if (content(lineNumber).trim().contains("{") && content(lineNumber).trim().contains("}")) {
+      readToEndOfMethod(content, lineNumber + 1, indentLevel, addLine(lineNumber, content, res))
+
+    } else if (content(lineNumber).trim().contains("{") || content(lineNumber).trim().endsWith("=")) {
       readToEndOfMethod(content, lineNumber + 1, indentLevel + 1, addLine(lineNumber, content, res))
 
-    } else if (content(lineNumber).trim().matches(".+\\{.+\\}")) {
-      val line = content(lineNumber).trim()
-      (lineNumber, line.substring(line.indexOf("{") + 1, line.lastIndexOf("}")).trim) :: res.reverse
-
-    } else if (content(lineNumber).trim().startsWith("}") && indentLevel == 0) {
+    } else if (content(lineNumber).trim().contains("}") && indentLevel == 0) {
       res.reverse
 
-    } else if (content(lineNumber).trim().startsWith("}")) {
+    } else if (content(lineNumber).trim().contains("}")) {
       readToEndOfMethod(content, lineNumber + 1, indentLevel - 1, addLine(lineNumber, content, res))
 
-    } else if (content(lineNumber).trim().endsWith("}")) {
-      res.reverse
-
-    } else {
+    } else {      
       readToEndOfMethod(content, lineNumber + 1, indentLevel, addLine(lineNumber, content, res))
     }
   }

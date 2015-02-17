@@ -18,6 +18,8 @@ var createDialogsForSequenceDiagramMessages = function () {
 var dialogsCreated = false;
 var messagePayloadDialogs = {};
 $(document).ready(function () {
+    $(".SvgSequenceDiagram").toggleClass("hide");
+    
     $(".sequence_diagram_clickable").click(function (event) {
         openDialog($(this), "click", event);
     });
