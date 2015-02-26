@@ -22,7 +22,8 @@ trait ClairvoyanceHtmlFileWriter {
           §<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
           §
           §${Xhtml.toXhtml(file.xml)}""".stripMargin('§'))
-    println(s"Output:$lineSeparator${reportFile.toAbsolute.path}")
+    if (file.notifyUser)
+      println(s"Output:$lineSeparator${reportFile.toAbsolute.path}")
   }
 
   protected def writeXml(xml: NodeSeq)(out: Writer): Unit = out.write(Xhtml.toXhtml(xml))

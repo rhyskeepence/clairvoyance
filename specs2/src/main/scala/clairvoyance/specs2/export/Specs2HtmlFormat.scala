@@ -24,27 +24,10 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
       </div>
     </body>)
 
-  def printSidebar(structure: Seq[SpecificationStructure]): Self = print(sidebar(structure))
+  def printSidebar(structure: Seq[SpecificationStructure])(implicit args: Arguments): Self = print(sidebar(structure))
 
-  private def sidebar(structures: Seq[SpecificationStructure]): NodeSeq = {
-    def fragmentsOf(s: SpecificationStructure): Seq[Fragment] =
-      s.formatFragments(s.map(Fragments.withCreationPaths(Fragments.withSpecName(s.is, s)))).fragments
-
-    val structure = structures.map { s =>
-      val specFragments = fragmentsOf(s).flatMap {
-        case Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
-        case Example(name, _, _, _, _) => Some(<li> - {formatShortExampleName(name.raw)}</li>)
-        case _ => None
-      }
-
-      <li>
-        <a href={s.identification.url}>{s.identification.title}</a><ul>
-        {specFragments}
-        </ul>
-      </li>
-    }
-
-    <div id="sidebar"><ul>{structure}</ul></div>
+  private def sidebar(structures: Seq[SpecificationStructure])(implicit args: Arguments): NodeSeq = {
+    <div id="sidebar" class="specifications">{Specs2SpecificationList.list(structures)}</div>
   }
 
   private def tableOfContentsFor(spec: ExecutedSpecification): NodeSeq = {

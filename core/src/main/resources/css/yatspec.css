@@ -151,19 +151,36 @@ div.contents, div.testmethod {
   font-size: 80%;
 }
 
-#sidebar ul {
+.specifications ul {
   padding: 0 0 10px 0;
 }
 
-#sidebar ul li {
+.specifications ul li {
   list-style: none;
   padding-left: 5px;;
+}
 
+.specifications .test-not-run, .specifications .test-passed {
+  border: none;
+}
+
+.specifications .test-passed::before {
+    content: '✓';
+    font-size: 14px;
+    margin-right: 5px;
+    color: #080;
+}
+
+.specifications .test-failed::before {
+    content: '✖';
+    font-size: 14px;
+    margin-right: 5px;
+    color: #f00;
 }
 
 .scenarios td {
-    padding: 0 20px;
-    text-align: center;
+  padding: 0 20px;
+  text-align: center;
 }
 
 .scenarios, .scenario {
