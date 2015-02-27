@@ -14,7 +14,11 @@ object Specs2SpecificationList extends DefaultStatisticsRepository {
       s.formatFragments(s.map(Fragments.withCreationPaths(Fragments.withSpecName(s.is, s)))).fragments
 
     def resultOfExample(id: SpecIdentification, exampleName: String): NodeSeq = {
-      val stats = id match {
+      <li><span> - {exampleName}</span></li>
+    }
+
+    val structure = structures.map { s =>
+      val stats = s.identification match {
         case name: SpecName => getStatistics(name)
       }
 
@@ -22,22 +26,18 @@ object Specs2SpecificationList extends DefaultStatisticsRepository {
         if (stats.isSuccess) "test-passed" else if (stats.hasSuspended) "test-not-run" else "test-failed"
       }).getOrElse("test-not-run")
 
-      <li><span class={cssClass}> - {exampleName}</span> {stats.map(_ => "").getOrElse("(Not Run)")}</li>
-    }
-
-    val structure = structures.map { s =>
       val specFragments = fragmentsOf(s).flatMap {
         case Text(text, _) => Some(<li><em>{formatShortExampleName(text.raw)}</em></li>)
         case Example(name, _, _, _, _) => Some(resultOfExample(s.identification, formatShortExampleName(name.raw)))
         case _ => None
       }
 
-      <li>
-        <a href={s.identification.url}>{s.identification.title}</a><ul>
+      <a href={s.identification.url}>
+        <ul class={cssClass}>
+          <li><span class="specificationTitle">{s.identification.title}</span> ({stats.map(_.displayResults).map(args.colors.removeColors).getOrElse("Not Run")})</li>
         {specFragments}
-      </ul>
-
-      </li>
+        </ul>
+      </a>
     }
 
     <ul>{structure}</ul>

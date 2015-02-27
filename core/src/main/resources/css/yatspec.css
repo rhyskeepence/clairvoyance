@@ -153,6 +153,13 @@ div.contents, div.testmethod {
 
 .specifications ul {
   padding: 0 0 10px 0;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.specifications a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .specifications ul li {
@@ -164,18 +171,27 @@ div.contents, div.testmethod {
   border: none;
 }
 
-.specifications .test-passed::before {
+.specifications .test-passed li:first-child::before {
     content: '✓';
     font-size: 14px;
     margin-right: 5px;
     color: #080;
 }
 
-.specifications .test-failed::before {
+.specifications .test-failed li:first-child::before {
     content: '✖';
     font-size: 14px;
     margin-right: 5px;
     color: #f00;
+}
+
+.specifications .specificationTitle {
+    margin-bottom: 5px;
+}
+
+.specifications .specificationTitle:hover {
+    margin-bottom: 5px;
+    text-decoration: underline;
 }
 
 .scenarios td {
