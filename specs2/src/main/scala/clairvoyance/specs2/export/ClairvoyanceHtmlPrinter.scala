@@ -20,7 +20,6 @@ trait ClairvoyanceHtmlPrinter {
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(specificationTitle)
-        .printSidebar(allSpecs)
         .printBody(specificationTitle, spec, printFragmentsOf(specificationFullName, spec).xml)
         .xml
     )

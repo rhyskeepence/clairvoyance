@@ -139,18 +139,6 @@ div.contents, div.testmethod {
     margin-bottom: 40px;
 }
 
-#container {
-  float: right;
-  width: 80%;
-}
-
-#sidebar {
-  clear: none;
-  float: left;
-  width: 20%;
-  font-size: 80%;
-}
-
 .specifications ul {
   padding: 0 0 10px 0;
   margin-bottom: 10px;

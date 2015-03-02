@@ -18,17 +18,11 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
   def printBody(specificationTitle: String, spec: ExecutedSpecification, specAsXml: => NodeSeq) = print(
     <body>
       <div id="container">
-        <h1>{wordify(specificationTitle)}</h1>
+        <h1><a href="index.html">Specs</a> / {wordify(specificationTitle)}</h1>
         {tableOfContentsFor(spec)}
         {specAsXml}
       </div>
     </body>)
-
-  def printSidebar(structure: Seq[SpecificationStructure])(implicit args: Arguments): Self = print(sidebar(structure))
-
-  private def sidebar(structures: Seq[SpecificationStructure])(implicit args: Arguments): NodeSeq = {
-    <div id="sidebar" class="specifications">{Specs2SpecificationList.list(structures)}</div>
-  }
 
   private def tableOfContentsFor(spec: ExecutedSpecification): NodeSeq = {
     val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
