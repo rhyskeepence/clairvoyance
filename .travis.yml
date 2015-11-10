@@ -5,8 +5,8 @@ jdk:
 - openjdk6
 sudo: false
 
-before_script: ./scripts/prepublish.sh
-script:        ./scripts/cibuild.sh
+before_script: ./scripts/pre-publish.sh
+script:        ./scripts/ci-build.sh
 
 env:
   global:
