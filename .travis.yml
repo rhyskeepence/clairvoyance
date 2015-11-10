@@ -3,8 +3,11 @@ scala:
 - 2.11.7
 jdk:
 - openjdk6
+sudo: false
+
 before_script: ./scripts/prepublish.sh
-script: ./scripts/cibuild.sh
+script:        ./scripts/cibuild.sh
+
 env:
   global:
   - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
