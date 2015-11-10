@@ -46,27 +46,26 @@ Get This Party Started
 
 Add this to your SBT build:
 
-    libraryDependencies ++= Seq(
-        "com.github.rhyskeepence" %% "clairvoyance" % "1.0.<latest travis build number>"
-        //  or, for scala 2.9.2: 
-        //  "com.github.rhyskeepence" %% "clairvoyance" % "27"
-    )
-    resolvers ++= Seq(
-        "releases"  at "http://oss.sonatype.org/content/repositories/releases"
-    )
+```scala
+    // for Scala 2.10 and above:
+    libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance-scalatest" % "1.0.<latest travis build number>"
+
+    // for scala 2.9.x:
+    libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance" % "27"
+
+    resolvers += "releases" at "http://oss.sonatype.org/content/repositories/releases"
+```
 
 Or in Maven:
 
 ```xml
     <dependency>
         <groupId>com.github.rhyskeepence</groupId>
-        <artifactId>clairvoyance-specs2_2.10</artifactId>
+        <artifactId>clairvoyance-scalatest_2.10</artifactId>
         <version>1.0.${latest.travis.build.number}</version>
         <scope>test</scope>
     </dependency>
-
-    ....
-
+    ...
     <repository>
         <id>sonatype-releases</id>
         <name>sonatype releases</name>
