@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sbt clean compile "+ publishSigned" sonatypeReleaseAll
+sbt coveralls clean compile "+ publishSigned" sonatypeReleaseAll

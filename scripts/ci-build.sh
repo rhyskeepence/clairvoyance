@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sbt clean test
+sbt clean coverage test
