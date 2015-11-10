@@ -56,6 +56,8 @@ Add this to your SBT build:
     resolvers += "releases" at "http://oss.sonatype.org/content/repositories/releases"
 ```
 
+[<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.10*.svg?label=latest%20release%20for%202.10"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.10) [<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.11*.svg?label=latest%20release%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.11)
+
 Or in Maven:
 
 ```xml
