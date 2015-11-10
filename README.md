@@ -1,6 +1,8 @@
 Clairvoyance
 ============
 
+[![Join the chat at https://gitter.im/rhyskeepence/clairvoyance](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rhyskeepence/clairvoyance?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provides a few extensions to capture what is
 happening in your tests, and then produce business and tester friendly documentation.
 
