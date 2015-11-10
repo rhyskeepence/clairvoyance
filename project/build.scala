@@ -24,8 +24,8 @@ object build extends Build {
   lazy val commonSettings = Seq(
     organization := "com.github.rhyskeepence",
     version := Try(sys.env("BUILD_NUMBER")).map("1.0." + _).getOrElse("1.0-SNAPSHOT"),
-    scalaVersion := "2.11.2",
-    crossScalaVersions := Seq("2.10.4", "2.11.2"),
+    scalaVersion := "2.11.7",
+    crossScalaVersions := Seq("2.10.6", "2.11.7"),
     scalacOptions in GlobalScope ++= Seq("-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature", "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials")
   )
 
