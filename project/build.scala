@@ -103,7 +103,12 @@ object build extends Build {
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
 
-    credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASSWORD")),
+    credentials += Credentials(
+      realm = "Sonatype Nexus Repository Manager",
+      host  = "oss.sonatype.org",
+      System.getenv("SONATYPE_USER"),
+      System.getenv("SONATYPE_PASSWORD")
+    ),
 
     pomExtra :=
       <url>http://www.github.com/rhyskeepence/clairvoyance</url>
