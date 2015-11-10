@@ -1,6 +1,6 @@
 language: scala
 scala:
-- 2.11.1
+- 2.11.7
 jdk:
 - openjdk6
 before_script: ./scripts/prepublish.sh
