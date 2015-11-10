@@ -212,4 +212,8 @@ TODO
 
 * Scenario tables
 
-.
+Contributing
+------------
+
+* Browse [existing issues](https://github.com/rhyskeepence/clairvoyance/issues)
+* [![Join the chat at https://gitter.im/rhyskeepence/clairvoyance](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rhyskeepence/clairvoyance?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

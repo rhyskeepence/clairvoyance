@@ -18,3 +18,11 @@ env:
   - secure: F3HjUa2ziwBQNF9HZ6+QGKZYykkA6WC9SA6mpLMf4K+ZwLneCK6m3J4/LH585qX5uqdA7pxmjE+rZe/9rIZmSITiBENTvq9tXKn/l5m9iCOTQOIArGwBE5LDVSOoYWOJP8xNy0MLa5P01x/bRwG9uEedPG600zusT/VCHtzICTo=
   - secure: C36DzktLLfg0/CuEVECAMPIrrs+ndrczMNhacxTdbymESFbG9UhVt27tk5JJLKsykvt3+LnmpFUckEQJ38fEkyRrkD4hRRdx1r+scOyF1LoPA46oVmYunUdyMQUunbiGEVb2fRieVtlmnHhzjiO72yUCJ9zOVJAnixBrMS4/9+M=
   - secure: czYFNF+feFGzvf7iRGjwDwXjIWj8LTAEfJrtWszgrFsupvP5fVdDM932Luy7dHdb29+8VQf5glcJvkv8XWhaJMI35a6BVmzAHn/QcNWzNE+Jebulo/i6+O8iOj8DeKOhF0F48EyVLyU3rdrGaMjig21Gbv8QeKaEwbravnY9Rqc=
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/b8e27ef78fec51586c41
+    on_success: change
+    on_failure: always
+    on_start:   never
