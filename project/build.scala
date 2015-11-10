@@ -60,8 +60,9 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-specs2",
       libraryDependencies := Seq(
-        "org.specs2"     %% "specs2"     % "2.4.2",
-        "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
+        "org.specs2"     %% "specs2-core"       % "[2.4.7,2.4.17]"  % "provided",
+        "org.specs2"     %% "specs2-scalacheck" % "[2.4.7,2.4.17]"  % "provided",
+        "org.scalacheck" %% "scalacheck"        % "[1.11.5,1.12.9]" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("specs2.outDir",     s"${target.value.getAbsolutePath}/clairvoyance-reports/")
