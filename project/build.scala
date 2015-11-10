@@ -43,14 +43,14 @@ object build extends Build {
     .settings(
       name := "clairvoyance-core",
       libraryDependencies <<= scalaVersion { scala_version => Seq(
-        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3",
-        "net.sourceforge.plantuml"      %  "plantuml"       % "8002",
-        "org.pegdown"                   %  "pegdown"        % "1.4.2",
+        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3" exclude("org.scala-lang.modules", s"scala-parser-combinators_${scala_version.substring(0, 4)}"),
+        "net.sourceforge.plantuml"      %  "plantuml"       % "8032",
+        "org.pegdown"                   %  "pegdown"        % "1.6.0",
         "org.scala-lang"                %  "scala-compiler" % scala_version % "optional"
       ) ++ (CrossVersion.partialVersion(scala_version) match {
         case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
-          "org.scala-lang.modules" %% "scala-xml" % "1.0.2",
-          "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
+          "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+          "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
         )
         case _ => Seq.empty
       })}
