@@ -7,7 +7,7 @@ happening in your tests, and then produce business and tester friendly documenta
 It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan
 Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 
-[![Build Status](https://secure.travis-ci.org/rhyskeepence/clairvoyance.svg)](http://travis-ci.org/rhyskeepence/clairvoyance) [![Coverage Status](https://coveralls.io/repos/rhyskeepence/clairvoyance/badge.svg?branch=master&service=github)](https://coveralls.io/github/rhyskeepence/clairvoyance?branch=master)
+[![Build Status](https://secure.travis-ci.org/rhyskeepence/clairvoyance.svg)](http://travis-ci.org/rhyskeepence/clairvoyance) [![Coverage Status](https://coveralls.io/repos/rhyskeepence/clairvoyance/badge.svg?branch=master&service=github)](https://coveralls.io/github/rhyskeepence/clairvoyance?branch=master) [![codecov.io](https://codecov.io/github/rhyskeepence/clairvoyance/coverage.svg?branch=master)](https://codecov.io/github/rhyskeepence/clairvoyance?branch=master&view=all)
 
 Example
 -------
