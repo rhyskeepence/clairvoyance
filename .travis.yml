@@ -7,6 +7,7 @@ sudo: false
 
 before_script: ./scripts/pre-publish.sh
 script:        ./scripts/ci-build.sh
+after_success: ./scripts/publish.sh
 
 env:
   global:
