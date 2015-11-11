@@ -1,36 +1,12 @@
 import sbt._
 import sbt.Keys._
-import com.typesafe.sbt.SbtSite.site
-import com.typesafe.sbt.SbtSite.SiteKeys.{siteSourceDirectory, siteMappings}
 
 import scala.util.Properties.{propOrEmpty, setProp}
-import scala.util.Try
 
 object build extends Build {
+  private lazy val moduleSettings = Common.settings ++ Publication.settings ++ Website.settings
 
-  type Settings = Def.Setting[_]
-
-  lazy val websiteSettings = site.settings ++ Seq[Setting[_]](
-      siteSourceDirectory <<= baseDirectory (_ / "site"),
-      siteMappings <++= baseDirectory map { (b) =>
-        (b / "specs2" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "specs2" / "target" / "clairvoyance-reports", "clairvoyance-reports/specs2")) ++
-        (b / "scalatest" / "target" / "clairvoyance-reports" ** "*" pair rebase(b / "scalatest" / "target" / "clairvoyance-reports", "clairvoyance-reports/scalatest"))
-      }
-    )
-
-  lazy val commonSettings = Seq(
-    organization := "com.github.rhyskeepence",
-    version := Try(sys.env("BUILD_NUMBER")).map("1.0." + _).getOrElse("1.0-SNAPSHOT"),
-    scalaVersion := "2.11.7",
-    crossScalaVersions := Seq("2.10.6", "2.11.7"),
-    scalacOptions in GlobalScope ++= Seq(
-      "-Xcheckinit", "-Xlint", "-deprecation", "-unchecked", "-feature",
-      "-language:implicitConversions,reflectiveCalls,postfixOps,higherKinds,existentials"
-    ),
-    updateOptions := updateOptions.value.withCachedResolution(cachedResoluton = true)
-  )
-
-  lazy val moduleSettings = commonSettings ++ publicationSettings ++ websiteSettings
+  private val scalaCheckVersion = "[1.11.5,1.12.9]"
 
   lazy val clairvoyance = (project in file("."))
     .settings(moduleSettings: _*)
@@ -39,8 +15,7 @@ object build extends Build {
 
   lazy val core = (project in file("core"))
     .settings(moduleSettings: _*)
-    .settings(
-      name := "clairvoyance-core",
+    .settings(name := "clairvoyance-core",
       libraryDependencies ++= Seq(
         "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3"
           exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}"),
@@ -65,7 +40,7 @@ object build extends Build {
       libraryDependencies ++= Seq(
         "org.specs2"     %% "specs2-core"       % "[2.4.7,2.4.17]"  % "provided",
         "org.specs2"     %% "specs2-scalacheck" % "[2.4.7,2.4.17]"  % "provided",
-        "org.scalacheck" %% "scalacheck"        % "[1.11.5,1.12.9]" % "test"
+        "org.scalacheck" %% "scalacheck"        % scalaCheckVersion % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("specs2.outDir",     s"${target.value.getAbsolutePath}/clairvoyance-reports/")
@@ -79,7 +54,7 @@ object build extends Build {
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies ++= Seq(
         "org.scalatest"  %% "scalatest"  % "[2.2.1,3.0.0-M11]" % "provided",
-        "org.scalacheck" %% "scalacheck" % "[1.11.5,1.12.9]"   % "test"
+        "org.scalacheck" %% "scalacheck" % scalaCheckVersion   % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
@@ -95,50 +70,4 @@ object build extends Build {
 //        "org.slf4j" % "slf4j-nop" % "1.7.7" % "test"
 //      )
 //    ) dependsOn (core, specs2 % "test")
-
-  lazy val publicationSettings: Seq[Settings] = Seq(
-    publishTo <<= version { v: String =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
-      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-
-    publishMavenStyle := true,
-    publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-
-    credentials += Credentials(
-      realm = "Sonatype Nexus Repository Manager",
-      host  = "oss.sonatype.org",
-      System.getenv("SONATYPE_USER"),
-      System.getenv("SONATYPE_PASSWORD")
-    ),
-
-    pomExtra :=
-      <url>http://www.github.com/rhyskeepence/clairvoyance</url>
-        <licenses>
-          <license>
-            <name>BSD-style</name>
-            <url>http://www.opensource.org/licenses/bsd-license.php</url>
-            <distribution>repo</distribution>
-          </license>
-        </licenses>
-        <scm>
-          <url>git://github.com/rhyskeepence/clairvoyance.git</url>
-          <connection>scm:git://github.com/rhyskeepence/clairvoyance.git</connection>
-        </scm>
-        <developers>
-          <developer>
-            <id>rhyskeepence</id>
-            <name>Rhys Keepence</name>
-            <url>http://rhyskeepence.github.com</url>
-          </developer>
-          <developer>
-            <id>franckrasolo</id>
-            <name>Franck Rasolo</name>
-            <url>https://github.com/franckrasolo</url>
-          </developer>
-        </developers>
-
-  )
 }
