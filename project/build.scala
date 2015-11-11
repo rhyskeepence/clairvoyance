@@ -6,9 +6,6 @@ import com.typesafe.sbt.SbtSite.SiteKeys.{siteSourceDirectory, siteMappings}
 import scala.util.Properties.{propOrEmpty, setProp}
 import scala.util.Try
 
-import xerial.sbt.Sonatype._
-import SonatypeKeys._
-
 object build extends Build {
 
   type Settings = Def.Setting[_]
@@ -31,35 +28,37 @@ object build extends Build {
 
   lazy val moduleSettings = commonSettings ++ publicationSettings ++ websiteSettings
 
-  lazy val clairvoyance = (project in file(".")).
-    settings(moduleSettings: _*).
-    settings(
-      aggregate in sonatypeReleaseAll := false,
-      packagedArtifacts := Map.empty
-    ).aggregate(core, specs2, scalatest)
+  lazy val clairvoyance = (project in file("."))
+    .settings(moduleSettings: _*)
+    .settings(packagedArtifacts := Map.empty)
+    .aggregate(core, specs2, scalatest)
 
   lazy val core = (project in file("core"))
     .settings(moduleSettings: _*)
     .settings(
       name := "clairvoyance-core",
-      libraryDependencies <<= scalaVersion { scala_version => Seq(
-        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3" exclude("org.scala-lang.modules", s"scala-parser-combinators_${scala_version.substring(0, 4)}"),
+      libraryDependencies ++= Seq(
+        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3"
+          exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}"),
         "net.sourceforge.plantuml"      %  "plantuml"       % "8032",
         "org.pegdown"                   %  "pegdown"        % "1.6.0",
-        "org.scala-lang"                %  "scala-compiler" % scala_version % "optional"
-      ) ++ (CrossVersion.partialVersion(scala_version) match {
-        case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
-          "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-          "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
-        )
-        case _ => Seq.empty
-      })}
+        "org.scala-lang"                %  "scala-compiler" % scalaVersion.value % "optional"
+      ),
+      libraryDependencies ++= {
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
+            "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+            "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
+          )
+          case _ => Seq.empty
+        }
+      }
     )
 
   lazy val specs2 = (project in file("specs2"))
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-specs2",
-      libraryDependencies := Seq(
+      libraryDependencies ++= Seq(
         "org.specs2"     %% "specs2-core"       % "[2.4.7,2.4.17]"  % "provided",
         "org.specs2"     %% "specs2-scalacheck" % "[2.4.7,2.4.17]"  % "provided",
         "org.scalacheck" %% "scalacheck"        % "[1.11.5,1.12.9]" % "test"
@@ -74,7 +73,7 @@ object build extends Build {
   lazy val scalatest = (project in file("scalatest"))
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
-      libraryDependencies := Seq(
+      libraryDependencies ++= Seq(
         "org.scalatest"  %% "scalatest"  % "[2.2.1,3.0.0-M11]" % "provided",
         "org.scalacheck" %% "scalacheck" % "[1.11.5,1.12.9]"   % "test"
       ),
@@ -137,5 +136,5 @@ object build extends Build {
           </developer>
         </developers>
 
-  ) ++ sonatypeSettings
+  )
 }
