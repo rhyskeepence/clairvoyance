@@ -50,7 +50,7 @@ Add this to your SBT build:
 
 ```scala
 // for Scala 2.10 and above:
-libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance-scalatest" % "1.0.<latest travis build number>"
+libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance-specs2" % <latest-version>
 
 // for scala 2.9.x:
 libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance" % "27"
@@ -58,15 +58,15 @@ libraryDependencies += "com.github.rhyskeepence" %% "clairvoyance" % "27"
 resolvers += "releases" at "http://oss.sonatype.org/content/repositories/releases"
 ```
 
-[<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.10*.svg?label=latest%20release%20for%202.10"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.10) [<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.11*.svg?label=latest%20release%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.11)
+[<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.10*.svg?label=latest%20version%20for%202.10"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.10) [<img src="https://img.shields.io/maven-central/v/com.github.rhyskeepence/clairvoyance-core_2.11*.svg?label=latest%20version%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Acom.github.rhyskeepence%20a%3Aclairvoyance-core_2.11)
 
 Or in Maven:
 
 ```xml
 <dependency>
     <groupId>com.github.rhyskeepence</groupId>
-    <artifactId>clairvoyance-scalatest_2.10</artifactId>
-    <version>1.0.${latest.travis.build.number}</version>
+    <artifactId>clairvoyance-specs2_2.10</artifactId>
+    <version>${latest-version}</version>
     <scope>test</scope>
 </dependency>
 ...
