@@ -1,15 +1,13 @@
 Clairvoyance
 ============
 
-[![Join the chat at https://gitter.im/rhyskeepence/clairvoyance](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rhyskeepence/clairvoyance?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Clairvoyance is an extension to Specs2, a Scala test library. Clairvoyance provides a few extensions to capture what is
 happening in your tests, and then produce business and tester friendly documentation.
 
 It's a pastiche of [Yatspec](http://code.google.com/p/yatspec), a Java testing library written by my colleague Dan
 Bodart. It addresses the deficiencies we experienced with Fit and Concordion.
 
-[![Build Status](https://secure.travis-ci.org/rhyskeepence/clairvoyance.svg)](http://travis-ci.org/rhyskeepence/clairvoyance) [![Coverage Status](https://coveralls.io/repos/rhyskeepence/clairvoyance/badge.svg?branch=master&service=github)](https://coveralls.io/github/rhyskeepence/clairvoyance?branch=master) [![codecov.io](https://codecov.io/github/rhyskeepence/clairvoyance/coverage.svg?branch=master)](https://codecov.io/github/rhyskeepence/clairvoyance?branch=master&view=all)
+[![Build Status](https://secure.travis-ci.org/rhyskeepence/clairvoyance.svg)](http://travis-ci.org/rhyskeepence/clairvoyance) [![codecov.io](https://codecov.io/github/rhyskeepence/clairvoyance/coverage.svg?branch=master)](https://codecov.io/github/rhyskeepence/clairvoyance?branch=master&view=all) [![Join the chat at https://gitter.im/rhyskeepence/clairvoyance](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rhyskeepence/clairvoyance?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Example
 -------
