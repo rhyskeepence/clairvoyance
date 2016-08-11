@@ -19,7 +19,7 @@ class MarkdownWithWordSpecExample extends WordSpec {
     |  ******
     |```
     | """.stripMargin can {
-    "can calculate the sixth triangle number" in {
+    "calculate the sixth triangle number" in {
       triangle(6) == 21
     }
   }
@@ -30,7 +30,7 @@ class MarkdownWithWordSpecExample extends WordSpec {
     |* *Non-negative* integers only
     |* [Further reading](http://en.wikipedia.org/wiki/Factorial)
   """.stripMargin can {
-    "can calculate the factorial of 3" in {
+    "calculate the factorial of 3" in {
       factorial(3) == 6
     }
   }
