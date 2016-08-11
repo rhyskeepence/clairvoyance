@@ -121,7 +121,7 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   private def getCodeFrom(location: String, event: TestSucceeded): List[(Int, String)] = {
     event.location match {
-      case Some(LineInFile(ln, _)) => FromSource.getCodeFrom(location, ln)
+      case Some(LineInFile(ln, _, _)) => FromSource.getCodeFrom(location, ln)
       case a@_ => FromSource.getCodeFrom(location, event.testText)
     }
   }
