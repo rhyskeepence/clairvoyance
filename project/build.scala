@@ -19,7 +19,7 @@ object build extends Build {
       libraryDependencies ++= Seq(
         "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3"
           exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}"),
-        "net.sourceforge.plantuml"      %  "plantuml"       % "8032",
+        "net.sourceforge.plantuml"      %  "plantuml"       % "8046",
         "org.pegdown"                   %  "pegdown"        % "1.6.0",
         "org.scala-lang"                %  "scala-compiler" % scalaVersion.value % "optional"
       ),
