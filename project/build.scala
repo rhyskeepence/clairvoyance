@@ -53,7 +53,7 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies ++= Seq(
-        "org.scalatest"  %% "scalatest"  % "[2.2.1,3.0.0-M11]" % "provided",
+        "org.scalatest"  %% "scalatest"  % "[2.2.1,3.0.0]" % "provided",
         "org.scalacheck" %% "scalacheck" % scalaCheckVersion   % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
