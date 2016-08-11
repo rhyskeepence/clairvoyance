@@ -53,8 +53,8 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies ++= Seq(
-        "org.scalatest"  %% "scalatest"  % "[2.2.1,3.0.0]" % "provided",
-        "org.scalacheck" %% "scalacheck" % scalaCheckVersion   % "test"
+        "org.scalatest"  %% "scalatest"  % "3.0.0"  % "provided",
+        "org.scalacheck" %% "scalacheck" % "1.13.1" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
