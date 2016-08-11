@@ -6,8 +6,6 @@ import scala.util.Properties.{propOrEmpty, setProp}
 object build extends Build {
   private lazy val moduleSettings = Common.settings ++ Publication.settings ++ Website.settings
 
-  private val scalaCheckVersion = "[1.11.5,1.12.9]"
-
   lazy val clairvoyance = (project in file("."))
     .settings(moduleSettings: _*)
     .settings(packagedArtifacts := Map.empty)
@@ -34,13 +32,14 @@ object build extends Build {
       }
     )
 
+  private val specs2Version = "[2.4.7,2.4.17]"
+
   lazy val specs2 = (project in file("specs2"))
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-specs2",
       libraryDependencies ++= Seq(
-        "org.specs2"     %% "specs2-core"       % "[2.4.7,2.4.17]"  % "provided",
-        "org.specs2"     %% "specs2-scalacheck" % "[2.4.7,2.4.17]"  % "provided",
-        "org.scalacheck" %% "scalacheck"        % scalaCheckVersion % "test"
+        "org.specs2" %% "specs2-core"       % specs2Version % "provided",
+        "org.specs2" %% "specs2-scalacheck" % specs2Version % "provided"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("specs2.outDir",     s"${target.value.getAbsolutePath}/clairvoyance-reports/")
