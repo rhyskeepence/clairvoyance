@@ -1,31 +1,31 @@
 package clairvoyance.scalatest.examples
 
 import clairvoyance.plugins.SequenceDiagram
-import clairvoyance.scalatest.tags.skipInteractions
 import clairvoyance.scalatest.{SkipInteractions, SkipSpecification}
 import org.scalatest.WordSpec
 
 class SequenceDiagramWithWordSpecExample extends WordSpec with LdapAuthenticationContext with SequenceDiagram {
 
   override def defaultActor = "Web Server"
+  def produce = afterWord("produce")
 
-  "The Web Site" must {
-    "authenticate the user using LDAP" in {
+  "User authentication" must produce {
+    "spec + interactions" in {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
       thenTheUserIsShownSecrets()
     }
 
-    "authenticate the user using LDAP (no spec)" taggedAs SkipSpecification in {
+    "no spec" taggedAs SkipSpecification in {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
       thenTheUserIsShownSecrets()
     }
 
-    "authenticate the user using LDAP (no interactions)" taggedAs SkipInteractions in {
+    "no interactions" taggedAs SkipInteractions in {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
       thenTheUserIsShownSecrets()
     }
 
-    "authenticate the user using LDAP (no spec, no interactions)" taggedAs (SkipSpecification, SkipInteractions) in {
+    "no spec, no interactions" taggedAs (SkipSpecification, SkipInteractions) in {
       whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
       thenTheUserIsShownSecrets()
     }

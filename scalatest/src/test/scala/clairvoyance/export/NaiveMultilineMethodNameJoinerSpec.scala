@@ -1,17 +1,17 @@
 package clairvoyance.export
 
 import clairvoyance.export.NaiveMultilineMethodNameJoiner.doStripLine
-import org.scalatest.{MustMatchers, Spec}
+import org.scalatest.{MustMatchers, WordSpec}
 
-class NaiveMultilineMethodNameJoinerSpec extends Spec with MustMatchers {
+class NaiveMultilineMethodNameJoinerSpec extends WordSpec with MustMatchers {
 
-  object `doStripLine strips the margin of a multiline string` {
+  "doStripLine strips the margin of a multiline string and" must {
 
-    def `and removes the explicit call to stripMargin`() {
+    "remove the explicit call to stripMargin" in {
       doStripLine("\"\"\"Bla\n    |----\n    |\n    |Foo\n    |\"\"\".stripMargin") mustBe "\"\"\"Bla\n----\n\nFoo\n\"\"\""
     }
 
-    def `even without an explicit call to stripMargin`() {
+    "work even without an explicit call to stripMargin" in {
       doStripLine("\"\"\"Bla\n    |----\n    |\n    |Foo\n    |\"\"\"") mustBe "\"\"\"Bla\n----\n\nFoo\n\"\"\""
     }
   }

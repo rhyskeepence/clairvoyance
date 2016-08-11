@@ -2,12 +2,12 @@ package clairvoyance.scalatest.examples
 
 import clairvoyance.rendering.CustomRendering
 import clairvoyance.scalatest.ClairvoyantContext
-import org.scalatest.Spec
+import org.scalatest.WordSpec
 
-class CustomRenderingExample extends Spec with ClairvoyantContext with CustomRendering {
+class CustomRenderingExample extends WordSpec with ClairvoyantContext with CustomRendering {
 
-  object `The Custom Renderer should` {
-    def `be invoked`() {
+  "The Custom Renderer" should {
+    "be invoked" in {
       interestingGivens += ("brain" -> Brain(130))
     }
   }

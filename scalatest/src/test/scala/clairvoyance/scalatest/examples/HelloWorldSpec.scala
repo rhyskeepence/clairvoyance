@@ -1,20 +1,24 @@
 package clairvoyance.scalatest.examples
 
-import org.scalatest.{MustMatchers, Spec}
+import org.scalatest.{MustMatchers, WordSpec}
 
-class HelloWorldSpec extends Spec with MustMatchers {
+class HelloWorldSpec extends WordSpec with MustMatchers {
 
-  object `The 'Hello world' string` {
-    def `must contain 11 characters`() {
+  "The 'Hello world' string" must {
+
+    "contain 11 characters" in {
       "Hello world" must have size 11
     }
-    def `must start with 'Hello'`() {
+
+    "start with 'Hello'" in {
       "Hello world" must startWith("Hello")
     }
-    def `must end with 'world'`() {
+
+    "end with 'world'" in {
       "Hello world" must endWith("world")
     }
-    def `can be found inside a multiline string`() {
+
+    "be found inside a multiline string" in {
       """
         |Begin: 12345
         |From: Foo

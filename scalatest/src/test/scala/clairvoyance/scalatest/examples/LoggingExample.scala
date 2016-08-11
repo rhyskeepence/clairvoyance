@@ -1,11 +1,11 @@
 package clairvoyance.scalatest.examples
 
-import org.scalatest.{Matchers, Spec}
+import org.scalatest.{Matchers, WordSpec}
 
-class LoggingExample extends Spec with DoomsdayContext with Matchers {
+class LoggingExample extends WordSpec with DoomsdayContext with Matchers {
 
-  object `The coordinator must` {
-    def `invoke the Doomsday Device on the 21st of December 2012`() {
+  "The coordinator" must {
+    "invoke the Doomsday Device on the 21st of December 2012" in {
       setDateTo("21/12/2012")
       runTheCoordinator()
       theDoomsdayDevice shouldBe unleashed
