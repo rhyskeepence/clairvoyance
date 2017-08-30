@@ -1,7 +1,6 @@
 package clairvoyance.scalatest.examples
 
 import clairvoyance.plugins.SequenceDiagram
-import clairvoyance.scalatest.tags.skipInteractions
 import clairvoyance.scalatest.{SkipInteractions, SkipSpecification}
 import org.scalatest.FunSuite
 
