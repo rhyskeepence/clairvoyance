@@ -15,24 +15,27 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-core",
       libraryDependencies ++= Seq(
-        "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3"
-          exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}"),
         "net.sourceforge.plantuml"      %  "plantuml"       % "8046",
         "org.pegdown"                   %  "pegdown"        % "1.6.0",
+        "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
         "org.scala-lang"                %  "scala-compiler" % scalaVersion.value % "optional"
       ),
       libraryDependencies ++= {
         CrossVersion.partialVersion(scalaVersion.value) match {
-          case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
-            "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-            "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
+          case Some((2, 11)) => Seq(
+            "com.github.scala-incubator.io" %% "scala-io-file"  % "0.4.3"
+              exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}")
           )
-          case _ => Seq.empty
+          case Some((2, 12)) => Seq(
+            "com.madgag" %% "scala-io-file" % "0.4.9"
+              exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}")
+          )
+          case _ => sys.error("Unknown scala-io-file version")
         }
       }
     )
 
-  private val specs2Version = "[2.4.7,2.4.17]"
+  private val specs2Version = "2.4.17"
 
   lazy val specs2 = (project in file("specs2"))
     .settings(moduleSettings: _*)
@@ -52,8 +55,8 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies ++= Seq(
-        "org.scalatest"  %% "scalatest"  % "3.0.0"  % "provided",
-        "org.scalacheck" %% "scalacheck" % "1.13.1" % "test"
+        "org.scalatest"  %% "scalatest"  % "3.0.1"  % "provided",
+        "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
         setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")

@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 class ScalaTestHtmlReporterWithLocation extends ScalaTestHtmlReporter
 
 class ScalaTestHtmlReporter extends Reporter {
-  private var events: ListBuffer[Event] = new ListBuffer[Event]
+  private val events: ListBuffer[Event] = new ListBuffer[Event]
 
   private val startTime: Long = System.currentTimeMillis()
 
