@@ -55,7 +55,7 @@ object build extends Build {
     .settings(moduleSettings: _*)
     .settings(name := "clairvoyance-scalatest",
       libraryDependencies ++= Seq(
-        "org.scalatest"  %% "scalatest"  % "3.0.1"  % "provided",
+        "org.scalatest"  %% "scalatest"  % "3.0.5"  % "provided",
         "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
       ),
       testOptions in Test += Tests.Setup(() => {
@@ -63,13 +63,4 @@ object build extends Build {
       })
     ) dependsOn core
 
-//  lazy val proxy = (project in file("http-proxy"))
-//    .settings(moduleSettings: _*)
-//    .settings(name := "clairvoyance-http-proxy",
-//      libraryDependencies := Seq(
-//        "net.databinder" %% "unfiltered-netty-server" % "0.8.1",
-//        "net.databinder.dispatch" %% "dispatch-core" % "0.11.2",
-//        "org.slf4j" % "slf4j-nop" % "1.7.7" % "test"
-//      )
-//    ) dependsOn (core, specs2 % "test")
 }
