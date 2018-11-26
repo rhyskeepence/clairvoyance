@@ -1,7 +1,7 @@
 # use container-based infrastructure
 sudo: false
 language: scala
-scala: 2.12.3
+scala: 2.12.7
 jdk: oraclejdk8
 
 before_script: ./scripts/pre-publish.sh
