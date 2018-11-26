@@ -19,7 +19,6 @@ trait ClairvoyanceHtmlPrinter {
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(specificationTitle)
-        .printSidebar(allSuiteResults)
         .printBody(suiteResult.suiteName, suiteResult)
         .xml
     )

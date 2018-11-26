@@ -17,28 +17,6 @@ case class ScalaTestHtmlFormat (override val xml: NodeSeq = NodeSeq.Empty) exten
 
   protected def print(xml2: NodeSeq): Self = ScalaTestHtmlFormat(xml ++ xml2)
 
-  def printSidebar(results: Seq[SuiteResult]): Self = print(sidebar(results))
-
-  private def sidebar(results: Seq[SuiteResult]): NodeSeq = {
-    val summarisedSuites = results.map { suite =>
-      <li>
-        <a href={ s"${suite.suiteId}.html" }>{suite.suiteName}</a><ul>
-        {
-          suite.eventList.flatMap {
-            case event: ScopeOpened => stringToPrintWhenNoError(event.formatter, event.nameInfo.suiteName) match {
-              case Some(text) => Some(<li><em>{formatShortExampleName(text)}</em></li>)
-              case None       => NodeSeq.Empty
-            }
-            case event: TestStarting => Some(<li> - {formatShortExampleName(event.testText)}</li>)
-            case _ => None
-          }
-        }
-        </ul>
-      </li>
-    }
-    <div id="sidebar"><ul>{summarisedSuites}</ul></div>
-  }
-
   private def tableOfContentsFor(suiteResult: SuiteResult): NodeSeq = {
     <ul class="contents">
     {
