@@ -13,22 +13,8 @@ lazy val core = (project in file("core"))
     libraryDependencies ++= Seq(
       "net.sourceforge.plantuml" % "plantuml" % "8046",
       "org.pegdown" % "pegdown" % "1.6.0",
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
-      "org.scala-lang" % "scala-compiler" % scalaVersion.value % "optional"
-    ),
-    libraryDependencies ++= {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, 11)) => Seq(
-          "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3"
-            exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}")
-        )
-        case Some((2, 12)) => Seq(
-          "com.madgag" %% "scala-io-file" % "0.4.9"
-            exclude("org.scala-lang.modules", s"scala-parser-combinators_${scalaVersion.value.substring(0, 4)}")
-        )
-        case _ => sys.error("Unknown scala-io-file version")
-      }
-    }
+      "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+    )
   )
 
 val specs2Version = "2.4.17"

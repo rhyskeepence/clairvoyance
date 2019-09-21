@@ -66,7 +66,7 @@ object Reflection {
    * Given a class, a zero or one-parameter constructor, return an instance of that class
    */
   private def createInstanceForConstructor[T <: AnyRef : ClassTag](c: Class[_], constructor: Constructor[_],
-                                                                   parameter: Option[AnyRef] = None): Either[Throwable, T] = {
+                                                                   parameter: Option[AnyRef]): Either[Throwable, T] = {
     if (constructor.getParameterTypes.isEmpty)
       createInstanceOfEither[T](Some[Class[T]](c.asInstanceOf[Class[T]]))
     else if (constructor.getParameterTypes.size == 1) {
