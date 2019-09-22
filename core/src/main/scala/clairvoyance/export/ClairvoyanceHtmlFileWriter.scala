@@ -19,6 +19,7 @@ trait ClairvoyanceHtmlFileWriter {
 
   protected def writeFile = (file: ClairvoyanceHtml) => {
     val reportFile = Path.of(outputDir, file.url)
+		Files.createDirectories(reportFile.getParent)
     Files.write(
       reportFile,
       s"""<?xml version="1.0" encoding="UTF-8"?>

@@ -1,10 +1,9 @@
 package clairvoyance.io
 
-import java.io.{BufferedInputStream, BufferedOutputStream, FileOutputStream, IOException}
+import java.io.{BufferedInputStream, BufferedOutputStream, FileOutputStream}
 import java.net.URL
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.attribute.BasicFileAttributes
-import java.nio.file.{FileVisitResult, Path, Paths, SimpleFileVisitor, Files => JFiles}
+import java.nio.file.{Path, Paths, Files => JFiles}
 import java.util.zip.{ZipEntry, ZipInputStream}
 
 import scala.annotation.tailrec
@@ -24,28 +23,10 @@ object ClasspathResources {
     val directory = Path.of(getClass.getClassLoader.getResource(src).toURI)
     if (!directory.toString.startsWith("jar")) {
       val target = Path.of(outputDir, src)
-      deleteRecursively(target)
 			JFiles.walk(directory).forEach(source => {
 				JFiles.copy(source, target.resolve(directory.relativize(source)), REPLACE_EXISTING)
 			})
     }
-  }
-
-  private def deleteRecursively(path: Path) = {
-    JFiles.walkFileTree(
-      path,
-      new SimpleFileVisitor[Path] {
-        override def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult = {
-          JFiles.delete(file)
-          FileVisitResult.CONTINUE
-        }
-
-        override def postVisitDirectory(dir: Path, exc: IOException): FileVisitResult = {
-          JFiles.delete(dir)
-          FileVisitResult.CONTINUE
-        }
-      }
-    )
   }
 
   private def unjar(jarUrl: URL, dirPath: String, regexFilter: String): Unit = {
