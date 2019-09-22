@@ -1,7 +1,9 @@
 # use container-based infrastructure
 sudo: false
 language: scala
-scala: 2.12.8
+scala:
+  - 2.12.8
+  - 2.13.0
 jdk: openjdk11
 
 before_script: ./scripts/pre-publish.sh
@@ -9,29 +11,29 @@ script:        ./scripts/ci-build.sh
 after_success: ./scripts/publish.sh
 
 env:
-	global:
-		- BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
-		-   secure: RjxypYwzeOgdI5wTMbXJylavApF3gb2oCBBFy6+WxZ19iGnuEzyBP1jVCEsddVQL45JOanzSIn3WOSJfUZTUid98oWjUna1/BQ6j67LXwdMNYAXTJjzdJSmuV+3abfE4qSV865WbkeikrotTvY0CMfYdbFg8F3Ntl4Up2RaDRaE=
-		-   secure: YiItkHA1A5jITEwPxO/J0J70eRqNhc7+JX/Uni0ICwSES5JhEDOlNfyVEgMnCY3U5GOJfWJXVx6WvGEyVLrGJu3xvjLPb3fHeZl92ER2Oo60Q+Ewd6t38/RkU5KAsa55EEfbO2gBlwr4jYfN/GJMl+l64Y1WzeQt5LDnQpmLu9M=
-		-   secure: DU+/P7ZMwfDFUsQbhH2b+9XGGIdfDmwYjUAMaEIxxbyKeP8R2q8tIF3lkx99eBI2xdFR6sEreyO+uXI+n6pqR1Q9yDrkAkTVeo9EIrnU+sBrS6gHt5X8qPotB6p54P23q+WJcdhAMKvv2F+zcHIerXxS8pgXuktRTAbUAwy9818=
-		-   secure: F3HjUa2ziwBQNF9HZ6+QGKZYykkA6WC9SA6mpLMf4K+ZwLneCK6m3J4/LH585qX5uqdA7pxmjE+rZe/9rIZmSITiBENTvq9tXKn/l5m9iCOTQOIArGwBE5LDVSOoYWOJP8xNy0MLa5P01x/bRwG9uEedPG600zusT/VCHtzICTo=
-		-   secure: C36DzktLLfg0/CuEVECAMPIrrs+ndrczMNhacxTdbymESFbG9UhVt27tk5JJLKsykvt3+LnmpFUckEQJ38fEkyRrkD4hRRdx1r+scOyF1LoPA46oVmYunUdyMQUunbiGEVb2fRieVtlmnHhzjiO72yUCJ9zOVJAnixBrMS4/9+M=
-		-   secure: czYFNF+feFGzvf7iRGjwDwXjIWj8LTAEfJrtWszgrFsupvP5fVdDM932Luy7dHdb29+8VQf5glcJvkv8XWhaJMI35a6BVmzAHn/QcNWzNE+Jebulo/i6+O8iOj8DeKOhF0F48EyVLyU3rdrGaMjig21Gbv8QeKaEwbravnY9Rqc=
+  global:
+    - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+    -   secure: RjxypYwzeOgdI5wTMbXJylavApF3gb2oCBBFy6+WxZ19iGnuEzyBP1jVCEsddVQL45JOanzSIn3WOSJfUZTUid98oWjUna1/BQ6j67LXwdMNYAXTJjzdJSmuV+3abfE4qSV865WbkeikrotTvY0CMfYdbFg8F3Ntl4Up2RaDRaE=
+    -   secure: YiItkHA1A5jITEwPxO/J0J70eRqNhc7+JX/Uni0ICwSES5JhEDOlNfyVEgMnCY3U5GOJfWJXVx6WvGEyVLrGJu3xvjLPb3fHeZl92ER2Oo60Q+Ewd6t38/RkU5KAsa55EEfbO2gBlwr4jYfN/GJMl+l64Y1WzeQt5LDnQpmLu9M=
+    -   secure: DU+/P7ZMwfDFUsQbhH2b+9XGGIdfDmwYjUAMaEIxxbyKeP8R2q8tIF3lkx99eBI2xdFR6sEreyO+uXI+n6pqR1Q9yDrkAkTVeo9EIrnU+sBrS6gHt5X8qPotB6p54P23q+WJcdhAMKvv2F+zcHIerXxS8pgXuktRTAbUAwy9818=
+    -   secure: F3HjUa2ziwBQNF9HZ6+QGKZYykkA6WC9SA6mpLMf4K+ZwLneCK6m3J4/LH585qX5uqdA7pxmjE+rZe/9rIZmSITiBENTvq9tXKn/l5m9iCOTQOIArGwBE5LDVSOoYWOJP8xNy0MLa5P01x/bRwG9uEedPG600zusT/VCHtzICTo=
+    -   secure: C36DzktLLfg0/CuEVECAMPIrrs+ndrczMNhacxTdbymESFbG9UhVt27tk5JJLKsykvt3+LnmpFUckEQJ38fEkyRrkD4hRRdx1r+scOyF1LoPA46oVmYunUdyMQUunbiGEVb2fRieVtlmnHhzjiO72yUCJ9zOVJAnixBrMS4/9+M=
+    -   secure: czYFNF+feFGzvf7iRGjwDwXjIWj8LTAEfJrtWszgrFsupvP5fVdDM932Luy7dHdb29+8VQf5glcJvkv8XWhaJMI35a6BVmzAHn/QcNWzNE+Jebulo/i6+O8iOj8DeKOhF0F48EyVLyU3rdrGaMjig21Gbv8QeKaEwbravnY9Rqc=
 
 # directories cached to S3 at the end of the build
 before_cache:
-	- find $HOME/.sbt -name "*.lock" -type f -delete
-	- find $HOME/.cache/coursier -name "*.lock" -type f -delete
+    - find $HOME/.sbt -name "*.lock" -type f -delete
+    - find $HOME/.cache/coursier -name "*.lock" -type f -delete
 
 cache:
-	directories:
-		- $HOME/.sbt/boot/
-		- $HOME/.cache/coursier
+  directories:
+    - $HOME/.sbt/boot/
+    - $HOME/.cache/coursier
 
 notifications:
-	webhooks:
-		urls:
-			- https://webhooks.gitter.im/e/b8e27ef78fec51586c41
-		on_success: change
-		on_failure: always
-		on_start:   never
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/b8e27ef78fec51586c41
+    on_success: change
+    on_failure: always
+    on_start:   never
