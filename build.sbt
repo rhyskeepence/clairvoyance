@@ -9,11 +9,12 @@ lazy val clairvoyance = (project in file("."))
 
 lazy val core = (project in file("core"))
   .settings(moduleSettings: _*)
-  .settings(name := "clairvoyance-core",
+  .settings(
+    name := "clairvoyance-core",
     libraryDependencies ++= Seq(
-      "net.sourceforge.plantuml" % "plantuml" % "8046",
-      "org.pegdown" % "pegdown" % "1.6.0",
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+      "net.sourceforge.plantuml" % "plantuml"   % "8046",
+      "org.pegdown"              % "pegdown"    % "1.6.0",
+      "org.scala-lang.modules"   %% "scala-xml" % "1.2.0"
     )
   )
 
@@ -21,9 +22,10 @@ val specs2Version = "2.4.17"
 
 lazy val specs2 = (project in file("specs2"))
   .settings(moduleSettings: _*)
-  .settings(name := "clairvoyance-specs2",
+  .settings(
+    name := "clairvoyance-specs2",
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core" % specs2Version % "provided",
+      "org.specs2" %% "specs2-core"       % specs2Version % "provided",
       "org.specs2" %% "specs2-scalacheck" % specs2Version % "provided"
     ),
     testOptions in Test += Tests.Setup(() => {
@@ -35,13 +37,13 @@ lazy val specs2 = (project in file("specs2"))
 
 lazy val scalatest = (project in file("scalatest"))
   .settings(moduleSettings: _*)
-  .settings(name := "clairvoyance-scalatest",
+  .settings(
+    name := "clairvoyance-scalatest",
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.0.5" % "provided",
-      "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
+      "org.scalatest"  %% "scalatest"  % "3.0.8"  % "provided",
+      "org.scalacheck" %% "scalacheck" % "1.14.1" % "test"
     ),
     testOptions in Test += Tests.Setup(() => {
       setProp("scalatest.output.dir", s"${target.value.getAbsolutePath}/clairvoyance-reports/")
     })
   ) dependsOn core
-
