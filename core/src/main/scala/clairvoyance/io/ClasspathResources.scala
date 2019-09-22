@@ -25,7 +25,9 @@ object ClasspathResources {
     if (!directory.toString.startsWith("jar")) {
       val target = Path.of(outputDir, src)
       deleteRecursively(target)
-      JFiles.copy(directory, target, REPLACE_EXISTING)
+			JFiles.walk(directory).forEach(source => {
+				JFiles.copy(source, target.resolve(directory.relativize(source)), REPLACE_EXISTING)
+			})
     }
   }
 
