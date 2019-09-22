@@ -12,7 +12,7 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
   }
 
   trait context extends ClairvoyantContext {
-    val bazza = new Bazza
+    val bazza                             = new Bazza
     override def capturedInputsAndOutputs = Seq(bazza)
 
     def whenFootieIsStarting(): Unit = { bazza.footieIsStarting() }
@@ -23,7 +23,7 @@ class CapturedInputsAndOutputsSpec extends ClairvoyantSpec {
         .toMap
         .apply(key)
   }
-  
+
   class Bazza extends ProducesCapturedInputsAndOutputs {
     def footieIsStarting(): Unit = {
       captureValue("Bazza says" -> "Oi Shazza, get me a beer, the game's starting.")

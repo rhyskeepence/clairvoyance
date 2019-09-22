@@ -12,7 +12,20 @@ class ResultExtractorTest extends WordSpec {
   "ResultExtractor can extract a result" when passed {
 
     s"a ${classOf[TestStarting].getSimpleName} event" in {
-      val event  = TestStarting(new Ordinal(0), "suiteName", "suiteId", Some("suiteClassName"), "testName", "testText", None, None, None, None, "Ima Thread", 0L)
+      val event = TestStarting(
+        new Ordinal(0),
+        "suiteName",
+        "suiteId",
+        Some("suiteClassName"),
+        "testName",
+        "testText",
+        None,
+        None,
+        None,
+        None,
+        "Ima Thread",
+        0L
+      )
       val result = ResultExtractor.extract(ListBuffer(event), 0).get
       assert(result.suiteId === "suiteId")
       assert(result.suiteName === "suiteName")
@@ -20,7 +33,16 @@ class ResultExtractorTest extends WordSpec {
     }
 
     "an event that exposes suite details via NameInfo" in {
-      val event  = ScopeOpened(new Ordinal(0), "I work for peanuts", NameInfo("suiteName", "suiteId", Some("suiteClassName"), None), None, None, None, "Ima Thread", 0L)
+      val event = ScopeOpened(
+        new Ordinal(0),
+        "I work for peanuts",
+        NameInfo("suiteName", "suiteId", Some("suiteClassName"), None),
+        None,
+        None,
+        None,
+        "Ima Thread",
+        0L
+      )
       val result = ResultExtractor.extract(ListBuffer(event), 0).get
       assert(result.suiteId === "suiteId")
       assert(result.suiteId === "suiteId")

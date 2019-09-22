@@ -5,7 +5,7 @@ import clairvoyance.scalatest.ClairvoyantContext
 import org.scalatest.Suite
 
 trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
-  val ldap = new Ldap
+  val ldap      = new Ldap
   val webServer = new WebServer(ldap)
 
   def whenTheUserLogsInToTheWebSiteUsingTheCredentials(user: String, password: String): Unit = {
@@ -27,16 +27,18 @@ trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
   class Ldap extends ProducesCapturedInputsAndOutputs {
     def authenticate(user: String, password: String): Unit = {
 
-      captureValue("Username and Password to LDAP" ->
-        <authRequest>
+      captureValue(
+        "Username and Password to LDAP" ->
+          <authRequest>
           <user>{user}</user>
           <pass>{password}</pass>
         </authRequest>
       )
       // do something
 
-      captureValue("Credentials for User from LDAP" ->
-        <authResponse>
+      captureValue(
+        "Credentials for User from LDAP" ->
+          <authResponse>
           <user>
             <name>{user}</name>
             <credentials>
@@ -46,7 +48,8 @@ trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
               <admin/>
             </credentials>
           </user>
-        </authResponse>)
+        </authResponse>
+      )
     }
   }
 }

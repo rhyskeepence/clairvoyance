@@ -4,21 +4,22 @@ import org.scalatest.events.Event
 
 import scala.collection.mutable.ListBuffer
 
-case class SuiteResult(suiteId: String,
-                       suiteName: String,
-                       suiteClassName: Option[String],
-                       duration: Option[Long],
-                       eventList: IndexedSeq[Event],
-                       testsPassedCount: Int,
-                       testsFailedCount: Int,
-                       testsIgnoredCount: Int,
-                       testsPendingCount: Int,
-                       testsCancelledCount: Int,
-                       scopesPendingCount: Int,
-                       isCompleted: Boolean)
+case class SuiteResult(
+    suiteId: String,
+    suiteName: String,
+    suiteClassName: Option[String],
+    duration: Option[Long],
+    eventList: IndexedSeq[Event],
+    testsPassedCount: Int,
+    testsFailedCount: Int,
+    testsIgnoredCount: Int,
+    testsPendingCount: Int,
+    testsCancelledCount: Int,
+    scopesPendingCount: Int,
+    isCompleted: Boolean
+)
 
-private[export]
-class SuiteResults {
+private[export] class SuiteResults {
   private val results = new ListBuffer[SuiteResult]
 
   def suites: Seq[SuiteResult] = results.toSeq

@@ -5,7 +5,7 @@ import org.specs2.specification._
 
 import scala.xml.NodeSeq
 
-class Specs2IndexHtmlFormat  {
+class Specs2IndexHtmlFormat {
 
   def printHtml(structures: Seq[SpecificationStructure])(implicit args: Arguments): NodeSeq =
     <html>

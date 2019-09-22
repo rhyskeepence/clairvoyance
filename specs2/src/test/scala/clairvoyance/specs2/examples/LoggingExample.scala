@@ -18,7 +18,7 @@ class LoggingExample extends ClairvoyantSpec {
 
   trait context extends ClairvoyantContext {
     val theDoomsdayDevice = new StubDoomsdayDevice
-    val clock = new StubClock
+    val clock             = new StubClock
 
     override def capturedInputsAndOutputs = Seq(theDoomsdayDevice)
 
@@ -31,9 +31,8 @@ class LoggingExample extends ClairvoyantSpec {
       coordinator.runIt()
     }
 
-    def beUnleashed: Matcher[StubDoomsdayDevice] = (d: StubDoomsdayDevice) =>
-      (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
-
+    def beUnleashed: Matcher[StubDoomsdayDevice] =
+      (d: StubDoomsdayDevice) => (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
 
     class StubClock extends Clock {
       def setDateTo(time: Date): Unit = {
@@ -46,7 +45,6 @@ class LoggingExample extends ClairvoyantSpec {
           .getOrElse(sys.error("No date set"))
       }
     }
-
 
     class StubDoomsdayDevice extends DoomsdayDevice with ProducesCapturedInputsAndOutputs {
       var wasUnleashed = false
@@ -69,7 +67,7 @@ class LoggingExample extends ClairvoyantSpec {
   /* Below is the system under test */
   class MasterCoordinator(doomsdayDevice: DoomsdayDevice, clock: Clock) {
     val triggerDate = toDate("21/12/2012")
-    
+
     def runIt(): Unit = {
       if (clock.currentTime equals triggerDate)
         doomsdayDevice.unleashDestruction("Planet Earth")

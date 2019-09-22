@@ -9,7 +9,11 @@ trait ProducesCapturedInputsAndOutputs {
   private lazy val capturedValues = new ListBuffer[CapturedValue]
 
   def captureValue(capturedValue: KeyValue): Unit = {
-    capturedValues += CapturedValue(CapturedValueSequence.nextId, capturedValue._1, capturedValue._2)
+    capturedValues += CapturedValue(
+      CapturedValueSequence.nextId,
+      capturedValue._1,
+      capturedValue._2
+    )
   }
 
   def clear(): Unit = { capturedValues.clear() }
@@ -24,5 +28,5 @@ case class CapturedValue(id: Int, key: String, value: AnyRef) {
 /* This is so that captured values are in insertion order across all producers */
 object CapturedValueSequence {
   private val sequence = new AtomicInteger
-  def nextId = sequence.getAndIncrement
+  def nextId           = sequence.getAndIncrement
 }

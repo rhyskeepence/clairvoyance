@@ -11,7 +11,8 @@ object Markdown {
 
   /** Inlined from org.specs2.text.Markdown */
   def markdownToXhtml(markdown: String): NodeSeq = {
-    val pegDown = new PegDownProcessor(Extensions.ALL & ~Extensions.QUOTES & ~Extensions.SMARTS, 2000L)
+    val pegDown =
+      new PegDownProcessor(Extensions.ALL & ~Extensions.QUOTES & ~Extensions.SMARTS, 2000L)
     val htmlSerializer = new ToHtmlSerializer(new LinkRenderer) {
       override def visit(node: CodeNode): Unit = {
         val text = node.getText
@@ -29,8 +30,11 @@ object Markdown {
             .print("</code>")
       }
     }
-    val html = htmlSerializer.toHtml(pegDown.parseMarkdown(markdown.replace("\\\\n", "\n").toCharArray))
-    val htmlWithoutParagraph = if (!markdown.contains("\n") || markdown.trim.isEmpty) html.removeEnclosingXmlTag("p") else html
+    val html =
+      htmlSerializer.toHtml(pegDown.parseMarkdown(markdown.replace("\\\\n", "\n").toCharArray))
+    val htmlWithoutParagraph =
+      if (!markdown.contains("\n") || markdown.trim.isEmpty) html.removeEnclosingXmlTag("p")
+      else html
     XhtmlParser(Source.fromString(s"<text>$htmlWithoutParagraph</text>"))
   }
 
@@ -38,10 +42,12 @@ object Markdown {
 
   class Trimmed(s: String) {
     def removeEnclosingXmlTag(t: String) =
-      if (isEnclosing("<" + t, "</" + t + ">")) removeFirst("<" + t + ".*?>").trimEnd("</" + t + ">") else s
+      if (isEnclosing("<" + t, "</" + t + ">"))
+        removeFirst("<" + t + ".*?>").trimEnd("</" + t + ">")
+      else s
 
     def isEnclosing(start: String, end: String) = s.startsWith(start) && s.endsWith(end)
-    def removeFirst(regex: String) = new Regex(regex).replaceFirstIn(s, "")
-    def trimEnd(end: String) = if (s.trim.endsWith(end)) s.trim.dropRight(end.size) else s.trim
+    def removeFirst(regex: String)              = new Regex(regex).replaceFirstIn(s, "")
+    def trimEnd(end: String)                    = if (s.trim.endsWith(end)) s.trim.dropRight(end.size) else s.trim
   }
 }

@@ -10,28 +10,29 @@ class GivenWhenThenExample extends ClairvoyantSpec {
 
   "The coordinator" should {
     "not invoke the Doomsday Device on the 20th of December 2012" in new context {
-      "Given the date is 20/12/2012"                      ===> givenTheDateIs("20/12/2012")
-      "When the coordinator runs"                         ===> theCoordinatorRuns
-      "Then the Doomsday device should not be unleashed"  ===> doomsdayDeviceIsNotUnleashed
+      "Given the date is 20/12/2012" ===> givenTheDateIs("20/12/2012")
+      "When the coordinator runs" ===> theCoordinatorRuns
+      "Then the Doomsday device should not be unleashed" ===> doomsdayDeviceIsNotUnleashed
     }
 
     "invoke the Doomsday Device on the 21st of December 2012" in new context {
-      "Given the date is 21/12/2012"                  ===> givenTheDateIs("21/12/2012")
-      "When the coordinator runs"                     ===> theCoordinatorRuns
-      "Then the Doomsday device should be unleashed"  ===> doomsdayDeviceIsUnleashed
+      "Given the date is 21/12/2012" ===> givenTheDateIs("21/12/2012")
+      "When the coordinator runs" ===> theCoordinatorRuns
+      "Then the Doomsday device should be unleashed" ===> doomsdayDeviceIsUnleashed
     }
   }
 
   trait context extends ClairvoyantContext {
     val theDoomsdayDevice = new StubDoomsdayDevice
-    val clock = new StubClock
+    val clock             = new StubClock
 
     override def capturedInputsAndOutputs = Seq(theDoomsdayDevice)
 
-    def beUnleashed: Matcher[StubDoomsdayDevice] = (d: StubDoomsdayDevice) =>
-      (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
+    def beUnleashed: Matcher[StubDoomsdayDevice] =
+      (d: StubDoomsdayDevice) => (d.wasUnleashed, d + " was unleashed", d + " was not unleashed")
 
-    def givenTheDateIs(date: String): Unit = clock.setDateTo(new SimpleDateFormat("dd/MM/yyyy").parse(date))
+    def givenTheDateIs(date: String): Unit =
+      clock.setDateTo(new SimpleDateFormat("dd/MM/yyyy").parse(date))
 
     def theCoordinatorRuns(): Unit = {
       new MasterCoordinator(theDoomsdayDevice, clock).runIt()

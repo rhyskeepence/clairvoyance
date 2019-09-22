@@ -7,19 +7,31 @@ object CapturedCollaborators {
     capturedValues.map(toCapturedValueCollaborators(defaultActor)).flatten
   }
 
-  val fullyQualifiedMessageSend = """(?i)(.*) from (.*) to (.*)""".r
+  val fullyQualifiedMessageSend      = """(?i)(.*) from (.*) to (.*)""".r
   val messageSendWithDefaultReceiver = """(?i)(.*) from (.*)""".r
-  val messageSendWithDefaultSender = """(?i)(.*) to (.*)""".r
+  val messageSendWithDefaultSender   = """(?i)(.*) to (.*)""".r
 
-  def toCapturedValueCollaborators(defaultActor: String): (CapturedValue) => Option[CapturedValueCollaborators] = {
+  def toCapturedValueCollaborators(
+      defaultActor: String
+  ): (CapturedValue) => Option[CapturedValueCollaborators] = {
     case CapturedValue(id, capturedValueKey, value) =>
       capturedValueKey match {
-        case fullyQualifiedMessageSend(what, from, to)  => Some(CapturedValueCollaborators(id, capturedValueKey, from, to, what, value))
-        case messageSendWithDefaultReceiver(what, from) => Some(CapturedValueCollaborators(id, capturedValueKey, from, defaultActor, what, value))
-        case messageSendWithDefaultSender(what, to)     => Some(CapturedValueCollaborators(id, capturedValueKey, defaultActor, to, what, value))
-        case _                                          => None
+        case fullyQualifiedMessageSend(what, from, to) =>
+          Some(CapturedValueCollaborators(id, capturedValueKey, from, to, what, value))
+        case messageSendWithDefaultReceiver(what, from) =>
+          Some(CapturedValueCollaborators(id, capturedValueKey, from, defaultActor, what, value))
+        case messageSendWithDefaultSender(what, to) =>
+          Some(CapturedValueCollaborators(id, capturedValueKey, defaultActor, to, what, value))
+        case _ => None
       }
   }
 }
 
-case class CapturedValueCollaborators(id: Int, key: String, from: String, to: String, what: String, rawMessage: Any)
+case class CapturedValueCollaborators(
+    id: Int,
+    key: String,
+    from: String,
+    to: String,
+    what: String,
+    rawMessage: Any
+)

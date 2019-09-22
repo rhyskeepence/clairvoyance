@@ -23,19 +23,19 @@ class RenderingSpec extends ClairvoyantSpec {
     "use the custom renderer" in new context {
       rendered(ToBeCustomRendered("nine times")) must_== <span>nine times</span>
     }
-    
+
     "use the custom renderer with XML output" in new context {
       rendered(ToBeCustomRenderedInBold("nine times")) must_== <div class='nohighlight'><em>nine times</em></div>
     }
   }
 
-  trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs  {
+  trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs {
     val rendering = new Rendering(Some(new CustomRenderer))
-    val brain = Brain(120)
+    val brain     = Brain(120)
 
     override def capturedInputsAndOutputs = Seq(this)
 
-    val xml = <xml>someXml</xml>
+    val xml          = <xml>someXml</xml>
     val formattedXml = new PrettyPrinter(80, 2).formatNodes(xml)
 
     def rendered(thingToRender: AnyRef) = {
@@ -53,7 +53,7 @@ class RenderingSpec extends ClairvoyantSpec {
 
   class CustomRenderer extends CustomRendering {
     def customRendering = {
-      case ToBeCustomRendered(x) => x
+      case ToBeCustomRendered(x)       => x
       case ToBeCustomRenderedInBold(x) => <em>{x}</em>
     }
   }

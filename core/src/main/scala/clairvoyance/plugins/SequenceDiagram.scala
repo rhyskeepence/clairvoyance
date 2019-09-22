@@ -1,6 +1,11 @@
 package clairvoyance.plugins
 
-import clairvoyance.{CapturedValueSequence, CapturedValue, ProducesCapturedInputsAndOutputs, CapturedInputsAndOutputs}
+import clairvoyance.{
+  CapturedValueSequence,
+  CapturedValue,
+  ProducesCapturedInputsAndOutputs,
+  CapturedInputsAndOutputs
+}
 
 trait SequenceDiagram extends CapturedInputsAndOutputs with ProducesCapturedInputsAndOutputs {
 
@@ -8,8 +13,12 @@ trait SequenceDiagram extends CapturedInputsAndOutputs with ProducesCapturedInpu
 
   abstract override def gatherCapturedValues = {
     val gatheredValues = super.gatherCapturedValues
-    val collaborators = CapturedCollaborators.collectCollaborators(gatheredValues, defaultActor)
-    val sequenceDiagram = CapturedValue(CapturedValueSequence.nextId, "Sequence Diagram", SvgSequenceDiagram(collaborators))
+    val collaborators  = CapturedCollaborators.collectCollaborators(gatheredValues, defaultActor)
+    val sequenceDiagram = CapturedValue(
+      CapturedValueSequence.nextId,
+      "Sequence Diagram",
+      SvgSequenceDiagram(collaborators)
+    )
 
     gatheredValues :+ sequenceDiagram
   }

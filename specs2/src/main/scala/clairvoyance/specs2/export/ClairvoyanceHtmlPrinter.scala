@@ -15,8 +15,11 @@ trait ClairvoyanceHtmlPrinter {
       ClairvoyanceHtml("index.html", printIndex(), notifyUser = false)
     )
 
-  private def printHtml(specificationFullName: String, specificationTitle: String, spec: ExecutedSpecification)
-                       (implicit args: Arguments): HtmlFormat =
+  private def printHtml(
+      specificationFullName: String,
+      specificationTitle: String,
+      spec: ExecutedSpecification
+  )(implicit args: Arguments): HtmlFormat =
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(specificationTitle)
@@ -24,16 +27,20 @@ trait ClairvoyanceHtmlPrinter {
         .xml
     )
 
-  private def printFragmentsOf(specificationFullName: String, spec: ExecutedSpecification)
-                              (implicit args: Arguments): HtmlFormat =
-    spec.fragments.foldLeft(clairvoyanceFormat) {
-      (htmlFormat, fragment) => htmlFormat.printFragment(specificationFullName, fragment)
+  private def printFragmentsOf(specificationFullName: String, spec: ExecutedSpecification)(
+      implicit args: Arguments
+  ): HtmlFormat =
+    spec.fragments.foldLeft(clairvoyanceFormat) { (htmlFormat, fragment) =>
+      htmlFormat.printFragment(specificationFullName, fragment)
     }
 
   private def clairvoyanceFormat = new Specs2HtmlFormat()
 
-  private def printIndex()(implicit args: Arguments) = new Specs2IndexHtmlFormat().printHtml(allSpecs)
+  private def printIndex()(implicit args: Arguments) =
+    new Specs2IndexHtmlFormat().printHtml(allSpecs)
 
   private def findSpecs(pattern: String): Seq[SpecificationStructure] =
-    SpecificationsFinder.specifications(pattern = pattern, basePath = new java.io.File(".").getAbsolutePath).sortBy(_.identification.title)
+    SpecificationsFinder
+      .specifications(pattern = pattern, basePath = new java.io.File(".").getAbsolutePath)
+      .sortBy(_.identification.title)
 }

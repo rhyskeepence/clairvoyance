@@ -9,7 +9,7 @@ class GraphExample extends WordSpec with LdapAuthenticationContext with Graph {
 
   "The Web Site" must {
     "authenticate the user using LDAP" in {
-      whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
+      whenTheUserLogsInToTheWebSiteUsingTheCredentials(user = "mario", password = "luigi")
       thenTheUserIsShownSecrets()
     }
   }

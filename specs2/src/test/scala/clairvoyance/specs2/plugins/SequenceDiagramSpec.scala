@@ -12,25 +12,33 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     "identify captured values in the format `SOME MESSAGE from X to Y`" in new context {
       givenTheCapturedValuesContains("Banana from Human to Monkey")
       whenTheSequenceDiagramIsGenerated()
-      theMarkupGenerated must contain("\"Human\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
+      theMarkupGenerated must contain(
+        "\"Human\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>"
+      )
     }
 
     "identify captured values in the format `SOME MESSAGE to Y`, using Donkey Kong as the default" in new context {
       givenTheCapturedValuesContains("Banana to Monkey")
       whenTheSequenceDiagramIsGenerated()
-      theMarkupGenerated must contain("\"Donkey Kong\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
+      theMarkupGenerated must contain(
+        "\"Donkey Kong\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>"
+      )
     }
 
     "identify captured values in the format `SOME MESSAGE from Y`, using Donkey Kong as the default" in new context {
       givenTheCapturedValuesContains("Banana from Monkey")
       whenTheSequenceDiagramIsGenerated()
-      theMarkupGenerated must contain("\"Monkey\" ->> \"Donkey Kong\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
+      theMarkupGenerated must contain(
+        "\"Monkey\" ->> \"Donkey Kong\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>"
+      )
     }
 
     "be case insensitive" in new context {
       givenTheCapturedValuesContains("Banana FROM Human TO Monkey")
       whenTheSequenceDiagramIsGenerated()
-      theMarkupGenerated must contain("\"Human\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>")
+      theMarkupGenerated must contain(
+        "\"Human\" ->> \"Monkey\":<text class=sequence_diagram_clickable sequence_diagram_message_id=1>Banana</text>"
+      )
     }
 
     "ignored captured values which do not match the `From/To` format" in new context {
@@ -40,10 +48,10 @@ class SequenceDiagramSpec extends ClairvoyantSpec {
     }
   }
 
-  trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs{
+  trait context extends ClairvoyantContext with ProducesCapturedInputsAndOutputs {
     override def capturedInputsAndOutputs = Seq(this)
 
-    var capturedValues = Seq[CapturedValue]()
+    var capturedValues     = Seq[CapturedValue]()
     var theMarkupGenerated = ""
 
     def givenTheCapturedValuesContains(key: String): Unit = {

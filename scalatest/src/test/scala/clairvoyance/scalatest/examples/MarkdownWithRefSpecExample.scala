@@ -40,5 +40,5 @@ class MarkdownWithRefSpecExample extends RefSpec {
   }
 
   def factorial(n: Int): Int = if (n == 1) n else n * factorial(n - 1)
-  def triangle (n: Int): Int = n * (n + 1) / 2
+  def triangle(n: Int): Int  = n * (n + 1) / 2
 }

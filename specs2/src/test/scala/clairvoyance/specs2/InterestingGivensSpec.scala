@@ -23,6 +23,6 @@ class InterestingGivensSpec extends ClairvoyantSpec {
     ("Name" -> "Bazza").isInteresting()
   }
 
-  def beSetTo[T](t: =>T) = beSome(t)
-  def notBeSet = beNone
+  def beSetTo[T](t: => T) = beSome(t)
+  def notBeSet            = beNone
 }

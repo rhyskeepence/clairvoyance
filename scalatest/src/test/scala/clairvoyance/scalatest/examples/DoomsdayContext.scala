@@ -6,14 +6,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import org.scalatest.{Matchers, OneInstancePerTest, Suite}
 
-trait DoomsdayContext extends ClairvoyantContext with OneInstancePerTest with Matchers { this: Suite =>
+trait DoomsdayContext extends ClairvoyantContext with OneInstancePerTest with Matchers {
+  this: Suite =>
   val theDoomsdayDevice = new StubDoomsdayDevice
-  val clock = new StubClock
+  val clock             = new StubClock
 
   override def capturedInputsAndOutputs = Seq(theDoomsdayDevice)
 
   def setDateTo(ddMMyyyy: String): Unit = clock.setDateTo(toDate(ddMMyyyy))
-  private def toDate(ddMMyyyy: String) = new SimpleDateFormat("dd/MM/yyyy").parse(ddMMyyyy)
+  private def toDate(ddMMyyyy: String)  = new SimpleDateFormat("dd/MM/yyyy").parse(ddMMyyyy)
 
   def runTheCoordinator(): Unit = new MasterCoordinator(theDoomsdayDevice, clock).runIt()
 
@@ -53,8 +54,9 @@ trait DoomsdayContext extends ClairvoyantContext with OneInstancePerTest with Ma
       wasUnleashed = true
       interestingGivens += ("Target" -> target)
 
-      captureValue("Doomsday Device Output" ->
-        <unleashDestruction>
+      captureValue(
+        "Doomsday Device Output" ->
+          <unleashDestruction>
           <target>{target}</target>
         </unleashDestruction>
       )

@@ -9,13 +9,13 @@ class SequenceDiagramExample extends ClairvoyantSpec {
 
   "The Web Site" should {
     "authenticate the user using LDAP" in new context {
-      whenTheUserLogsInToTheWebSiteUsingTheCredentials(user="mario", password="luigi")
+      whenTheUserLogsInToTheWebSiteUsingTheCredentials(user = "mario", password = "luigi")
       thenTheUserIsShownSecrets()
     }
   }
 
   trait context extends ClairvoyantContext with SequenceDiagram {
-    val ldap = new Ldap
+    val ldap      = new Ldap
     val webServer = new WebServer(ldap)
 
     override def defaultActor = "Web Server"
@@ -40,16 +40,18 @@ class SequenceDiagramExample extends ClairvoyantSpec {
   class Ldap extends ProducesCapturedInputsAndOutputs {
     def authenticate(user: String, password: String): Unit = {
 
-      captureValue("Username and Password to LDAP" ->
-        <authRequest>
+      captureValue(
+        "Username and Password to LDAP" ->
+          <authRequest>
           <user>{user}</user>
           <pass>{password}</pass>
         </authRequest>
       )
       // do something
 
-      captureValue("Credentials for User from LDAP" ->
-        <authResponse>
+      captureValue(
+        "Credentials for User from LDAP" ->
+          <authResponse>
           <user>
             <name>{user}</name>
             <credentials>
@@ -59,7 +61,8 @@ class SequenceDiagramExample extends ClairvoyantSpec {
               <admin/>
             </credentials>
           </user>
-        </authResponse>)
+        </authResponse>
+      )
     }
   }
 }

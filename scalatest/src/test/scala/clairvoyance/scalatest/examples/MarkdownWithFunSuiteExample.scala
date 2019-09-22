@@ -4,7 +4,8 @@ import org.scalatest.FunSuite
 
 class MarkdownWithFunSuiteExample extends FunSuite {
 
-  test( """The Triangle Number Calculator
+  test(
+    """The Triangle Number Calculator
           |----
           |
           |###Rules
@@ -21,11 +22,12 @@ class MarkdownWithFunSuiteExample extends FunSuite {
           |   *****
           |  ******
           |```
-        """.stripMargin) {
+        """.stripMargin
+  ) {
     triangle(6) == 21
   }
 
-  test( """The Calculator
+  test("""The Calculator
           |----
           |
           |### Rules

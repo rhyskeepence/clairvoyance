@@ -27,7 +27,7 @@ abstract class HtmlFormat(val xml: NodeSeq) {
       <script src="javascript/yatspec.js" type="text/javascript"></script>
       <script src="javascript/sequence_diagram.js" type="text/javascript"></script>
       <script type="text/javascript">{
-        Unparsed( s"""
+      Unparsed(s"""
          |function toggleDetails(contentId, linkId) {
          |  var content  = document.getElementById(contentId);
          |  var linkText = document.getElementById(linkId);
@@ -44,11 +44,14 @@ abstract class HtmlFormat(val xml: NodeSeq) {
          |  if (top === self) { document.getElementById('printlink').style.display = 'none'; }
          |}
          |""".stripMargin)
-        }</script>
+    }</script>
     </head>
   }
 
-  protected def interestingGivensTable(testState: Option[TestState], rendering: Rendering): Seq[NodeSeq] = {
+  protected def interestingGivensTable(
+      testState: Option[TestState],
+      rendering: Rendering
+  ): Seq[NodeSeq] = {
     val givens = testState.map(_.interestingGivens).getOrElse(Seq())
 
     givens match {
@@ -61,7 +64,10 @@ abstract class HtmlFormat(val xml: NodeSeq) {
     }
   }
 
-  private def mapInterestingGivenRows(givens: Seq[(String, Any)], rendering: Rendering): Seq[NodeSeq] = givens.map {
+  private def mapInterestingGivenRows(
+      givens: Seq[(String, Any)],
+      rendering: Rendering
+  ): Seq[NodeSeq] = givens.map {
     case (key: String, value: Any) =>
       <tr>
         <th class="key">{key}</th>
@@ -69,21 +75,28 @@ abstract class HtmlFormat(val xml: NodeSeq) {
       </tr>
   }
 
-  protected def loggedInputsAndOutputs(testState: Option[TestState], rendering: Rendering): Seq[NodeBuffer] = {
+  protected def loggedInputsAndOutputs(
+      testState: Option[TestState],
+      rendering: Rendering
+  ): Seq[NodeBuffer] = {
     val inputsAndOutputs = testState.map(_.capturedInputsAndOutputs).getOrElse(Seq())
     inputsAndOutputs.map {
       case CapturedValue(id, key, value) =>
         <h3 class="logKey" logkey={id.toString}>{key}</h3>
-        <div class={s"logValue highlight monospace ${value.getClass.getSimpleName}"}>{rendering.renderToXml(value)}</div>
+        <div class={s"logValue highlight monospace ${value.getClass.getSimpleName}"}>{
+          rendering.renderToXml(value)
+        }</div>
     }
   }
 
   protected def print(xml2: NodeSeq): Self
 
-  protected def linkNameOf(formattedResultText: String): String = formattedResultText.replaceAll("\\s", "")
+  protected def linkNameOf(formattedResultText: String): String =
+    formattedResultText.replaceAll("\\s", "")
 
   protected def wordify(title: String): String =
-    "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])".r.replaceAllIn(title, " ")
+    "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])".r
+      .replaceAllIn(title, " ")
 
   protected def formatShortExampleName: String => String = _.split(lineSeparator).head
 }

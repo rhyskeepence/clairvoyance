@@ -25,7 +25,6 @@ class MarkdownExample extends ClairvoyantSpec with Snippets {
     }
   }
 
-
   "The Calculator" should {
     """Calculate the factorial of 3
       |### Rules

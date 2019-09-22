@@ -15,8 +15,8 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
 
   protected def print(xml2: NodeSeq): Self = Specs2HtmlFormat(this.xml ++ xml2)
 
-  def printBody(specificationTitle: String, spec: ExecutedSpecification, specAsXml: => NodeSeq) = print(
-    <body>
+  def printBody(specificationTitle: String, spec: ExecutedSpecification, specAsXml: => NodeSeq) =
+    print(<body>
       <div id="container">
         <h1><a href="index.html">Specs</a> / {wordify(specificationTitle)}</h1>
         {tableOfContentsFor(spec)}
@@ -25,40 +25,50 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
     </body>)
 
   private def tableOfContentsFor(spec: ExecutedSpecification): NodeSeq = {
-    val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator,fragment) =>
+    val items = spec.fragments.foldLeft(("", List[NodeSeq]())) { (accumulator, fragment) =>
       fragment match {
         case executedResult: ExecutedResult =>
           val link = "#" + linkNameOf(executedResult.s.toString())
 
           val htmlListItemForResult =
             <li class={cssClassOf(executedResult)}>
-              <a href={link}>{ formatShortExampleName(accumulator._1) + " " + formatShortExampleName(executedResult.s.raw) }</a>
+              <a href={link}>{
+              formatShortExampleName(accumulator._1) + " " + formatShortExampleName(
+                executedResult.s.raw
+              )
+            }</a>
             </li>
 
           (accumulator._1, htmlListItemForResult :: accumulator._2)
 
         case executedText: ExecutedText => (executedText.text, accumulator._2)
-        case _ => (accumulator._1, accumulator._2)
+        case _                          => (accumulator._1, accumulator._2)
       }
     }
 
     <ul class="contents">{items._2.reverse}</ul>
   }
 
-  def printFragment(specificationFullName: String, fragment: ExecutedFragment)(implicit args: Arguments): Specs2HtmlFormat = {
+  def printFragment(specificationFullName: String, fragment: ExecutedFragment)(
+      implicit args: Arguments
+  ): Specs2HtmlFormat = {
     print(<ul>
-      {fragment match {
+      {
+      fragment match {
         case executedResult: ExecutedResult =>
-          val resultOutput = if (executedResult.isSuccess) "Test Passed" else executedResult.result.message
-          val testState    = TestStates.dequeue(specificationFullName)
+          val resultOutput =
+            if (executedResult.isSuccess) "Test Passed" else executedResult.result.message
+          val testState = TestStates.dequeue(specificationFullName)
 
-          val optionalCustomRenderer = Reflection.tryToCreateObject[CustomRendering](specificationFullName)
+          val optionalCustomRenderer =
+            Reflection.tryToCreateObject[CustomRendering](specificationFullName)
           val rendering = new Rendering(optionalCustomRenderer)
 
-          val sourceLines = FromSource.getCodeFrom(executedResult.location.toString(), executedResult.location.lineNumber)
+          val sourceLines = FromSource
+            .getCodeFrom(executedResult.location.toString(), executedResult.location.lineNumber)
           val stackTrace: Seq[StackTraceElement] = executedResult.result match {
             case Failure(_, _, st, _) => st
-            case _ => Seq.empty
+            case _                    => Seq.empty
           }
 
           <a id={linkNameOf(executedResult.s.toString())}></a>
@@ -66,23 +76,35 @@ case class Specs2HtmlFormat(override val xml: NodeSeq = NodeSeq.Empty) extends H
             {markdownToXhtml("## " + executedResult.s.raw)}
             <div class="scenario" id={executedResult.hashCode().toString}>
               <h2>Specification</h2>
-              <pre class="highlight specification">{SpecificationFormatter.format(sourceLines, stackTrace, specificationFullName, codeFormatFor(specificationFullName))}</pre>
+              <pre class="highlight specification">{
+            SpecificationFormatter.format(
+              sourceLines,
+              stackTrace,
+              specificationFullName,
+              codeFormatFor(specificationFullName)
+            )
+          }</pre>
               <h2>Test results:</h2>
-              <pre class={s"highlight results ${cssClassOf(executedResult)} highlighted"}>{resultOutput + " in " + executedResult.stats.time}</pre>
+              <pre class={s"highlight results ${cssClassOf(executedResult)} highlighted"}>{
+            resultOutput + " in " + executedResult.stats.time
+          }</pre>
               {interestingGivensTable(testState, rendering)}
               {loggedInputsAndOutputs(testState, rendering)}
             </div>
           </div>
 
         case executedText: ExecutedText => markdownToXhtml("# " + executedText.text)
-        case _ => <span></span>
-      }}
-    </ul>
-    )
+        case _                          => <span></span>
+      }
+    }
+    </ul>)
   }
 
-  private def codeFormatFor(className: String): CodeFormat = tryToCreateObject[CodeFormat](className).getOrElse(DefaultCodeFormat)
+  private def codeFormatFor(className: String): CodeFormat =
+    tryToCreateObject[CodeFormat](className).getOrElse(DefaultCodeFormat)
 
   private def cssClassOf(executedResult: ExecutedResult): String =
-    if (executedResult.isSuccess) "test-passed" else if (executedResult.isSuspended) "test-not-run" else "test-failed"
+    if (executedResult.isSuccess) "test-passed"
+    else if (executedResult.isSuspended) "test-not-run"
+    else "test-failed"
 }

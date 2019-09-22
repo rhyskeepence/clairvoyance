@@ -12,10 +12,13 @@ trait ClairvoyanceHtmlPrinter {
 
   private def asFileName(suiteResult: SuiteResult) = suiteResult.suiteClassName match {
     case Some(suiteClassName) => suiteClassName
-    case None => suiteResult.suiteName
+    case None                 => suiteResult.suiteName
   }
 
-  private def printHtml(specificationTitle: String, suiteResult: SuiteResult): ScalaTestHtmlFormat = {
+  private def printHtml(
+      specificationTitle: String,
+      suiteResult: SuiteResult
+  ): ScalaTestHtmlFormat = {
     clairvoyanceFormat.printHtml(
       clairvoyanceFormat
         .printHead(specificationTitle)
