@@ -24,7 +24,9 @@ object ClasspathResources {
     if (!directory.toString.startsWith("jar")) {
       val target = Path.of(outputDir, src)
 			JFiles.walk(directory).forEach(source => {
-				JFiles.copy(source, target.resolve(directory.relativize(source)), REPLACE_EXISTING)
+				val targetFile = target.resolve(directory.relativize(source))
+				JFiles.createDirectories(targetFile.getParent)
+				JFiles.copy(source, targetFile, REPLACE_EXISTING)
 			})
     }
   }
