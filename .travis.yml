@@ -13,7 +13,7 @@ script:
   - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate;
 after_success:
   - curl -s https://codecov.io/bash | bash
-  - if [[ "$TRAVIS_PULL_REQUEST" = "false" && "TRAVIS_BRANCH" = "master" ]]; then sbt ++$TRAVIS_SCALA_VERSION coveralls publishSigned sonatypeReleaseAll; fi
+  - if [[ "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" = "master" ]]; then sbt ++$TRAVIS_SCALA_VERSION coveralls publishSigned sonatypeReleaseAll; fi
 env:
   global:
     - BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
