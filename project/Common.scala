@@ -4,8 +4,8 @@ import sbt.Keys._
 import scala.util.Try
 
 object Common {
-  val scala_2_12 = "2.12.8"
-  val scala_2_13 = "2.13.0"
+  val scala_2_12 = "2.12.10"
+  val scala_2_13 = "2.13.1"
 
   lazy val settings = Seq(
     organization := "com.github.rhyskeepence",
