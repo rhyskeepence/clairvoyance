@@ -29,18 +29,18 @@ trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
 
       captureValue(
         "Username and Password to LDAP" ->
-          <authRequest>
-          <user>{user}</user>
-          <pass>{password}</pass>
-        </authRequest>
+          s"""<authRequest>
+          <user>${user}</user>
+          <pass>${password}</pass>
+        </authRequest>"""
       )
       // do something
 
       captureValue(
         "Credentials for User from LDAP" ->
-          <authResponse>
+          s"""<authResponse>
           <user>
-            <name>{user}</name>
+            <name>${user}</name>
             <credentials>
               <login/>
               <viewWibbles/>
@@ -48,7 +48,7 @@ trait LdapAuthenticationContext extends ClairvoyantContext { this: Suite =>
               <admin/>
             </credentials>
           </user>
-        </authResponse>
+        </authResponse>"""
       )
     }
   }

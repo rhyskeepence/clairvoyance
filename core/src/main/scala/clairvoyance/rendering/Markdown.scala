@@ -1,16 +1,13 @@
 package clairvoyance.rendering
 
-import org.pegdown.{Extensions, LinkRenderer, PegDownProcessor, ToHtmlSerializer}
 import org.pegdown.ast.CodeNode
-import scala.io.Source
+import org.pegdown.{Extensions, LinkRenderer, PegDownProcessor, ToHtmlSerializer}
+
 import scala.util.matching.Regex
-import scala.xml.NodeSeq
-import scala.xml.parsing.XhtmlParser
 
 object Markdown {
 
-  /** Inlined from org.specs2.text.Markdown */
-  def markdownToXhtml(markdown: String): NodeSeq = {
+  def markdownToXhtml(markdown: String): String = {
     val pegDown =
       new PegDownProcessor(Extensions.ALL & ~Extensions.QUOTES & ~Extensions.SMARTS, 2000L)
     val htmlSerializer = new ToHtmlSerializer(new LinkRenderer) {
@@ -35,7 +32,7 @@ object Markdown {
     val htmlWithoutParagraph =
       if (!markdown.contains("\n") || markdown.trim.isEmpty) html.removeEnclosingXmlTag("p")
       else html
-    XhtmlParser(Source.fromString(s"<text>$htmlWithoutParagraph</text>"))
+    s"<text>$htmlWithoutParagraph</text>"
   }
 
   implicit def trimmed(s: String): Trimmed = new Trimmed(s)

@@ -25,16 +25,17 @@ object ClasspathResources {
       val target = Path.of(outputDir, src)
 			JFiles.walk(directory).forEach(source => {
 				val targetFile = target.resolve(directory.relativize(source))
-				JFiles.createDirectories(targetFile.getParent)
-				JFiles.copy(source, targetFile, REPLACE_EXISTING)
+        if (JFiles.isDirectory(source))
+          createDirectories(targetFile)
+        else
+          JFiles.copy(source, targetFile, REPLACE_EXISTING)
 			})
     }
   }
 
   private def unjar(jarUrl: URL, dirPath: String, regexFilter: String): Unit = {
     val path = Paths.get(dirPath)
-    if (!JFiles.exists(path))
-      JFiles.createDirectories(path)
+    createDirectories(path)
 
     val zis = new ZipInputStream(new BufferedInputStream(jarUrl.openStream()))
 
@@ -60,5 +61,10 @@ object ClasspathResources {
 
     extractEntry(zis.getNextEntry)
     zis.close()
+  }
+
+  private def createDirectories(path: Path): Unit = {
+    if (!JFiles.exists(path))
+      JFiles.createDirectories(path)
   }
 }

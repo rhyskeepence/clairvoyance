@@ -1,5 +1,3 @@
 package clairvoyance.rendering
 
-import scala.xml.Elem
-
-case class Html(inlineHtml: Elem)
+case class Html(inlineHtml: String)

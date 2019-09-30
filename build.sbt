@@ -12,9 +12,8 @@ lazy val core = (project in file("core"))
   .settings(
     name := "clairvoyance-core",
     libraryDependencies ++= Seq(
-      "net.sourceforge.plantuml" % "plantuml"   % "8046",
-      "org.pegdown"              % "pegdown"    % "1.6.0",
-      "org.scala-lang.modules"   %% "scala-xml" % "1.2.0"
+      "net.sourceforge.plantuml" % "plantuml" % "8046",
+      "org.pegdown"              % "pegdown"  % "1.6.0"
     )
   )
 

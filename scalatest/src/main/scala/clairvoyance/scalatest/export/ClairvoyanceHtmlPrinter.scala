@@ -2,12 +2,11 @@ package clairvoyance.scalatest.export
 
 import clairvoyance.export.ClairvoyanceHtml
 
-trait ClairvoyanceHtmlPrinter {
+object ClairvoyanceHtmlPrinter {
 
   def print(suiteResult: SuiteResult): ClairvoyanceHtml = {
     val suiteFileName = asFileName(suiteResult)
-    ClairvoyanceHtml(s"$suiteFileName.html", printHtml(suiteFileName, suiteResult).xml)
-//    printTeamCityLog(executed)
+    ClairvoyanceHtml(s"$suiteFileName.html", printHtml(suiteFileName, suiteResult))
   }
 
   private def asFileName(suiteResult: SuiteResult) = suiteResult.suiteClassName match {
@@ -18,15 +17,9 @@ trait ClairvoyanceHtmlPrinter {
   private def printHtml(
       specificationTitle: String,
       suiteResult: SuiteResult
-  ): ScalaTestHtmlFormat = {
-    clairvoyanceFormat.printHtml(
-      clairvoyanceFormat
-        .printHead(specificationTitle)
-        .printBody(suiteResult.suiteName, suiteResult)
-        .xml
-    )
+  ): String = {
+    clairvoyanceFormat.format(specificationTitle, suiteResult)
   }
 
-  protected def allSuiteResults: Seq[SuiteResult]
   private def clairvoyanceFormat = new ScalaTestHtmlFormat()
 }

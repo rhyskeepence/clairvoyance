@@ -20,5 +20,5 @@ class ScalaTestHtmlReporter extends Reporter {
 
   private def writeResult(result: Option[SuiteResult]): Unit =
     new SingleClairvoyanceHtmlFileWriter()
-      .writeFiles(result.map(new SingleClairvoyanceHtmlPrinter().print).toSeq)
+      .writeFiles(result.map(ClairvoyanceHtmlPrinter.print).toSeq)
 }
