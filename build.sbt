@@ -13,7 +13,6 @@ lazy val core = (project in file("core"))
     name := "clairvoyance-core",
     libraryDependencies ++= Seq(
       "net.sourceforge.plantuml" % "plantuml" % "8046",
-      "org.pegdown"              % "pegdown"  % "1.6.0"
     )
   )
 
