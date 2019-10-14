@@ -34,7 +34,7 @@ h3 {
 .highlight {
     background-color: #E8EEF7;
     padding: 1rem;
-    margin: 0 0 1rem;
+    margin: 0;
     display: block;
 }
 
@@ -183,12 +183,19 @@ td {
     text-decoration: underline;
 }
 
-.scenario {
-    border-top: 1px solid #ddd;
+.scenario h2 {
+    padding: 1rem;
+    flex: 1;
 }
 
-.scenario h2 {
-    margin: 0.5rem;
+.scenario header {
+    display: flex;
+    align-items: center;
+}
+
+.test-duration {
+    padding: 1rem;
+    color: #888;
 }
 
 .scenarios td {

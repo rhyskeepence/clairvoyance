@@ -19,14 +19,16 @@ class ScalaTestHtmlFormat extends HtmlFormat {
   private def tableOfContentsFor(suiteResult: SuiteResult): String = {
     s"""
     <ul class="contents">
-    ${suiteResult.eventList
-      .map {
-        case event: TestSucceeded         => renderFragmentForTableOfContents(event)
-        case TestFailedOrCancelled(event) => renderFragmentForTableOfContents(event)
-        case TestPendingOrIgnored(event)  => renderFragmentForTableOfContents(event)
-        case _                            => ""
-      }
-      .mkString("\n")}
+    ${
+      suiteResult.eventList
+        .map {
+          case event: TestSucceeded => renderFragmentForTableOfContents(event)
+          case TestFailedOrCancelled(event) => renderFragmentForTableOfContents(event)
+          case TestPendingOrIgnored(event) => renderFragmentForTableOfContents(event)
+          case _ => ""
+        }
+        .mkString("\n")
+    }
     </ul>
     """
   }
@@ -59,12 +61,12 @@ class ScalaTestHtmlFormat extends HtmlFormat {
     )
 
   private def renderFragmentForTableOfContents(
-      testName: String,
-      testText: String,
-      recordedEvents: IndexedSeq[RecordableEvent],
-      listCssClass: String,
-      cssClass: String
-  ): String =
+                                                testName: String,
+                                                testText: String,
+                                                recordedEvents: IndexedSeq[RecordableEvent],
+                                                listCssClass: String,
+                                                cssClass: String
+                                              ): String =
     s"""<li class="$listCssClass">
       <a href="#${linkNameOf(testText)}">
         ${formatShortExampleName(testName)}
@@ -77,22 +79,24 @@ class ScalaTestHtmlFormat extends HtmlFormat {
       <div id="container">
         <h1> ${wordify(specificationTitle)} </h1>
         ${tableOfContentsFor(suiteResult)}
-        ${suiteResult.eventList
-      .map {
-        case event: TestSucceeded         => renderFragmentForBody(event)
-        case TestFailedOrCancelled(event) => renderFragmentForBody(event)
-        case TestPendingOrIgnored(event)  => renderFragmentForBody(event)
-        // AlertProvided, InfoProvided, and NoteProvided must not show up in the HTML report
-        case _ => ""
-      }
-      .mkString("\n")}
+        ${
+      suiteResult.eventList
+        .map {
+          case event: TestSucceeded => renderFragmentForBody(event)
+          case TestFailedOrCancelled(event) => renderFragmentForBody(event)
+          case TestPendingOrIgnored(event) => renderFragmentForBody(event)
+          // AlertProvided, InfoProvided, and NoteProvided must not show up in the HTML report
+          case _ => ""
+        }
+        .mkString("\n")
+    }
       </div>
     </body>
     """
 
   private def renderFragmentForBody(event: TestSucceeded): String = {
-    val (suiteClassName, testName, testText, duration) =
-      (event.suiteClassName.get, event.testName, event.testText, event.duration)
+    val (suiteClassName, testName, testText) =
+      (event.suiteClassName.get, event.testName, event.testText)
     val annotations = annotationsFor(event.suiteName, event.testName)
 
     val testState = TestStates.dequeue(testName)
@@ -103,10 +107,6 @@ class ScalaTestHtmlFormat extends HtmlFormat {
     <div class="testmethod test-passed">
       <div class="scenario" id="${testName.hashCode().toString}">
         ${renderSpecification(testName, annotations, suiteClassName, event)}
-        <h2>Execution</h2>
-        <pre class="highlight results highlighted">${duration.fold("")(
-      milliseconds => s"Passed in $milliseconds ms"
-    )}</pre>
         ${interestingGivensTable(testState, rendering)}
         ${capturedInputsAndOutputs(testState, rendering, annotations)}
       </div>
@@ -115,11 +115,11 @@ class ScalaTestHtmlFormat extends HtmlFormat {
   }
 
   private def renderSpecification(
-      testName: String,
-      annotations: Set[Tag],
-      suiteClassName: String,
-      event: TestSucceeded
-  ) = {
+                                   testName: String,
+                                   annotations: Set[Tag],
+                                   suiteClassName: String,
+                                   event: TestSucceeded
+                                 ) = {
     if (!annotations.contains(SkipSpecification)) {
       val spec = SpecificationFormatter.format(
         getCodeFrom(suiteClassName, event),
@@ -127,27 +127,33 @@ class ScalaTestHtmlFormat extends HtmlFormat {
         suiteClassName,
         codeFormatFor(suiteClassName)
       )
-
-      s"""
-        <h2>$testName</h2>
-        <code class="highlight specification">$spec</code>
-        """
+      renderSpecificationHeader(testName, event.duration, spec)
     } else ""
+  }
+
+  private def renderSpecificationHeader(testName: String, duration: Option[Long], spec: String) = {
+    s"""
+          <header>
+            <h2>$testName</h2>
+            ${duration.fold("")(milliseconds => s"""<div class="test-duration">$milliseconds ms</div>""")}
+          </header>
+          <code class="highlight specification">$spec</code>
+        """
   }
 
   private def getCodeFrom(location: String, event: TestSucceeded): List[(Int, String)] = {
     event.location match {
       case Some(LineInFile(ln, _, _)) => FromSource.getCodeFrom(location, ln)
-      case _                          => FromSource.getCodeFrom(location, event.testText)
+      case _ => FromSource.getCodeFrom(location, event.testText)
     }
   }
 
   private def renderFragmentForBody(event: TestFailedOrCancelled): String = {
     val annotations = annotationsFor(event.suiteName, event.testName)
-    val testState   = TestStates.dequeue(event.testName)
-    val rendering   = renderingFor(event.suiteClassName)
+    val testState = TestStates.dequeue(event.testName)
+    val rendering = renderingFor(event.suiteClassName)
 
-    val linkId    = UUID.randomUUID.toString
+    val linkId = UUID.randomUUID.toString
     val contentId = UUID.randomUUID.toString
 
     val (grayStackTraceElements, blackStackTraceElements) =
@@ -174,10 +180,7 @@ class ScalaTestHtmlFormat extends HtmlFormat {
           codeFormatFor(event.suiteClassName)
         )
 
-        s"""
-        <h2>${event.testName}</h2>
-        <code class="highlight specification">$spec</code>
-        """
+        renderSpecificationHeader(event.testName, event.duration, spec)
       } else
         ""
     }
@@ -187,23 +190,23 @@ class ScalaTestHtmlFormat extends HtmlFormat {
     <div class="testmethod test-failed">
       <div class="scenario" id="${event.testName.hashCode().toString}">
         $specification
-        <h2>${event.testName}</h2>
-        <div class="highlight results highlighted" style="margin-bottom: 1em">
-          ${event.duration
-      .map(milliseconds => s"<span>${event.name} after $milliseconds ms</span><br/>")
-      .getOrElse("")}
+        <div class="highlight results highlighted">
           <pre>&gt; ${event.message}</pre>
           <span class="detailstoggle">
             <a id="$linkId" href="#" onclick="{ toggleDetails('$contentId', '$linkId'); return false; }">[ show stacktrace ]</a>
           </span>
           <div id="$contentId" style="display: none; margin-top: 1em">
-            ${grayStackTraceElements.map(
-      ste => s"""<div style="color: #CCADAD">${ste.toString}</div>)"""
-    )}
+            ${
+      grayStackTraceElements.map(
+        ste => s"""<div style="color: #CCADAD">${ste.toString}</div>"""
+      ).mkString("\n")
+    }
             <div style="color: #9C3636; font-weight: bold">${blackStackTraceElements.head.toString}</div>
-            ${blackStackTraceElements.tail.map(
-      ste => s"""<div style="color: #9C3636">${ste.toString}</div>"""
-    )}
+            ${
+      blackStackTraceElements.tail.map(
+        ste => s"""<div style="color: #9C3636">${ste.toString}</div>"""
+      ).mkString("\n")
+    }
           </div>
         </div>
         ${interestingGivensTable(testState, rendering).mkString("\n")}
@@ -214,10 +217,10 @@ class ScalaTestHtmlFormat extends HtmlFormat {
   }
 
   private def capturedInputsAndOutputs(
-      testState: Option[TestState],
-      rendering: Rendering,
-      annotations: Set[Tag]
-  ): String = {
+                                        testState: Option[TestState],
+                                        rendering: Rendering,
+                                        annotations: Set[Tag]
+                                      ): String = {
     val interactionStyle =
       if (annotations.contains(SkipInteractions)) "display: none" else "display: inline"
 
@@ -249,23 +252,25 @@ class ScalaTestHtmlFormat extends HtmlFormat {
       """
   }
 
-  private def renderFragmentForBody(event: TestPendingOrIgnored): String =
+  private def renderFragmentForBody(event: TestPendingOrIgnored): String = {
+    println(event)
     s"""
     <a id={linkNameOf(event.testText)}></a>
     <div class="testmethod test-not-run">
       <div class="scenario" id=${event.testName.hashCode().toString}>
-        <h2>Specification</h2>
-        <pre class="highlight specification">${SpecificationFormatter.format(
-      FromSource.getCodeFrom(event.suiteClassName, event.testText),
-      Seq.empty,
-      event.suiteClassName,
-      codeFormatFor(event.suiteClassName)
-    )}</pre>
-        <h2>Execution</h2>
+        ${
+      renderSpecificationHeader(event.testName, None, SpecificationFormatter.format(
+        FromSource.getCodeFrom(event.suiteClassName, event.testText),
+        Seq.empty,
+        event.suiteClassName,
+        codeFormatFor(event.suiteClassName)
+      ))
+    }
         <pre class="highlight specification">${event.name}</pre>
       </div>
     </div>
   """
+  }
 
   private def renderingFor(className: String): Rendering =
     new Rendering(tryToCreateObject[CustomRendering](className))

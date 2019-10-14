@@ -27,11 +27,16 @@ object FromSource {
     val content                           = readLines(sourceFile).getOrElse(Seq.empty)
     val zippedContent: Seq[(String, Int)] = content.zipWithIndex
     val joined                            = join(zippedContent)
-    val (line, lineNumber)                = joined.find(_._1.replace("\"", "").contains(testName)).get
-    readToEndOfMethod(
-      content,
-      if (line.trim().matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1
-    )
+    val firstLine                         = joined.find(_._1.replace("\"", "").contains(testName.replace("must", "").replace("should", "").trim))
+    firstLine match {
+      case Some((line, lineNumber)) =>
+        readToEndOfMethod(
+          content,
+          if (line.trim().matches(".+\\{.+\\}|.+ =\\s+[^\\{]+")) lineNumber else lineNumber + 1
+        )
+      case None =>
+        Nil
+    }
   }
 
   @tailrec
