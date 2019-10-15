@@ -1,8 +1,9 @@
 package clairvoyance.scalatest.examples
 
+import clairvoyance.scalatest.ClairvoyantContext
 import org.scalatest.refspec.RefSpec
 
-class MarkdownWithRefSpecExample extends RefSpec {
+class MarkdownWithRefSpecExample extends RefSpec with ClairvoyantContext {
 
   object `The Triangle Number Calculator` {
     markup {

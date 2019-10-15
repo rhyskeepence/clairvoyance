@@ -1,8 +1,9 @@
 package clairvoyance.scalatest.examples
 
+import clairvoyance.scalatest.ClairvoyantContext
 import org.scalatest.{MustMatchers, WordSpec}
 
-class HelloWorldSpec extends WordSpec with MustMatchers {
+class HelloWorldSpec extends WordSpec with ClairvoyantContext with MustMatchers {
 
   "The 'Hello world' string" must {
 

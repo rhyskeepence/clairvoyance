@@ -1,8 +1,9 @@
 package clairvoyance.scalatest.examples
 
+import clairvoyance.scalatest.ClairvoyantContext
 import org.scalatest.FunSuite
 
-class MarkdownWithFunSuiteExample extends FunSuite {
+class MarkdownWithFunSuiteExample extends FunSuite with ClairvoyantContext {
 
   test(
     """The Triangle Number Calculator

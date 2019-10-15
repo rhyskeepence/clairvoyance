@@ -1,8 +1,9 @@
 package clairvoyance.scalatest.examples
 
+import clairvoyance.scalatest.ClairvoyantContext
 import org.scalatest.WordSpec
 
-class MarkdownWithWordSpecExample extends WordSpec {
+class MarkdownWithWordSpecExample extends WordSpec with ClairvoyantContext {
 
   """The Triangle Number Calculator
     |###Rules
