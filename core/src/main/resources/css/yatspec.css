@@ -85,15 +85,32 @@ h3 {
 }
 
 .test-failed .scenario {
-    border-left: 0.25rem solid #e74c3c;
+    border-left: 0.5rem solid #e74c3c;
 }
 
-.test-passed .results {
-    background-color: #F2FFEE;
+.test-failed .test-status {
+    color: #e74c3c
 }
 
 .test-passed .scenario {
-    border-left: 0.25rem solid #27ae60;
+    border-left: 0.5rem solid #27ae60;
+}
+
+.test-passed .test-status {
+    color: #27ae60
+}
+
+.test-not-run .scenario {
+    border-left: 0.5rem solid #f1c40f;
+}
+
+.test-not-run .test-status {
+    color: #f1c40f;
+}
+
+.test-status {
+    padding: 1rem;
+    text-transform: capitalize;
 }
 
 ul.contents {
@@ -279,4 +296,8 @@ dl.index-result {
 
 .toggle:hover {
     text-decoration: none;
+}
+
+code {
+    white-space: pre;
 }

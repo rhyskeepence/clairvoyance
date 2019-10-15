@@ -127,19 +127,31 @@ class ScalaTestHtmlFormat extends HtmlFormat {
         suiteClassName,
         codeFormatFor(suiteClassName)
       )
-      renderSpecificationHeader(testName, event.duration, spec)
+      renderSpecificationHeader(testName, "success", event.duration, spec)
     } else ""
   }
 
-  private def renderSpecificationHeader(testName: String, duration: Option[Long], spec: String) = {
+
+  private def formatDuration(durationMillis: Long): List[String] = {
+    durationMillis match {
+      case millis if millis < 1000 =>
+        List(s"${millis} ms")
+      case millis if millis < 60000 =>
+        List(s"${millis / 1000} s") ::: formatDuration(millis % 1000)
+      case millis =>
+        List(s"${millis / 60000} m") ::: formatDuration(millis % 60000)
+    }
+  }
+
+  private def renderSpecificationHeader(testName: String, testStatus: String, duration: Option[Long], spec: String) =
     s"""
           <header>
             <h2>$testName</h2>
-            ${duration.fold("")(milliseconds => s"""<div class="test-duration">$milliseconds ms</div>""")}
+            <div class="test-status">${testStatus}</div>
+            ${duration.map(formatDuration).fold("")(d => s"""<div class="test-duration">${d.mkString(" ")}</div>""")}
           </header>
           <code class="highlight specification">$spec</code>
         """
-  }
 
   private def getCodeFrom(location: String, event: TestSucceeded): List[(Int, String)] = {
     event.location match {
@@ -180,7 +192,7 @@ class ScalaTestHtmlFormat extends HtmlFormat {
           codeFormatFor(event.suiteClassName)
         )
 
-        renderSpecificationHeader(event.testName, event.duration, spec)
+        renderSpecificationHeader(event.testName, "failed", event.duration, spec)
       } else
         ""
     }
@@ -253,20 +265,18 @@ class ScalaTestHtmlFormat extends HtmlFormat {
   }
 
   private def renderFragmentForBody(event: TestPendingOrIgnored): String = {
-    println(event)
     s"""
-    <a id={linkNameOf(event.testText)}></a>
+    <a id="${linkNameOf(event.testText)}"></a>
     <div class="testmethod test-not-run">
       <div class="scenario" id=${event.testName.hashCode().toString}>
         ${
-      renderSpecificationHeader(event.testName, None, SpecificationFormatter.format(
+      renderSpecificationHeader(event.testName, event.name, None, SpecificationFormatter.format(
         FromSource.getCodeFrom(event.suiteClassName, event.testText),
         Seq.empty,
         event.suiteClassName,
         codeFormatFor(event.suiteClassName)
       ))
     }
-        <pre class="highlight specification">${event.name}</pre>
       </div>
     </div>
   """
